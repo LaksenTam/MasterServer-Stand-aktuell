@@ -1,0 +1,50 @@
+@charset "ISO-8859-1";
+
+p.error{
+	color: red;
+}
+
+h4.error {
+	color: red;
+}
+
+.btn-circle{
+	border-radius: 2px;
+}
+
+.i-btn {
+	cursor: pointer;
+	height: 50px;
+	width: 60px;
+	font-family: 'Titillium Web', sans-serif;
+	color: #333;
+	border-radius: 10px;
+	box-shadow: 0px 10px 10px rgba(0,0,0,0.1);
+	background: #bee5eb;
+	margin: 5px;
+	transition: 0s;
+}
+
+.i-btn span {
+	width: 0px;
+	overflow: hidden;
+	transition: 0s;
+	text-align: center;
+	color: transparent;
+}
+
+.i-btn:hover {
+	width: 600px;
+	border-radius: 5px;
+	
+}
+
+.i-btn:hover span {
+	text-align:center;
+	padding: 2px;
+	width: max-content;
+	color: black;
+}
+
+
+

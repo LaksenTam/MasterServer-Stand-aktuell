@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+
+<taglib>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>2.0</jsp-version>
+	<short-name>Custom TLD</short-name>
+	
+	<tag>
+		<name>AdminHead</name>
+		<tagclass>tags.AdminHead</tagclass>
+		<body-content>scriptless</body-content>
+	
+	</tag>
+</taglib>
