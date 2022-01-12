@@ -53,7 +53,8 @@ public class ProduktListenAnfordern extends HttpServlet {
 			String ausgabe = dj.dataToJson(produkte);
 			String lagerausgabe = dj.lagerToJson(lager); 
 			System.out.println(ausgabe);
-			pw.print(lagerausgabe);
+			pw.print(lagerausgabe + "?");
+			
 		
 			pw.print(ausgabe);
 			pw.close();

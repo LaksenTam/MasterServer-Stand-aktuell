@@ -26,6 +26,11 @@ $(document).ready(function(){
 </head>
 <body>
 	<x:AdminHead></x:AdminHead>
+	
+	<p>Aktuell im Bestand sind: </p>
+	<p>A Produkt: 46
+	<p>B Produkt: 43
+	<p>C Produkt: 32
 		
 	
 	<h4 class = "error">${fehler }</h4>

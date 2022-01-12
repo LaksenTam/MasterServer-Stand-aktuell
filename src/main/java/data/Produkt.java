@@ -182,6 +182,7 @@ public class Produkt {
 				+ ", minBestand=" + minBestand + ", maxBestand=" + maxBestand + ", maxLager=" + maxLager
 				+ ", verbrauch=" + verbrauch + ", verbraeuche=" + verbraeuche + "]";
 	}
+
 	
 	
 	

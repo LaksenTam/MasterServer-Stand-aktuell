@@ -23,6 +23,7 @@ import produkterstellung.AProdukt;
 import produkterstellung.BProdukt;
 import produkterstellung.CProdukt;
 import produkterstellung.LagerGenerierung;
+import utility.CheckName;
 
 
 /**
@@ -100,8 +101,10 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		//Generierung des Lagers
 		
 		int counter = 0;
-		boolean saison = false;		
-			for(int j = 0; j < aProdukt;j++) {				
+		boolean saison = false;	
+		List<Produkt> checkName = new ArrayList<>();
+
+			for(int j = 0; j < aProdukt;j++) {	
 				Produkt p = new Produkt();
 				AProdukt ap = new AProdukt();
 				if(saisonalA>0) {
@@ -114,13 +117,42 @@ public class ProblemInstanzErstellen extends HttpServlet {
 					saison = false;
 					ap.generiereProduktA(p, saison, counter, perioden, lager);
 					System.out.println("A-Produkt erstellt!");
-				}				
-				produkte.add(p);				
-				counter++;				
+				}	
+				//produkte.add(p);	
+				checkName.add(p);
+				
 			}
+			for(Produkt pro: checkName) {
+				System.out.println(pro.getName() + " ");
+			}
+			System.out.println("_----------------------_");
+		
+			AProdukt ap = new AProdukt();
+//			
+//			}
+			/**
+			 * ‹bergebe die Liste mit allen Namen mit und schlieﬂe bereits verwendete Namen aus
+			 */
+			
+			
+			List<String> produktNamen = ap.getProduktNamen();
+			CheckName cn =  new CheckName();
+			checkName= cn.checkNameForDup(produktNamen, checkName);//			
+			produkte.addAll(checkName);
+			checkName.clear();
+			produktNamen.clear();
+			
+			
+				counter++;					
+			
+			
+			/**
+			 * Bereich der Erstellung der B Produkte
+			 */
 			for(int n = 0; n< bProdukt; n++) {
 				Produkt p = new Produkt();
 				BProdukt bp = new BProdukt();
+				
 				if(saisonalB>0) {
 					saison = true;
 					bp.generiereProduktB(p,saison, counter, perioden,lager);
@@ -133,10 +165,19 @@ public class ProblemInstanzErstellen extends HttpServlet {
 					System.out.println("B-Produkt erstellt!");
 
 				}
-				produkte.add(p);				
+				checkName.add(p);				
 				counter++;
 				
 			}
+			
+			BProdukt bp = new BProdukt();
+			produktNamen = bp.getProduktNamen();			
+			checkName= cn.checkNameForDup(produktNamen, checkName);//			
+			produkte.addAll(checkName);
+			checkName.clear();
+			produktNamen.clear();
+			
+			
 			for(int c = 0; c<cProdukt; c++) {
 				Produkt p = new Produkt();
 				CProdukt cp = new CProdukt();
@@ -152,10 +193,23 @@ public class ProblemInstanzErstellen extends HttpServlet {
 					System.out.println("C-Produkt erstellt");
 				}
 				
-				produkte.add(p);
+				checkName.add(p);
 				counter++;							
 			}
-			System.out.println("Es wurden " + produkte.size() + " Produkte erstellt");
+			
+			CProdukt cp = new CProdukt();
+			produktNamen = cp.getProduktNamen();			
+			checkName= cn.checkNameForDup(produktNamen, checkName);//			
+			produkte.addAll(checkName);
+			checkName.clear();
+			produktNamen.clear();
+			
+		System.out.println("Es wurden " + produkte.size() + " Produkte erstellt");
+		/*
+		 * Falls zweimal das selbe Produkt in der Liste ist w‰hle einen neuen namen
+		 */
+		
+		
 		String identifier = UUID.randomUUID().toString();
 		daten.produktSpeichern(produkte, identifier);
 		daten.problemInstanzDatenSpeichern(produkte.size(), perioden, identifier, lager);

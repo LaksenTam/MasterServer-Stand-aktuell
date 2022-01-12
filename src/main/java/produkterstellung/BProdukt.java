@@ -14,19 +14,24 @@ import utility.IntervallAufteilung;
 
 public class BProdukt {
 	
-	public Produkt generiereProduktB(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
-		Random rand = new Random();
-		List<Integer> verbrauchsListe = new ArrayList<Integer>();
-		CSVRead csv = new CSVRead();
-		
-		String artikel = "ASUS ROG STRIX B550, ASUS ROB STRIX Z690, MSI MEG Z690, GeForce RTX 3060, GeForce RTX 3070, "
-				+ "XFX Radeon RX 6600, Corsair DIMM 32GB, G.Skill 32GB, BenQ EW3270, MSI Optix, AORUS FI27Q, "
-				+ "SAMSUNG Odyssey, BenQ Zowie, GIGAByte G27F, iiyama G-Master, Acer Nitro, Alienware AW2720, "
-				+ "SAMSUNG Galaxy S20, ASUS Zenfone, OnePlus 8, Xiaomi 11T, Xiaomi Mi 11, SAMSUNG GU-50, "
-				+ "Sony Bravia KD50, Hisense 40A, Grundig 49, LG Eletronics 43UP, Nokia 4300A, Panasonic TX-58, Hitachi U50, "
-				+ "Xiaomi Mi TV, ChiQ U55, Toshiba 50U, Roborock S5 Max, Dyson V11, Xiaomi Mi Cleaner, EXOVACS DEEBOT OZMO, "
-				+ "Xiaomi Dreame D9, Xiaomi Mi Mop, Xiaomi ROIDMI EVE, iRobot Roomba i3, Canon EOS 2000D, Olympus E-M10";
+	CSVRead csv = new CSVRead();
+	Random rand = new Random();
+	
 
+	String artikel = "ASUS ROG STRIX B550, ASUS ROB STRIX Z690, MSI MEG Z690, GeForce RTX 3060, GeForce RTX 3070, "
+			+ "XFX Radeon RX 6600, Corsair DIMM 32GB, G.Skill 32GB, BenQ EW3270, MSI Optix, AORUS FI27Q, "
+			+ "SAMSUNG Odyssey, BenQ Zowie, GIGAByte G27F, iiyama G-Master, Acer Nitro, Alienware AW2720, "
+			+ "SAMSUNG Galaxy S20, ASUS Zenfone, OnePlus 8, Xiaomi 11T, Xiaomi Mi 11, SAMSUNG GU-50, "
+			+ "Sony Bravia KD50, Hisense 40A, Grundig 49, LG Eletronics 43UP, Nokia 4300A, Panasonic TX-58, Hitachi U50, "
+			+ "Xiaomi Mi TV, ChiQ U55, Toshiba 50U, Roborock S5 Max, Dyson V11, Xiaomi Mi Cleaner, EXOVACS DEEBOT OZMO, "
+			+ "Xiaomi Dreame D9, Xiaomi Mi Mop, Xiaomi ROIDMI EVE, iRobot Roomba i3, Canon EOS 2000D, Olympus E-M10";
+
+	
+	public Produkt generiereProduktB(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
+		
+		List<Integer> verbrauchsListe = new ArrayList<Integer>();
+		
+		
 		
 		List<String> namenListe = new ArrayList<String>();
 		
@@ -56,6 +61,13 @@ public class BProdukt {
 		}
 		p.setVerbraeuche(verbrauchsListe);		
 		return p;
+	}
+	
+	public List<String> getProduktNamen(){
+		List<String> produktNamen = new ArrayList<String>();
+		produktNamen = csv.lese(artikel, produktNamen);
+		System.out.println(produktNamen.size());
+		return produktNamen;
 	}
 
 }

@@ -13,12 +13,8 @@ import utility.CSVRead;
 import utility.IntervallAufteilung;
 
 public class CProdukt {
-	
-public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
-	Random rand = new Random();
-	List<Integer> verbrauchsListe = new ArrayList<Integer>();
 	CSVRead csv = new CSVRead();
-
+	Random rand = new Random();
 	
 	String artikel = "Roccat Kone, Roccat Pyro, Sharkoon SKILLER, Razer Huntsman, Logitech G502 HERO, Roccat Kain 120, "
 			+ "Microsoft Xbox Wireless Controller, ASUS ROG Chakram, Keychron K3, EVGA Z15, Logitech PRO X, "
@@ -26,6 +22,14 @@ public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int periode
 			+ " SteelSeries Archtis, Turtle Beach Recon 500, Logitech G PRO X, Razer Kraken, Shure SM7B, Creative SoundBlaster X4, "
 			+ "Cooler Master MH670, Elgato Wave:3, HP X1000, SteelSeries Arctis 9, Rode NT-USB Mini, Razer Blackshart V2, "
 			+ "Jabra Evolve2 75, Sony WF-1000XM4";
+
+	
+public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
+	
+	List<Integer> verbrauchsListe = new ArrayList<Integer>();
+
+	
+	
 	
 	List<String> namenListe = new ArrayList<String>();
 	
@@ -56,6 +60,21 @@ public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int periode
 	p.setVerbraeuche(verbrauchsListe);	
 	return p;
 		
+	}
+
+	public String doppelterName() {	
+	List<String> namenListe = new ArrayList<String>();			
+	namenListe = csv.lese(artikel, namenListe);				
+	int selector = rand.nextInt(namenListe.size())+0;		
+	String name = namenListe.get(selector);			
+	return name;		
+	}
+	
+	public List<String> getProduktNamen(){
+		List<String> produktNamen = new ArrayList<String>();
+		produktNamen = csv.lese(artikel, produktNamen);
+		System.out.println("C" + produktNamen.size());
+		return produktNamen;
 	}
 
 	/**
