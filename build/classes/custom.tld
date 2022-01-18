@@ -12,4 +12,10 @@
 		<body-content>scriptless</body-content>
 	
 	</tag>
+	
+	<tag>
+		<name>ProblemInstanzBearbeiten</name>
+		<tagclass>tags.ProblemInstanzBearbeiten</tagclass>
+		<bodycontent>empty</bodycontent>	
+	</tag>
 </taglib>

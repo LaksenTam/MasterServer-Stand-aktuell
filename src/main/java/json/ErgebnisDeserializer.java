@@ -11,7 +11,11 @@ public class ErgebnisDeserializer {
 	
 	//Userergebnis in Produktergebnis getauscht
 	public Userergebnis deserializeJsonInput(String jsonErgebnis, Userergebnis ue) {		
-		return ue = new Gson().fromJson(jsonErgebnis, Produktergebnis.class);		
+		return ue = new Gson().fromJson(jsonErgebnis, Userergebnis.class);		
+	}
+	
+	public Produktergebnis jsonToProduktergebnis(String ergebnis, Produktergebnis pe) {
+		return pe = new Gson().fromJson(ergebnis, Produktergebnis.class);		
 	}
 
 }

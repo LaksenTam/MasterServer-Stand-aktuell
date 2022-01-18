@@ -337,6 +337,30 @@ public class Datenbank {
 		
 	}
 	
-	
+	public void updateProblem(List<Produkt> produkte) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Update public.produkt set bestellfix =?, lagerkostensatz=?, fehlmengenkosten=?, minbestand =?, maxbestand=?, einstand=? where name =?";
+		
+		try {
+			con=DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			for(int i=0; i<produkte.size(); i++) {				
+				Produkt p = produkte.get(i);
+				ps.setString(7, p.getName());
+				ps.setDouble(1, p.getBestellfix());
+				ps.setDouble(2, p.getLagerkostensatz());
+				ps.setDouble(3, p.getFehlmengenkosten());
+				ps.setInt(4, p.getMinBestand());
+				ps.setInt(5, p.getMaxBestand());
+				ps.setDouble(6, p.getEinstand());	
+				ps.executeUpdate();
+			}
+		}catch(SQLException e) {
+		e.printStackTrace();
+		}
 	}
+	
+	
+}
 	

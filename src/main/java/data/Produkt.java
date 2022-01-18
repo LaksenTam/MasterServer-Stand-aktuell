@@ -1,10 +1,15 @@
 package data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Produkt {
+public class Produkt implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5143178635019436477L;
 	private String name;
 	private double einstand;
 	private double bestellfix;

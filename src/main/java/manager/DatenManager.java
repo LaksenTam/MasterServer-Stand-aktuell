@@ -66,5 +66,9 @@ public class DatenManager {
 		return db.getStartProblem(start);
 		
 	}
+	
+	public void updateProblemInstanz(List<Produkt> produkte) {
+		db.updateProblem(produkte);
+	}
 
 }

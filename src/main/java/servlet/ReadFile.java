@@ -1,29 +1,34 @@
 package servlet;
 
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import data.Produkt;
-import datenbank.Datenbank;
-import json.DataToJson;
+import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvException;
 
 /**
- * Servlet implementation class verbrauchProProdukt
+ * Servlet implementation class ReadFile
  */
-@WebServlet("/verbrauchProProdukt")
-public class verbrauchProProdukt extends HttpServlet {
+@WebServlet("/ReadFile")
+public class ReadFile extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public verbrauchProProdukt() {
+    public ReadFile() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,26 +38,17 @@ public class verbrauchProProdukt extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Datenbank db = new Datenbank();
-		DataToJson dj = new DataToJson();
-		
-		String periode = request.getParameter("periode");
-		String produktName = request.getParameter("produktName");
-		
-		int per = Integer.parseInt(periode);
-		
-		System.out.println("Per: " + periode + "Name: " + produktName);
-		
-		Produkt p = db.getProduktInfos(per, produktName);
-		
-		PrintWriter pw = response.getWriter();
-		response.setContentType("text/json");
-		
-		String ausgabe = dj.produktToJson(p);
-		System.out.println(ausgabe);
-		pw.print(ausgabe);
-		pw.close();
-		
+		InputStream res = getServletContext().getResourceAsStream("/WEB-INF/files/Artikelliste.csv");
+		CSVReader reader = new CSVReader(new InputStreamReader(res, "UTF-8"));
+		try {
+			List<String[]> allRows = reader.readAll();
+			for(String[] row : allRows){
+		        System.out.println(Arrays.toString(row));
+		     }
+		} catch (IOException | CsvException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

@@ -166,5 +166,35 @@ public class UserDatenbank {
 		}
 		return rs;
 	}
+	
+	public void produktErgebnisGesamtSpeicher(Userergebnis ue) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Insert into public.ergebnis (bestellmenge, pname, kosten,userkey,periode, zeitstempel) values(?,?,?,?,?,?)";
+		
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			for(int i =0; i<ue.getProdukte().size(); i++) {
+				
+				Produktergebnis pe = new Produktergebnis();
+				pe = ue.getProdukte().get(i);
+				ps.setInt(1, pe.getBestellmenge());
+				ps.setString(2, pe.getProduktName());
+				ps.setDouble(3, pe.getKosten());
+				ps.setString(4, ue.getAPI_KEY());
+				ps.setInt(5, pe.getPeriode());
+				ps.setInt(6 , 1);
+				ps.executeUpdate();
+
+			}		
+			System.out.println("Erfolg");
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
 
 }
