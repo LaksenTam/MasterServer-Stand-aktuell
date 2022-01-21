@@ -50,12 +50,12 @@ public class BProdukt {
 		p.setMinBestand(rand.nextInt() + 0);
 		p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
 		if(saisonal) {
-			int verbrauch = rand.nextInt(30000)+0;
+			int verbrauch = rand.nextInt(700)+0;
 			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
 		}else {
 			
 			for(int n = 0; n < perioden; n++) {
-				p.setVerbrauch(rand.nextInt(20000) + 0);
+				p.setVerbrauch(rand.nextInt(700) + 0);
 				verbrauchsListe.add(p.getVerbrauch());
 			}
 		}

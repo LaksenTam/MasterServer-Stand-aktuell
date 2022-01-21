@@ -142,6 +142,10 @@ public class Datenbank {
 		return produktListe;
 	}
 	
+	/**
+	 * Hier schauen ob die Funktion so umgeschrieben werden kann, dass eine Liste zurückgegeben wird
+	 * @return
+	 */
 	public ResultSet problemInstanzAnzeigen() {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -206,7 +210,10 @@ public class Datenbank {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
-			perioden = rs.getInt("perioden");
+			while(rs.next()) {
+				perioden = rs.getInt("perioden");
+			}
+			
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -361,6 +368,43 @@ public class Datenbank {
 		}
 	}
 	
+	public List<Produkt> getVerbrauchsListe() throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Produkt> produkte = new ArrayList<>();
+		String sql = "SELECT name, bestellfix,einstand, "
+				+ "fehlmengenkosten, lagerkostensatz, minbestand, maxbestand, volumenprodukt, verbrauch"
+				+ " FROM public.produkt RIGHT JOIN public.verbrauch "
+				+ "ON public.produkt.name = public.verbrauch.pname";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Produkt p = new Produkt();
+				p.setName(rs.getString("name"));
+				p.setBestellfix(rs.getDouble("bestellfix"));
+				p.setLagerkostensatz(rs.getDouble("lagerkostensatz"));
+				p.setFehlmengenkosten(rs.getDouble("fehlmengenkosten"));
+				p.setvProdukt(rs.getDouble("volumenprodukt"));
+				p.setMinBestand(rs.getInt("minbestand"));
+				p.setMaxBestand(rs.getInt("maxbestand"));
+				p.setEinstand(rs.getDouble("einstand"));
+				p.setVerbrauch(rs.getInt("verbrauch"));
+				produkte.add(p);
+			}
+			return produkte;
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
+		}
+	}
 	
 }
 	

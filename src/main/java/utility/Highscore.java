@@ -1,17 +1,94 @@
 package utility;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import data.Produkt;
+import data.Produktergebnis;
+import datenbank.Datenbank;
+
 public class Highscore {
+	Datenbank db = new Datenbank();
 	
 	/**
 	 * Hole dir volle Ergebnisse (alle Ergebnisse für die Perioden) aus der DB und berechne den Highscore
 	 * Berechnung: Niedrige Kosten müssen zu höheren Werte führen als niedrige Kosten Fehlmengen sollten einen negativen Effekt haben
 	 * Wenn die letze Periode abgegeben wurde sollte an diese Klasse weitergeleitet werden, sodass alle Perioden von dem Benutzer abgerufen werden
 	 * @return
+	 * @throws SQLException 
 	 */
 	
-	public int berechneHighscore() {
-		return 0;
+	public void berechneHighscore(List<Produktergebnis> ergebnis) throws SQLException {	
+		int highscore;
+		List<Produkt> produktListe = db.getVerbrauchsListe();
+		List<Produkt> pInfo = new ArrayList<Produkt>();
+		db.getStartProblem(pInfo);
 		
+		int fehl = berechnefehlMengen(ergebnis, produktListe, pInfo);
+		double kosten = berechneKosten(ergebnis,pInfo);
+		System.out.println(fehl);
+		System.out.println(kosten);
+		
+		
+		
+		
+	}
+	
+	public int berechnefehlMengen(List<Produktergebnis> ergebnis,List<Produkt> produktListe, List<Produkt> pInfo ) {
+		int fehlmenge = 0;			
+		List<Produkt> pro = new ArrayList<>();		
+		
+		int menge = 0;
+		for(int i =0; i<produktListe.size();i++) {		
+			Produkt p = new Produkt();
+			menge += produktListe.get(i).getVerbrauch();
+			if(i != (produktListe.size()-1)) {			
+				if(!produktListe.get(i).getName().equals(produktListe.get(i+1).getName())) {						
+					p.setVerbrauch(menge);
+					p.setName(produktListe.get(i).getName());
+					pro.add(p);					
+					menge = 0;
+				}
+			}else {				
+				p.setVerbrauch(menge);
+				p.setName(produktListe.get(i).getName());
+				pro.add(p);
+			}		
+		}		
+				
+		for(int j=0;j<pro.size();j++) {
+			int checkfehl = pro.get(j).getVerbrauch();			
+			for(int k =0; k<ergebnis.size();k++) {
+				if(pro.get(j).getName().equals(ergebnis.get(k).getProduktName())) {
+					checkfehl -=ergebnis.get(k).getBestellmenge();
+				}				
+			}
+		fehlmenge +=checkfehl *pInfo.get(j).getFehlmengenkosten();			
+		}	
+		return fehlmenge;
+	}
+	
+	public double berechneKosten(List<Produktergebnis> ergebnis,List<Produkt> pInfo)  {
+		double kosten =0.00;		
+						
+		for(int i =0; i<ergebnis.size();i++) {				
+			kosten += ergebnis.get(i).getBestellmenge()*ergebnis.get(i).getKosten();						
+		}
+		double bestellkosten = 0.00;
+		for(int j = 0; j<pInfo.size(); j++) {				
+			for(int i = 0; i<ergebnis.size();i++) {				
+				if(pInfo.get(j).getName().equals(ergebnis.get(i).getProduktName())) {
+					bestellkosten += pInfo.get(j).getEinstand() * ergebnis.get(i).getBestellmenge();									
+				}
+			}
+		}
+				
+		kosten += bestellkosten; 		
+		kosten = ((double) Math.round(kosten*100)/100);
+		
+		return kosten;
 	}
 
 }

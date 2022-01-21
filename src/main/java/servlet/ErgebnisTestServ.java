@@ -1,7 +1,8 @@
 package servlet;
 
 import java.io.IOException;
-
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,9 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import data.Produktergebnis;
 import data.Userergebnis;
 import datenbank.UserDatenbank;
 import json.ErgebnisDeserializer;
+import utility.Highscore;
 
 /**
  * Servlet implementation class ErgebnisTestServ
@@ -19,7 +22,7 @@ import json.ErgebnisDeserializer;
 @WebServlet("/ErgebnisTestServ")
 public class ErgebnisTestServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+      Highscore score = new Highscore();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -38,8 +41,21 @@ public class ErgebnisTestServ extends HttpServlet {
 		Userergebnis u = new Userergebnis();
 		ErgebnisDeserializer ed = new ErgebnisDeserializer();		
 		u = ed.deserializeJsonInput(ergebnis, u);
-		System.out.println(u.toString());
-		db.produktErgebnisGesamtSpeicher(u);
+		List<Produktergebnis> p = u.getProdukte();
+		try {
+			score.berechneHighscore(p);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	
+		
+		
+		//db.produktErgebnisGesamtSpeicher(u);
+		
+		
 	}
 
 	/**

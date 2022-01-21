@@ -48,12 +48,12 @@ public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int periode
 	p.setMinBestand(rand.nextInt() + 0);
 	p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
 	if(saisonal) {
-		int verbrauch = rand.nextInt(70000)+0;
+		int verbrauch = rand.nextInt(1000)+0;
 		verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
 	}else {
 		
 		for(int n = 0; n < perioden; n++) {
-			p.setVerbrauch(rand.nextInt(100000)+ 0);
+			p.setVerbrauch(rand.nextInt(1000)+ 0);
 			verbrauchsListe.add(p.getVerbrauch());
 		}
 	}

@@ -17,5 +17,7 @@ public class ErgebnisDeserializer {
 	public Produktergebnis jsonToProduktergebnis(String ergebnis, Produktergebnis pe) {
 		return pe = new Gson().fromJson(ergebnis, Produktergebnis.class);		
 	}
+	
+	
 
 }

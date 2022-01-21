@@ -58,13 +58,13 @@ public class Registrierung extends HttpServlet {
 				try {
 					ud.registrierungUser(name, password, api_key, zugriff);
 					User user = new User(name, password, zugriff);					
-					
+					session.setAttribute("key", api_key);
 					request.setAttribute("user", user);
 					request.setAttribute("userName", user.getName());
 					session.setAttribute("name", user.getName());
 					System.out.println(session.getAttribute("name"));
 					System.out.println("Benutzer wurde erstellt: " + user.toString());
-					
+					request.setAttribute("key", api_key);
 					request.setAttribute("name", session.getAttribute("name"));
 					request.getRequestDispatcher("index.jsp").forward(request, response);
 				} catch (SQLException e) {
