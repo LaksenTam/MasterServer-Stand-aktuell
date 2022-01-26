@@ -1,7 +1,9 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,23 +12,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import data.Produktergebnis;
-import data.Userergebnis;
-import datenbank.UserDatenbank;
-import json.ErgebnisDeserializer;
-import utility.Highscore;
+import data.Produkt;
+import datenbank.Datenbank;
+import json.DataToJson;
 
 /**
- * Servlet implementation class ErgebnisTestServ
+ * Servlet implementation class GetProdukte
  */
-@WebServlet("/ErgebnisTestServ")
-public class ErgebnisTestServ extends HttpServlet {
+@WebServlet("/GetProdukte")
+public class GetProdukte extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-      Highscore score = new Highscore();
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ErgebnisTestServ() {
+    public GetProdukte() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,32 +35,32 @@ public class ErgebnisTestServ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		Datenbank db = new Datenbank();
+		DataToJson dj = new DataToJson();
 		
-		UserDatenbank db = new UserDatenbank();
-		String ergebnis = request.getParameter("json");
-		Userergebnis u = new Userergebnis();
-		ErgebnisDeserializer ed = new ErgebnisDeserializer();		
-		u = ed.deserializeJsonInput(ergebnis, u);
-		List<Produktergebnis> p = u.getProdukte();
+		List<Produkt> produkte = new ArrayList<>();
+		
 		try {
-			System.out.println(request.getRemoteAddr());
-		double highscore =	score.berechneHighscore(p);	
-		db.saveHighScore(highscore, u);
-		db.produktErgebnisGesamtSpeicher(u);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			produkte = db.produktListeAbrufen();
+			PrintWriter pw = response.getWriter();
+			response.setContentType("text/json");
+			String produkteToString = dj.dataToJson(produkte);
+			pw.print(produkteToString);
+			pw.flush();
+			pw.close();
+
+		}catch(IOException | SQLException e) {
 			e.printStackTrace();
-		}	
+		}
 	}
-	
-	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		doGet(request,response);
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

@@ -1,5 +1,18 @@
 @charset "ISO-8859-1";
 
+@media screen and (min-width:1200px) and (max-width:1350px){
+	.button-icon{
+	display:none;
+	}
+}
+
+@media screen and (max-width: 1199px){
+	.button-text{
+		display:none;
+	}
+}
+
+
 p.error{
 	color: red;
 }

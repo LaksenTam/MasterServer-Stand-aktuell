@@ -20,7 +20,7 @@ public class Produkt implements Serializable {
 	private int maxBestand;
 	private int maxLager;
 	private int verbrauch;
-	private List<Integer> verbraeuche = new ArrayList<Integer>();
+	private transient List<Integer> verbraeuche = new ArrayList<Integer>();
 
 	public Produkt() {
 		

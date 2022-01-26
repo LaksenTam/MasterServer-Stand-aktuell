@@ -8,8 +8,12 @@
 <title>Insert title here</title>
 <script src="js/jquery-3.3.1.slim-min.js" ></script>
 <script src="js/popper.min.js" ></script>
-<link rel = "stylesheet" href = "bootstrap-4.2.1-dist/css/bootstrap.min.css">
 <script src="bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
+<script src="js/jquery.tablesort.min.js"></script>
+<link rel = "stylesheet" href = "bootstrap-4.2.1-dist/css/bootstrap.min.css">
+
+<link rel = "stylesheet" href= "css/style.css">
+<script src="https://kit.fontawesome.com/5cfe696ca3.js" ></script>
 <link rel = "stylesheet" href= "css/login-style.css">
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
@@ -42,8 +46,7 @@
               <div class="row">
                 <div class="col-6">
                   <button type="submit" class="btn btn-primary px-4">Registrieren</button>
-                </div>               
-                             
+                </div>                            
               </div>
              </form>
             </div>            

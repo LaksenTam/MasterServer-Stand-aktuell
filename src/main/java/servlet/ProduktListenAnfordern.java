@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import data.Lager;
 import data.Produkt;
 import datenbank.Datenbank;
+import datenbank.UserDatenbank;
 import json.DataToJson;
 
 /**
@@ -38,12 +39,19 @@ public class ProduktListenAnfordern extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Datenbank db = new Datenbank();
+		UserDatenbank ud = new UserDatenbank();
 		DataToJson dj = new DataToJson();
 		
+		String key = request.getParameter("key");
+		
 		List<Produkt> produkte = new ArrayList<>();
-		Lager lager = new Lager();
+		Lager lager = new Lager();	
 		
 		try {
+			System.out.println(key);
+			long stamp = System.currentTimeMillis();
+			ud.insStempel(key, stamp);
+			
 			produkte = db.produktListeAbrufen();
 			lager = db.lagerAbrufen();
 			PrintWriter pw = response.getWriter();
@@ -51,17 +59,15 @@ public class ProduktListenAnfordern extends HttpServlet {
 			response.setContentType("text/json");
 			
 			String ausgabe = dj.dataToJson(produkte);
-			String lagerausgabe = dj.lagerToJson(lager); 
-			System.out.println(ausgabe);
-			pw.print(lagerausgabe + "?");
-			
-		
+			String lagerausgabe = dj.lagerToJson(lager); 			
+			pw.print(lagerausgabe + "?");		
 			pw.print(ausgabe);
 			pw.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 
 	/**

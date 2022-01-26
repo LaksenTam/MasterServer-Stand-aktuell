@@ -12,6 +12,7 @@ public class StudentHead extends SimpleTagSupport {
 	
 	public void doTag() {
 		PageContext pc = (PageContext) getJspContext();
+		@SuppressWarnings("unused")
 		HttpSession session = pc.getSession();
 		JspWriter out = getJspContext().getOut();
 		String studentHead = "";

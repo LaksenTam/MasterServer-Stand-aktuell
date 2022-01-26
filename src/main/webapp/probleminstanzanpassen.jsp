@@ -10,9 +10,12 @@
 <meta charset="ISO-8859-1">
 <script src="js/jquery-3.3.1.slim-min.js" ></script>
 <script src="js/popper.min.js" ></script>
-<link rel = "stylesheet" href = "bootstrap-4.2.1-dist/css/bootstrap.min.css">
 <script src="bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
+<script src="js/jquery.tablesort.min.js"></script>
+<link rel = "stylesheet" href = "bootstrap-4.2.1-dist/css/bootstrap.min.css">
+
 <link rel = "stylesheet" href= "css/style.css">
+<script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
 <title>Insert title here</title>
 </head>
 <body>

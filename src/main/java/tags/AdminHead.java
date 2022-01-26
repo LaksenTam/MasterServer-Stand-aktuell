@@ -7,7 +7,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import data.*;
+
 
 
 public class AdminHead extends SimpleTagSupport {
@@ -23,7 +23,7 @@ public class AdminHead extends SimpleTagSupport {
 		String adminHead = "";
 		try {
 		if(name != null) {			
-				adminHead = "<div class=\"container-fluid mb-5 mt-2\">\r\n"
+				adminHead = "<div class=\"container-lg mb-5 mt-2\">\r\n"
 						+ "	<div class=\"row align-items-center\" >\r\n"
 						+ "		<div class=\"col-md-2 center\">\r\n"
 						+ "		<img src = \"img/logo-uni.svg\" width = \"70\" height = \"70\">\r\n"
@@ -76,7 +76,7 @@ public class AdminHead extends SimpleTagSupport {
 					+ "			</ul>\r\n"
 					+ "		</div>\r\n"
 					+ "		<div class=\"col-md-1 justify-content-center\">\r\n"
-					+ "		<a href =\"login.jsp\"><button id = \"navbutton\" type=\"button\" class=\"btn btn-primary btn-block rounded-pill \">Login</button></a>\r\n"
+					+ "		<a href =\"login.jsp\"><button id = \"navbutton\" type=\"button\" class=\"btn btn-primary btn-block rounded-pill \"><span class = \"button-icon\"><i class=\"fas fa-sign-in-alt\"></i></span><span class = \"button-text\">Login</span></button></a>\r\n"
 					+ "		</div>\r\n"
 					+ "	</div>\r\n"
 					+ "</div>";

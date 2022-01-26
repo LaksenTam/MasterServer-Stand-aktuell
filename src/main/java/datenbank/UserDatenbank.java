@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import data.Highscore;
 import data.Produktergebnis;
 import data.User;
 import data.Userergebnis;
@@ -31,7 +34,6 @@ public class UserDatenbank {
 				ps.setString(4,ue.getAPI_KEY());
 				ps.setInt(5, ue.getPeriode());
 				ps.setLong(6, zeitstempel);
-				System.out.println("pe: " + pe.getBestellmenge() + "Name: " + pe.getProduktName() + "api: " +ue.getAPI_KEY() + "Kosten: " + pe.getKosten() + " per: "+ ue.getPeriode() );
 				ps.executeUpdate();				
 			}
 			status = true;
@@ -69,6 +71,7 @@ public class UserDatenbank {
 	}
 	
 	public User getUser(String name, String password, User user) throws SQLException {
+		@SuppressWarnings("unused")
 		boolean status = false;
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -85,9 +88,7 @@ public class UserDatenbank {
 			if(status = rs.next()) {
 				user.setName(name);
 				user.setApi_key(rs.getString("key"));
-			}
-			
-			System.out.println(status);
+			}			
 		}catch(SQLException e) {
 			e.printStackTrace();			
 		}finally {
@@ -115,7 +116,6 @@ public class UserDatenbank {
 			ps.setString(2, password);
 			rs = ps.executeQuery();
 			status = rs.next();
-			System.out.println(status);
 		}catch(SQLException e) {
 			e.printStackTrace();			
 		}finally {
@@ -149,35 +149,42 @@ public class UserDatenbank {
 		return stempel;
 	}
 	
-	public ResultSet bestenListe() {
-		ResultSet rs = null;
+	public List<Highscore> highscoresabrufen() {
 		Connection con = null;
 		PreparedStatement ps = null;
-	
-		
-		String sql = "Select * from public.ergebnis";
+		ResultSet rs = null;
+		List<Highscore> score = new ArrayList<Highscore>();
+		String sql = "Select DISTINCT name, score, api "
+					+ "from public.highscore "
+					+ "INNER JOIN public.user ON public.highscore.api = public.user.key "
+					+ "Order BY public.highscore.score DESC";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
 			rs = ps.executeQuery();
-			
-		}catch(SQLException e){
+			while(rs.next()) {	
+				Highscore hs = new Highscore();
+				hs.setName(rs.getString("name"));
+				hs.setScore(rs.getDouble("score"));
+				score.add(hs);	
+				
+			}
+		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return rs;
+		return score;
+		
 	}
 	
 	public void produktErgebnisGesamtSpeicher(Userergebnis ue) {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Insert into public.ergebnis (bestellmenge, pname, kosten,userkey,periode, zeitstempel) values(?,?,?,?,?,?)";
-		
+		String sql = "Insert into public.ergebnis (bestellmenge, pname, kosten,userkey,periode, zeitstempel) values(?,?,?,?,?,?)";		
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
-			for(int i =0; i<ue.getProdukte().size(); i++) {
-				
+			for(int i =0; i<ue.getProdukte().size(); i++) {				
 				Produktergebnis pe = new Produktergebnis();
 				pe = ue.getProdukte().get(i);
 				ps.setInt(1, pe.getBestellmenge());
@@ -187,14 +194,77 @@ public class UserDatenbank {
 				ps.setInt(5, pe.getPeriode());
 				ps.setInt(6 , 1);
 				ps.executeUpdate();
-
 			}		
 			System.out.println("Erfolg");
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}		
+	}
+	
+	public void saveHighScore(double highscore, Userergebnis ue) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Insert into public.highscore (score, api) values(?,?)";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setDouble(1, highscore);
+			ps.setString(2, ue.getAPI_KEY());
+			ps.executeUpdate();
+			System.out.println("Highscore gespeichert");
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ps.close();
+			con.close();
 		}
+	}
 		
+	
+	public void insStempel(String key, long stamp) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		String sql = "Insert into public.stamps (key, timestamp) values (?,?) ON Conflict (key) DO Update set timestamp = ?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1,key);
+			ps.setLong(2, stamp);
+			ps.setLong(3, stamp);
+			ps.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ps.close();
+			con.close();
+		}
+	}
+	
+	public long getStempel(String key) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		long alterStempel = 0;
+		String sql = "Select timestamp from public.stamps where key = ?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, key);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				System.out.println("Zeit geupdatet");
+				alterStempel = rs.getLong("timestamp");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			
+		}
+		return alterStempel;
 	}
 
 }

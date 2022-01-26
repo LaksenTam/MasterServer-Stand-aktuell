@@ -46,9 +46,7 @@ public class DatenManager {
 		return json.dataToJson(produkte);
 	}
 	
-	public ResultSet bestenListeAbrufen() {
-		return ud.bestenListe();
-	}
+	
 	
 	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager) {
 		return db.problemInstanzDatenSpeichern(anzProdukte, perioden, key, lager);

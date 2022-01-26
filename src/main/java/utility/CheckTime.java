@@ -33,5 +33,23 @@ public class CheckTime {
 		
 		return status;
 	}
+	
+	public boolean testeStempel(long neuStempel, String key) {
+		boolean status = false;
+		UserDatenbank ud = new UserDatenbank();
+		long altStempel = ud.getStempel(key);
+		System.out.println("ALT: " + altStempel);
+		System.out.println("NEU: " + neuStempel);
+		
+		double ergebnis = neuStempel - altStempel;
+		System.out.println(ergebnis);
+		System.out.println(ergebnis/1000);
+		
+		
+		if(ergebnis/1000< 0.7) {
+			status = true;
+		}
+		return status;
+	}
 
 }

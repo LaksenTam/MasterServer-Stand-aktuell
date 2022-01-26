@@ -1,17 +1,19 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import manager.DatenManager;
+import data.Highscore;
+import datenbank.UserDatenbank;
+
 
 /**
  * Servlet implementation class BestenListe
@@ -32,34 +34,13 @@ public class BestenListe extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		String meldung = "";
-		
-		DatenManager daten = new DatenManager();
-		
-		try {
-			ResultSet rs = daten.bestenListeAbrufen();
-			ArrayList<String[]> results = new ArrayList<String[]>();
-			while(rs.next()) {
-				String[] s = {
-						rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7)
-				};
-				results.add(s);
-			}
-			request.setAttribute("columnNames", new String[] {
-					"id", "bestellmenge", "Produktname", "Kostne", "userkey", "periode", "zeitstempel"
-			});
-			request.setAttribute("resultList", results);
-			request.getRequestDispatcher("best.jsp").forward(request, response);
 			
-		}catch(SQLException e) {
-			meldung = "Fehler";
-			e.printStackTrace();
-			request.setAttribute("meldung", meldung);
-			request.getRequestDispatcher("best.jsp").forward(request, response);
-		}
-	
-		
+			HttpSession session = request.getSession();
+			UserDatenbank db = new UserDatenbank();
+			List<Highscore> score = db.highscoresabrufen();		
+			
+			session.setAttribute("score", score);		
+			request.getRequestDispatcher("best.jsp").forward(request, response);		
 	}
 
 	/**

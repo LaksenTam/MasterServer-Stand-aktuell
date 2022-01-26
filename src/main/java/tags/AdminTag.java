@@ -7,6 +7,11 @@ import data.User;
 
 public class AdminTag extends TagSupport {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public int doStartTag() {
 		
 		HttpSession session = pageContext.getSession();

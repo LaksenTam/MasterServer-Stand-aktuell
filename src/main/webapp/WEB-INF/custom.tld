@@ -18,4 +18,9 @@
 		<tagclass>tags.ProblemInstanzBearbeiten</tagclass>
 		<bodycontent>empty</bodycontent>	
 	</tag>
+	<tag>
+		<name>Bestenliste</name>
+		<tagclass>tags.Bestenliste</tagclass>
+		<bodycontent>scriptless</bodycontent>
+	</tag>
 </taglib>

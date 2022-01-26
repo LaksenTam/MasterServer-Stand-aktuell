@@ -56,23 +56,19 @@ public class ProblemInstanzPost extends HttpServlet {
 			produktListe = daten.produktListePeriode(produktListe,ue.getPeriode());		
 			if(ue.getPeriode() != 0) {	
 			
-				if(daten.ueberpruefeZeit(currentDate, ue.getPeriode(), ue.getAPI_KEY())) {
-					
+				if(daten.ueberpruefeZeit(currentDate, ue.getPeriode(), ue.getAPI_KEY())) {					
 					daten.userErgebnisSpeichern(ue, currentDate);	
 					if(ue.getPeriode() != daten.getPeriodenAnzahl()) {
 						
 						String jsonString = daten.dataToJson(produktListe);	
 						pwriter.print(jsonString);
 						pwriter.close();
-					}else {
-						
+					}else {						
 						pwriter.print("Sie haben alle Perioden berechnet");
 						pwriter.close();
 						daten.berechneHighscore();
-					}
-					
-				}else {
-					
+					}					
+				}else {					
 					pwriter.print("Optimiere deinen Algorithmus, du brauchst zu lange");
 					pwriter.close();
 				}

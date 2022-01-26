@@ -2,7 +2,7 @@ package utility;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 import data.Produkt;
@@ -20,8 +20,8 @@ public class Highscore {
 	 * @throws SQLException 
 	 */
 	
-	public void berechneHighscore(List<Produktergebnis> ergebnis) throws SQLException {	
-		int highscore;
+	public double berechneHighscore(List<Produktergebnis> ergebnis) throws SQLException {	
+		double highscore;
 		List<Produkt> produktListe = db.getVerbrauchsListe();
 		List<Produkt> pInfo = new ArrayList<Produkt>();
 		db.getStartProblem(pInfo);
@@ -31,9 +31,9 @@ public class Highscore {
 		System.out.println(fehl);
 		System.out.println(kosten);
 		
+		highscore = kosten - fehl;
 		
-		
-		
+		return highscore;
 	}
 	
 	public int berechnefehlMengen(List<Produktergebnis> ergebnis,List<Produkt> produktListe, List<Produkt> pInfo ) {

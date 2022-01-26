@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import data.Lager;
@@ -29,6 +28,7 @@ public class Datenbank {
 		//Füge die Werte der Datenbank hinzu
 		try {	
 			loeschTabelle();	
+			resetBestenListe();
 			System.out.println("Tabellen geloescht");
 			con = DatenbankVerbindung.getConnection();									
 			ps1 = con.prepareStatement(sql);
@@ -61,8 +61,7 @@ public class Datenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean status = false;
-		String sql = "insert into public.verbrauch(pname, periode, verbrauch) VALUES (?,?,?)";
-		
+		String sql = "insert into public.verbrauch(pname, periode, verbrauch) VALUES (?,?,?)";		
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -127,7 +126,6 @@ public class Datenbank {
 				p.setVerbrauch(rs.getInt("verbrauch"));
 				produktListe.add(p);				
 			}
-			System.out.println("Datenbankliste: " + Arrays.asList(produktListe));
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -335,8 +333,7 @@ public class Datenbank {
 				lager.setKbindung(rs.getFloat("kapitalbindung"));
 				lager.setLagerVol(rs.getFloat("lagervolumen"));
 				lager.setPer(rs.getInt("perioden"));
-			}
-			
+			}			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
@@ -406,5 +403,18 @@ public class Datenbank {
 		}
 	}
 	
+	public void resetBestenListe() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		String sql = "Delete from public.highscore restart identity";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }
 	
