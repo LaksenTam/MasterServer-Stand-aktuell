@@ -3,6 +3,7 @@ package servlet;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
+
+import utility.Highscore;
 
 /**
  * Servlet implementation class ReadFile
@@ -35,14 +38,10 @@ public class ReadFile extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		InputStream res = getServletContext().getResourceAsStream("/WEB-INF/files/Artikelliste.csv");
-		CSVReader reader = new CSVReader(new InputStreamReader(res, "UTF-8"));
+		Highscore hs = new Highscore();
 		try {
-			List<String[]> allRows = reader.readAll();
-			for(String[] row : allRows){
-		        System.out.println(Arrays.toString(row));
-		     }
-		} catch (IOException | CsvException e) {
+			hs.eloVergleichsWert();
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

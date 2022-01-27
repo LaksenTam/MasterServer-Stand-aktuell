@@ -31,9 +31,7 @@ $(document).ready(function(){
 	<x:AdminHead></x:AdminHead>
 	
 	<p>Aktuell im Bestand sind: </p>
-	<p>A Produkt: 46
-	<p>B Produkt: 43
-	<p>C Produkt: 32
+	<p>A Produkt: 46, B Produkt: 43, C Produkt: 32
 		
 	
 	<h4 class = "error">${fehler }</h4>
@@ -101,7 +99,7 @@ $(document).ready(function(){
 
 <form action = "CreateCSV" method = "GET">
         <button type = "submit">Als CSV speichern</button> 
-        </form>
+</form>
 
 	<p>Produkttabelle</p>
 <button class="btn btn-primary btn-lg btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -112,10 +110,7 @@ Anzeigen
 <input class ="form-control" id="pInput" type = "text" placeholder="Filtern nach Produktnamen">
 <table class = "table table-hover">
 	<thead>
-            <tr>
-                <!-- Durch den Tag ist es moeglich Werte der Liste anzuzeigen, in dem man
-                durch die Liste iteriert und greifen auf jedes Objekt in der Liste zu.
-                Dabei werden die Werte in einer Tabelle gespeichert -->
+            <tr>                
            		<th>#</th>
                 <c:forEach items="${columnNames}" var="name">                	
                     <th>${name}</th>

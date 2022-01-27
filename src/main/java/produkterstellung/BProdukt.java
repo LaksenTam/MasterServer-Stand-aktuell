@@ -42,12 +42,12 @@ public class BProdukt {
 		String name = namenListe.get(selector);		
 		
 		p.setName(name);
-		p.setBestellfix((double) Math.round((rand.nextDouble() + 0)*100)/100);		
+		p.setBestellfix((double) Math.round((rand.nextInt(500)+100)+(rand.nextDouble() + 0)*100)/100);		
 		p.setEinstand((double) Math.round(((rand.nextInt(700) + 200) + (rand.nextFloat()+0))*100)/100);
-		p.setFehlmengenkosten((double) Math.round((rand.nextDouble() + 0)*100)/100);
-		p.setLagerkostensatz((double) Math.round((rand.nextDouble() + 0)*100)/100);
-		p.setMaxBestand(rand.nextInt() + 0);
-		p.setMinBestand(rand.nextInt() + 0);
+		p.setFehlmengenkosten((double) Math.round((rand.nextInt(70) + 0)+(rand.nextDouble() + 0)*100)/100);
+		p.setLagerkostensatz((double) Math.round((rand.nextInt(20) + 0) +(rand.nextDouble() + 0)*100)/100);
+		p.setMinBestand(rand.nextInt(10) + 0);
+		p.setMaxBestand(rand.nextInt(4000) + p.getMinBestand());
 		p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
 		if(saisonal) {
 			int verbrauch = rand.nextInt(700)+0;

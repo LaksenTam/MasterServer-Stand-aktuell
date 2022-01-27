@@ -257,7 +257,6 @@ public class UserDatenbank {
 			ps.setString(1, key);
 			rs = ps.executeQuery();
 			if(rs.next()) {
-				System.out.println("Zeit geupdatet");
 				alterStempel = rs.getLong("timestamp");
 			}
 		}catch(SQLException e) {

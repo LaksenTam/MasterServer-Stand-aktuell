@@ -42,13 +42,12 @@ public class ErgebnisTestServ extends HttpServlet {
 		ErgebnisDeserializer ed = new ErgebnisDeserializer();		
 		u = ed.deserializeJsonInput(ergebnis, u);
 		List<Produktergebnis> p = u.getProdukte();
-		try {
-			System.out.println(request.getRemoteAddr());
-		double highscore =	score.berechneHighscore(p);	
-		db.saveHighScore(highscore, u);
-		db.produktErgebnisGesamtSpeicher(u);
+		try {			
+			double highscore =	score.berechneHighscore(p);	
+			db.saveHighScore(highscore, u);
+			db.produktErgebnisGesamtSpeicher(u);
 			
-		} catch (SQLException e) {
+		}catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	

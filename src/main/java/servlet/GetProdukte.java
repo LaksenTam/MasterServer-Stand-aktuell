@@ -14,10 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import data.Produkt;
 import datenbank.Datenbank;
+import datenbank.UserDatenbank;
 import json.DataToJson;
 
 /**
  * Servlet implementation class GetProdukte
+ * Servlet um die Produktdaten abzufragen
  */
 @WebServlet("/GetProdukte")
 public class GetProdukte extends HttpServlet {
@@ -38,10 +40,18 @@ public class GetProdukte extends HttpServlet {
 		// TODO Auto-generated method stub
 		Datenbank db = new Datenbank();
 		DataToJson dj = new DataToJson();
+		UserDatenbank ud = new UserDatenbank();
+
+		
+		String key = request.getParameter("key");
+		System.out.println(key);
+	
 		
 		List<Produkt> produkte = new ArrayList<>();
 		
 		try {
+			long stamp = System.currentTimeMillis();
+			ud.insStempel(key, stamp);
 			produkte = db.produktListeAbrufen();
 			PrintWriter pw = response.getWriter();
 			response.setContentType("text/json");

@@ -20,6 +20,7 @@ import json.DataToJson;
 
 /**
  * Servlet implementation class ProduktListenAnfordern
+ * Startservlet um sämtliche Produkteabzufragen und die Lagerdaten zu erhalten
  */
 @WebServlet("/ProduktListenAnfordern")
 public class ProduktListenAnfordern extends HttpServlet {

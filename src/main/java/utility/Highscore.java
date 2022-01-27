@@ -21,23 +21,39 @@ public class Highscore {
 	 */
 	
 	public double berechneHighscore(List<Produktergebnis> ergebnis) throws SQLException {	
-		double highscore;
+		
 		List<Produkt> produktListe = db.getVerbrauchsListe();
 		List<Produkt> pInfo = new ArrayList<Produkt>();
 		db.getStartProblem(pInfo);
 		
-		int fehl = berechnefehlMengen(ergebnis, produktListe, pInfo);
+		int fehl = berechnefehlMengenKosten(ergebnis, produktListe, pInfo);
 		double kosten = berechneKosten(ergebnis,pInfo);
-		System.out.println(fehl);
-		System.out.println(kosten);
 		
-		highscore = kosten - fehl;
+		double averageElo = 1500;
+		double highscore = averageElo;
 		
+		double vergleichsWert = eloVergleichsWert();
+		
+		
+		double userKosten = kosten + fehl;
+		System.out.println(userKosten);
+		System.out.println(vergleichsWert);
+		
+		double prozent = 100*userKosten/vergleichsWert;
+		
+		if(vergleichsWert>userKosten) {		
+			highscore = averageElo + ((averageElo*(100 - prozent))/100);
+		}else {			
+			highscore = averageElo - ((averageElo*(prozent-100))/100);
+		}
+		highscore = (double) Math.round((highscore*100)/100);
+		System.out.println(highscore);
+
 		return highscore;
 	}
 	
-	public int berechnefehlMengen(List<Produktergebnis> ergebnis,List<Produkt> produktListe, List<Produkt> pInfo ) {
-		int fehlmenge = 0;			
+	public int berechnefehlMengenKosten(List<Produktergebnis> ergebnis,List<Produkt> produktListe, List<Produkt> pInfo ) {
+		int fehlmengenKosten = 0;			
 		List<Produkt> pro = new ArrayList<>();		
 		
 		int menge = 0;
@@ -65,9 +81,9 @@ public class Highscore {
 					checkfehl -=ergebnis.get(k).getBestellmenge();
 				}				
 			}
-		fehlmenge +=checkfehl *pInfo.get(j).getFehlmengenkosten();			
+		fehlmengenKosten +=checkfehl *pInfo.get(j).getFehlmengenkosten();			
 		}	
-		return fehlmenge;
+		return fehlmengenKosten;
 	}
 	
 	public double berechneKosten(List<Produktergebnis> ergebnis,List<Produkt> pInfo)  {
@@ -89,6 +105,15 @@ public class Highscore {
 		kosten = ((double) Math.round(kosten*100)/100);
 		
 		return kosten;
+	}
+	
+	public double eloVergleichsWert() throws SQLException {
+		double vergleichsWert = 0;
+		List<Produkt> produkte = db.getVerbrauchsListe();
+		for(int i =0; i<produkte.size();i++) {
+			vergleichsWert += produkte.get(i).getBestellfix() + (produkte.get(i).getEinstand()*produkte.get(i).getVerbrauch());
+		}
+		return vergleichsWert;
 	}
 
 }

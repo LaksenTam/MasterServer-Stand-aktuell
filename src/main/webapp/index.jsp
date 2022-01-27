@@ -22,7 +22,7 @@
 		
 
 
-<form action = "testCSVread" method = "GET">
+<form action = "ReadFile" method = "GET">
 <button type= "submit">testen</button>
 </form>
 <br>

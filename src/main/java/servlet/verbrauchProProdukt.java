@@ -18,6 +18,7 @@ import utility.CheckTime;
 
 /**
  * Servlet implementation class verbrauchProProdukt
+ * Schwierigkeitsgrad 1 erhalte lediglich ein angefragtes Produkt zurück
  */
 @WebServlet("/verbrauchProProdukt")
 public class verbrauchProProdukt extends HttpServlet {

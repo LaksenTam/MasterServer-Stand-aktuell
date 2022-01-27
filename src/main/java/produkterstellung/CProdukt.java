@@ -40,12 +40,12 @@ public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int periode
 	String name = namenListe.get(selector);		
 	
 	p.setName(name);
-	p.setBestellfix((double) Math.round((rand.nextDouble() + 0)*100)/100);		
+	p.setBestellfix((double) Math.round((rand.nextInt(500)+50)+(rand.nextDouble() + 0)*100)/100);		
 	p.setEinstand((double) Math.round(((rand.nextInt(200) + 3) + (rand.nextFloat()+0))*100)/100);
-	p.setFehlmengenkosten((double) Math.round((rand.nextDouble() + 0)*100)/100);
-	p.setLagerkostensatz((double) Math.round((rand.nextDouble() + 0)*100)/100);
-	p.setMaxBestand(rand.nextInt() + 0);
-	p.setMinBestand(rand.nextInt() + 0);
+	p.setFehlmengenkosten((double) Math.round((rand.nextInt(50)+1)+(rand.nextDouble() + 0)*100)/100);
+	p.setLagerkostensatz((double) Math.round((rand.nextInt(10)+0)+(rand.nextDouble() + 0)*100)/100);
+	p.setMinBestand(rand.nextInt(10) + 0);
+	p.setMaxBestand(rand.nextInt(5000) + p.getMinBestand());
 	p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
 	if(saisonal) {
 		int verbrauch = rand.nextInt(1000)+0;

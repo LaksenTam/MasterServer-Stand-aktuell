@@ -26,7 +26,6 @@ public class CheckTime {
 		long altesErgebnis = ud.zeitStempel(periode, api);
 		
 		ergebnis = currentTime - altesErgebnis;		
-		System.out.println("Ergebnis: " + ergebnis);
 		if(ergebnis/1000<10) {
 			status = true;
 		}		
@@ -37,13 +36,8 @@ public class CheckTime {
 	public boolean testeStempel(long neuStempel, String key) {
 		boolean status = false;
 		UserDatenbank ud = new UserDatenbank();
-		long altStempel = ud.getStempel(key);
-		System.out.println("ALT: " + altStempel);
-		System.out.println("NEU: " + neuStempel);
-		
-		double ergebnis = neuStempel - altStempel;
-		System.out.println(ergebnis);
-		System.out.println(ergebnis/1000);
+		long altStempel = ud.getStempel(key);		
+		double ergebnis = neuStempel - altStempel;		
 		
 		
 		if(ergebnis/1000< 0.7) {

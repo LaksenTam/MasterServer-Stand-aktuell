@@ -407,7 +407,7 @@ public class Datenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		
-		String sql = "Delete from public.highscore restart identity";
+		String sql = "Truncate public.highscore restart identity";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);

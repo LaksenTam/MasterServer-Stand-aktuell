@@ -16,7 +16,7 @@
 
 <link rel = "stylesheet" href= "css/style.css">
 <script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
-<title>Insert title here</title>
+<title></title>
 </head>
 <body>
 <x:AdminHead></x:AdminHead>
