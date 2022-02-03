@@ -1,33 +1,29 @@
 package servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import data.Highscore;
+import datenbank.Datenbank;
 import datenbank.UserDatenbank;
 
-
 /**
- * Servlet implementation class BestenListe
+ * Servlet implementation class Profil
  */
-@WebServlet("/BestenListe")
-public class BestenListe extends HttpServlet {
+@WebServlet("/Profil")
+public class Profil extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOGGER = Logger.getLogger("bestenlist");
-
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public BestenListe() {
+    public Profil() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,25 +32,20 @@ public class BestenListe extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-			
-			//HttpSession session = request.getSession();
-			UserDatenbank db = new UserDatenbank();
-			List<Highscore> score = db.highscoresabrufen();	
-			List<String[]> stringScores = new ArrayList<String[]>();
-			
-			for(Highscore s: score) {				
-				String[] sh = { s.getName(), Double.toString(s.getScore())};
-				//System.out.println(s.getName() + " " + s.getScore());	
-				
-				stringScores.add(sh);
-			}
-			
-			LOGGER.log( Level.FINE, "processing score entries", score.size() );
-			
-			request.setAttribute("resultList", stringScores);
-			
-			//session.setAttribute("score", score);		
-			request.getRequestDispatcher("test.jsp").forward(request, response);		
+		HttpSession session = request.getSession();
+		Datenbank db = new Datenbank();
+		String key = (String) session.getAttribute("key");
+		System.out.println(key);
+		UserDatenbank udb = new UserDatenbank();
+		List<String> ergebnisListe = udb.userErgebnis(key);
+		List<String> pList = db.proList();
+		for(String e: ergebnisListe) {
+			System.out.println(e);
+		}
+		request.setAttribute("ergebnisListe", ergebnisListe);
+		request.setAttribute("pList", pList);
+		request.getRequestDispatcher("profil.jsp").forward(request, response);
+	
 	}
 
 	/**

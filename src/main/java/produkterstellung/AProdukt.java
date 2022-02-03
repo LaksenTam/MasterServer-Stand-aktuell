@@ -46,10 +46,11 @@ public class AProdukt {
 		
 		p.setName(name);		
 		
-		p.setBestellfix((double) Math.round((rand.nextInt(500)+300)+(rand.nextDouble() + 0)*100)/100);		
-		p.setEinstand((double) Math.round(((rand.nextInt(2000) + 700) + (rand.nextFloat()+0))*100)/100);
-		p.setFehlmengenkosten((double) Math.round((rand.nextInt(100) + 0)+(rand.nextDouble() + 0)*100)/100);
-		p.setLagerkostensatz((double) Math.round((rand.nextInt(50) + 0) + (rand.nextDouble() + 0)*100)/100);
+		p.setBestellfix((rand.nextInt(30000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
+		System.out.println(p.getBestellfix());
+		p.setEinstand((rand.nextInt(2000) + 700) + (double) Math.round((rand.nextFloat()+0)*100)/100);
+		p.setFehlmengenkosten((rand.nextInt(100) + 5)+(double) Math.round((rand.nextDouble() + 0)*100)/100);
+		p.setLagerkostensatz((rand.nextInt(50) + 0) +(double) Math.round( (rand.nextDouble() + 0)*100)/100);
 		p.setMinBestand(rand.nextInt(10) + 0);
 		p.setMaxBestand(rand.nextInt(1000) + p.getMinBestand());		
 		p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);

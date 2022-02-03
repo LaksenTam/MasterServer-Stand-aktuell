@@ -45,5 +45,16 @@ public class CheckTime {
 		}
 		return status;
 	}
+	
+	public long berechneZeit(String key) {
+		UserDatenbank db = new UserDatenbank();	
+		System.out.println(key);
+		long startStamp = db.getStartStamp(key);
+	
+		long stamp = System.currentTimeMillis() - startStamp;
+		stamp = stamp /1000;
+		
+		return stamp;
+	}
 
 }

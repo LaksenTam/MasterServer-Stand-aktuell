@@ -29,6 +29,7 @@ public class Datenbank {
 		try {	
 			loeschTabelle();	
 			resetBestenListe();
+			resetErgebnisse();
 			System.out.println("Tabellen geloescht");
 			con = DatenbankVerbindung.getConnection();									
 			ps1 = con.prepareStatement(sql);
@@ -99,6 +100,20 @@ public class Datenbank {
 			
 		}
 		return status;
+	}
+	
+	public void resetErgebnisse() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Truncate public.ergebnis restart identity";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public List<Produkt> getProblemInstanz(List<Produkt> produktListe, int periode) throws SQLException, NullPointerException {
@@ -415,6 +430,108 @@ public class Datenbank {
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public List<String[]> getUser() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<String[]> list = new ArrayList<String[]>();
+		
+		String sql = "Select name,score,fehl,kosten,zeit, zugriff From public.user "
+				+ " LEFT JOIN public.highscore ON public.user.key = public.highscore.api";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);	
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String[] s = {rs.getString("name"), Double.toString(rs.getDouble("score")), 
+						Double.toString(rs.getDouble("fehl")), Double.toString(rs.getDouble("kosten")), 
+						Integer.toString(rs.getInt("zeit")), Integer.toString(rs.getInt("zugriff"))};	
+				list.add(s);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public void deleteUser(String name) throws SQLException{
+		Connection con = null;
+		PreparedStatement ps = null;
+		
+		String sql = "DELETE from public.user where name = ?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.executeUpdate();			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ps.close();
+			con.close();
+		}
+	}
+
+	public void AdminErstellen(String name) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Update public.user Set zugriff = 1 where name =?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ps.close();
+			con.close();
+		}
+		
+	}
+	
+	public void AdminDemoten(String name) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Update public.user Set zugriff = 0 where name =?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ps.close();
+			con.close();
+		}
+	}
+	
+	public List<String> proList() {
+		List<String> pListe = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps= null;
+		ResultSet rs = null;
+		
+		String sql = "Select name from public.produkt";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				pListe.add(rs.getString("name"));
+				
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return pListe;
 	}
 }
 	

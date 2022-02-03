@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <script src="js/jquery-3.3.1.slim-min.js" ></script>
 <script src="js/popper.min.js" ></script>
 <script src="bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
@@ -15,11 +16,21 @@
 <script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
+ <script type="text/javascript">
+    // Load the Visualization API and the corechart package.
+ 	google.charts.load('current', {packages: ['corechart', 'bar']});
+	google.charts.setOnLoadCallback(drawBasic);
+	
+	function drawproduktList(){
+		var data = google.visualization.arrayToDataTable([
+			['Bestellmenge', 'Periode' ]
+		])
+	}
 </head>
 <body>
 <x:AdminHead></x:AdminHead>
 <div class= "container">
-<form action = "Profil" method = "POST">
+
 <table>
 	<tr>
 		<td>Name: </td>
@@ -29,24 +40,12 @@
 		<td>API-Key: </td>
 		<td>${key }</td>
 	</tr>
-</table>
-</form>
-</div>
-
-<div class = "container">
-	<table>
-		<thead>
-			<tr>
-			<td>Ergebnis Nr.</td>
-			<td>andere Daten</td>
-			</tr>
-		</thead>
-	
-	
-	</table>
-
+</table>  
 
 </div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+       <div id="chart_div" style="width: 900px; height: 500px;"></div>
+
 
 </body>
 </html>

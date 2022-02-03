@@ -2,7 +2,7 @@
 <!DOCTYPE xml>
 
 <taglib>
-	<tlib-version>1.0</tlib-version>
+	<tlib-version>1.1.2</tlib-version>
 	<jsp-version>2.0</jsp-version>
 	<short-name>Custom TLD</short-name>
 	
@@ -22,5 +22,10 @@
 		<name>Bestenliste</name>
 		<tagclass>tags.Bestenliste</tagclass>
 		<bodycontent>scriptless</bodycontent>
+	</tag>
+	<tag>
+		<name>UserManagementTag</name>
+		<tagclass>tags.UserManagementTag</tagclass>
+		<bodycontent>empty</bodycontent>
 	</tag>
 </taglib>

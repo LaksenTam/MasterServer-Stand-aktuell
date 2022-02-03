@@ -24,70 +24,49 @@ public class CProdukt {
 			+ "Jabra Evolve2 75, Sony WF-1000XM4";
 
 	
-public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
+	public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
 	
-	List<Integer> verbrauchsListe = new ArrayList<Integer>();
-
+		List<Integer> verbrauchsListe = new ArrayList<Integer>();
+		List<String> namenListe = new ArrayList<String>();	
+		namenListe = csv.lese(artikel, namenListe);	
 	
+		int selector = rand.nextInt(namenListe.size())+0;		
 	
+		String name = namenListe.get(selector);		
 	
-	List<String> namenListe = new ArrayList<String>();
-	
-	namenListe = csv.lese(artikel, namenListe);	
-	
-	int selector = rand.nextInt(namenListe.size())+0;		
-	
-	String name = namenListe.get(selector);		
-	
-	p.setName(name);
-	p.setBestellfix((double) Math.round((rand.nextInt(500)+50)+(rand.nextDouble() + 0)*100)/100);		
-	p.setEinstand((double) Math.round(((rand.nextInt(200) + 3) + (rand.nextFloat()+0))*100)/100);
-	p.setFehlmengenkosten((double) Math.round((rand.nextInt(50)+1)+(rand.nextDouble() + 0)*100)/100);
-	p.setLagerkostensatz((double) Math.round((rand.nextInt(10)+0)+(rand.nextDouble() + 0)*100)/100);
-	p.setMinBestand(rand.nextInt(10) + 0);
-	p.setMaxBestand(rand.nextInt(5000) + p.getMinBestand());
-	p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
-	if(saisonal) {
-		int verbrauch = rand.nextInt(1000)+0;
-		verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
-	}else {
-		
-		for(int n = 0; n < perioden; n++) {
-			p.setVerbrauch(rand.nextInt(1000)+ 0);
-			verbrauchsListe.add(p.getVerbrauch());
+		p.setName(name);
+		p.setBestellfix((rand.nextInt(15000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);		
+		p.setEinstand((rand.nextInt(200) + 3) + (double) Math.round((rand.nextFloat()+0)*100)/100);
+		p.setFehlmengenkosten((rand.nextInt(50)+1) + ((double) Math.round((rand.nextDouble() + 0)*100)/100));
+		p.setLagerkostensatz((rand.nextInt(10)+0) + (double) Math.round((rand.nextDouble() + 0)*100)/100);
+		p.setMinBestand(rand.nextInt(10) + 0);
+		p.setMaxBestand(rand.nextInt(5000) + p.getMinBestand());
+		p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
+		if(saisonal) {
+			int verbrauch = rand.nextInt(1000)+0;
+			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
+		}else {		
+			for(int n = 0; n < perioden; n++) {
+				p.setVerbrauch(rand.nextInt(1000)+ 0);
+				verbrauchsListe.add(p.getVerbrauch());
+			}
 		}
-	}
-	p.setVerbraeuche(verbrauchsListe);	
-	return p;
-		
+		p.setVerbraeuche(verbrauchsListe);	
+		return p;		
 	}
 
 	public String doppelterName() {	
-	List<String> namenListe = new ArrayList<String>();			
-	namenListe = csv.lese(artikel, namenListe);				
-	int selector = rand.nextInt(namenListe.size())+0;		
-	String name = namenListe.get(selector);			
-	return name;		
+		List<String> namenListe = new ArrayList<String>();			
+		namenListe = csv.lese(artikel, namenListe);				
+		int selector = rand.nextInt(namenListe.size())+0;		
+		String name = namenListe.get(selector);			
+		return name;		
 	}
-	
+		
 	public List<String> getProduktNamen(){
 		List<String> produktNamen = new ArrayList<String>();
 		produktNamen = csv.lese(artikel, produktNamen);
 		System.out.println("C" + produktNamen.size());
 		return produktNamen;
 	}
-
-	/**
-	 * Saisonaler Verbrauch Generieren
-	 * Erstelle einen Verbrauchswert
-	 * Aufteilen der Quartilen anhand der Periodenanzahl
-	 * 3 Quartile:
-	 * 		0,05 Quatil * 2 10% der Perioden 
-	 * 		0,15 Quartil * 2 30% der Perioden
-	 * 		0,3 Quartil * 2 60% der Perioden
-	 * Multipliziere Verbrauchswert mit Quartilen
-	 * Füge den WErt der Liste hinzu für das Produkt
-	 */
-
-
 }

@@ -7,9 +7,10 @@ import java.util.List;
 
 import data.Produkt;
 import data.Produktergebnis;
+import data.Highscore;
 import datenbank.Datenbank;
 
-public class Highscore {
+public class calcHighscore {
 	Datenbank db = new Datenbank();
 	
 	/**
@@ -20,8 +21,8 @@ public class Highscore {
 	 * @throws SQLException 
 	 */
 	
-	public double berechneHighscore(List<Produktergebnis> ergebnis) throws SQLException {	
-		
+	public Highscore berechneHighscore(List<Produktergebnis> ergebnis) throws SQLException {	
+		Highscore score = new Highscore();
 		List<Produkt> produktListe = db.getVerbrauchsListe();
 		List<Produkt> pInfo = new ArrayList<Produkt>();
 		db.getStartProblem(pInfo);
@@ -36,8 +37,8 @@ public class Highscore {
 		
 		
 		double userKosten = kosten + fehl;
-		System.out.println(userKosten);
-		System.out.println(vergleichsWert);
+		System.out.println("Kosten User: " +userKosten);
+		System.out.println("Kosten System: " +vergleichsWert);
 		
 		double prozent = 100*userKosten/vergleichsWert;
 		
@@ -45,11 +46,16 @@ public class Highscore {
 			highscore = averageElo + ((averageElo*(100 - prozent))/100);
 		}else {			
 			highscore = averageElo - ((averageElo*(prozent-100))/100);
-		}
+		}		
+		
 		highscore = (double) Math.round((highscore*100)/100);
-		System.out.println(highscore);
+		System.out.println("Highscore: " + highscore);
+		
+		score.setScore(highscore);
+		score.setKosten(userKosten);		
+		score.setFehlmengen(fehl);
 
-		return highscore;
+		return score;
 	}
 	
 	public int berechnefehlMengenKosten(List<Produktergebnis> ergebnis,List<Produkt> produktListe, List<Produkt> pInfo ) {
@@ -90,18 +96,19 @@ public class Highscore {
 		double kosten =0.00;		
 						
 		for(int i =0; i<ergebnis.size();i++) {				
-			kosten += ergebnis.get(i).getBestellmenge()*ergebnis.get(i).getKosten();						
+			kosten += ergebnis.get(i).getKosten();						
 		}
-		double bestellkosten = 0.00;
-		for(int j = 0; j<pInfo.size(); j++) {				
-			for(int i = 0; i<ergebnis.size();i++) {				
-				if(pInfo.get(j).getName().equals(ergebnis.get(i).getProduktName())) {
-					bestellkosten += pInfo.get(j).getEinstand() * ergebnis.get(i).getBestellmenge();									
-				}
-			}
-		}
+//		double bestellkosten = 0.00;
+//		for(int j = 0; j<pInfo.size(); j++) {				
+//			for(int i = 0; i<ergebnis.size();i++) {				
+//				if(pInfo.get(j).getName().equals(ergebnis.get(i).getProduktName())) {
+//					bestellkosten += ergebnis.get(i).getKosten() * ergebnis.get(i).getBestellmenge();	
+//					
+//				}
+//			}
+		//}
 				
-		kosten += bestellkosten; 		
+		//kosten += bestellkosten; 		
 		kosten = ((double) Math.round(kosten*100)/100);
 		
 		return kosten;

@@ -20,14 +20,14 @@ import utility.CheckTime;
  * Servlet implementation class verbrauchProProdukt
  * Schwierigkeitsgrad 1 erhalte lediglich ein angefragtes Produkt zurück
  */
-@WebServlet("/verbrauchProProdukt")
-public class verbrauchProProdukt extends HttpServlet {
+@WebServlet("/Schwierigkeitsgrad1")
+public class Schwierigkeitsgrad1 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public verbrauchProProdukt() {
+    public Schwierigkeitsgrad1() {
         super();
         // TODO Auto-generated constructor stub
     }

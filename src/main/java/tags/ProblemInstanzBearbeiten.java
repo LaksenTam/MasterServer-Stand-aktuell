@@ -19,6 +19,7 @@ public class ProblemInstanzBearbeiten extends SimpleTagSupport {
 		ArrayList<Produkt> p = (ArrayList<Produkt>) session.getAttribute("produkte");
 		JspWriter out = getJspContext().getOut();
 		String s ="";
+		String meldung = "";
 		session.setAttribute("i", p.size());
 		
 		if(p != null) {
@@ -57,7 +58,8 @@ public class ProblemInstanzBearbeiten extends SimpleTagSupport {
 		}
 		
 		try {			
-			out.append(s);			
+			out.append(s);	
+			out.append(meldung);
 		}catch(IOException e) {
 			e.printStackTrace();
 		}

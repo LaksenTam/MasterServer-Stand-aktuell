@@ -39,7 +39,7 @@ public class Userergebnis extends User {
 
 	@Override
 	public String toString() {
-		return "Userergebnis [periode=" + periode + ", API_KEY=" + API_KEY + ", produkte=" + produkte + "]";
+		return "Userergebnis [ API_KEY=" + API_KEY + ", produkte=" + produkte + "]";
 	}
 
 

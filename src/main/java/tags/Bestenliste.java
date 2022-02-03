@@ -1,7 +1,7 @@
 package tags;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
@@ -12,11 +12,12 @@ import data.Highscore;
 
 public class Bestenliste extends SimpleTagSupport {
 	
-	@SuppressWarnings("unchecked")
 	public void doTag() {
 		PageContext pc = (PageContext) getJspContext();
 		HttpSession session  = pc.getSession();
-		List<Highscore> score = (List<Highscore>) session.getAttribute("score");
+		@SuppressWarnings("unchecked")
+		ArrayList<Highscore> score = (ArrayList<Highscore>) session.getAttribute("score");
+		
 		JspWriter out =  getJspContext().getOut();
 		String s = "";
 		

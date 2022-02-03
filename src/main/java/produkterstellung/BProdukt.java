@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import com.opencsv.exceptions.CsvValidationException;
 
 import data.Lager;
 import data.Produkt;
@@ -17,6 +16,7 @@ public class BProdukt {
 	CSVRead csv = new CSVRead();
 	Random rand = new Random();
 	
+	
 
 	String artikel = "ASUS ROG STRIX B550, ASUS ROB STRIX Z690, MSI MEG Z690, GeForce RTX 3060, GeForce RTX 3070, "
 			+ "XFX Radeon RX 6600, Corsair DIMM 32GB, G.Skill 32GB, BenQ EW3270, MSI Optix, AORUS FI27Q, "
@@ -27,7 +27,7 @@ public class BProdukt {
 			+ "Xiaomi Dreame D9, Xiaomi Mi Mop, Xiaomi ROIDMI EVE, iRobot Roomba i3, Canon EOS 2000D, Olympus E-M10";
 
 	
-	public Produkt generiereProduktB(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
+	public Produkt generiereProduktB(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws IOException {
 		
 		List<Integer> verbrauchsListe = new ArrayList<Integer>();
 		
@@ -42,10 +42,11 @@ public class BProdukt {
 		String name = namenListe.get(selector);		
 		
 		p.setName(name);
-		p.setBestellfix((double) Math.round((rand.nextInt(500)+100)+(rand.nextDouble() + 0)*100)/100);		
-		p.setEinstand((double) Math.round(((rand.nextInt(700) + 200) + (rand.nextFloat()+0))*100)/100);
-		p.setFehlmengenkosten((double) Math.round((rand.nextInt(70) + 0)+(rand.nextDouble() + 0)*100)/100);
-		p.setLagerkostensatz((double) Math.round((rand.nextInt(20) + 0) +(rand.nextDouble() + 0)*100)/100);
+		p.setBestellfix((rand.nextInt(20000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
+		p.setEinstand((rand.nextInt(700) + 200) + (double) Math.round((rand.nextDouble()+0)*100)/100);
+		p.setFehlmengenkosten((rand.nextInt(70) + 0)+ (double) Math.round((rand.nextDouble()+0)*100)/100);		
+		p.setLagerkostensatz((rand.nextInt(10) + 0)+ (double) Math.round((rand.nextDouble()+0)*100)/100);
+		System.out.println(p.getLagerkostensatz());
 		p.setMinBestand(rand.nextInt(10) + 0);
 		p.setMaxBestand(rand.nextInt(4000) + p.getMinBestand());
 		p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);

@@ -18,8 +18,34 @@
 <title>Insert title here</title>
 </head>
 <body>
+
 <x:AdminHead></x:AdminHead>
-<x:Bestenliste></x:Bestenliste>
+<table class = "table table-hover">
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			<th>Score</th>			
+		</tr>
+	</thead>
+	<tbody id = "tablebody">
+	<c:forEach items="${resultList}" var="result" varStatus = "index">
+             
+                <tr>     
+                	 <th scope = "row">${index.index }</th>  
+                    <c:forEach items="${result}" var="value"> 
+                                       	
+                        <td>${value}</td>
+                    </c:forEach>
+                </tr>
+            </c:forEach>
+		
+	
+	</tbody>
+
+</table>
+
+
 
 
 </body>
