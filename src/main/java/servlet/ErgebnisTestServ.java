@@ -16,7 +16,7 @@ import data.Produktergebnis;
 import data.Userergebnis;
 import datenbank.UserDatenbank;
 import json.ErgebnisDeserializer;
-import utility.calcHighscore;
+import utility.CalcHighscore;
 import utility.CheckTime;
 
 /**
@@ -25,7 +25,7 @@ import utility.CheckTime;
 @WebServlet("/ErgebnisTestServ")
 public class ErgebnisTestServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-      calcHighscore score = new calcHighscore();
+      CalcHighscore score = new CalcHighscore();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -46,7 +46,7 @@ public class ErgebnisTestServ extends HttpServlet {
 		u = ed.deserializeJsonInput(ergebnis, u);
 		List<Produktergebnis> p = u.getProdukte();
 		try {			
-			Highscore highscore =	score.berechneHighscore(p);	
+			Highscore highscore = score.berechneHighscore(p);	
 			System.out.println(u.getAPI_KEY());
 			long endstamp = check.berechneZeit(u.getAPI_KEY());
 			highscore.setTime(endstamp);

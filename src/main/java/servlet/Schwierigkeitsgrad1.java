@@ -61,7 +61,7 @@ public class Schwierigkeitsgrad1 extends HttpServlet {
 			pw.print(ausgabe);
 			pw.close();
 			
-			try {
+		try {
 				ud.insStempel(key, neuStempel);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block

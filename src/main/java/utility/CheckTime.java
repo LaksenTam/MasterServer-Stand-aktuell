@@ -40,7 +40,7 @@ public class CheckTime {
 		double ergebnis = neuStempel - altStempel;		
 		
 		
-		if(ergebnis/1000< 0.7) {
+		if(ergebnis/1000<10000) {
 			status = true;
 		}
 		return status;

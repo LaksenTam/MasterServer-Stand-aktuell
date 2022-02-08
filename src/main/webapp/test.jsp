@@ -19,7 +19,7 @@
 </head>
 <body>
 
-<x:AdminHead></x:AdminHead>
+
 <table class = "table table-hover">
 	<thead>
 		<tr>

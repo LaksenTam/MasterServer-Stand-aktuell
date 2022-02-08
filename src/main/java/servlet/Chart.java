@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import data.Produkt;
 import datenbank.Datenbank;
@@ -18,16 +17,16 @@ import utility.CalcVolumen;
 import utility.DrawChart;
 
 /**
- * Servlet implementation class Profil
+ * Servlet implementation class Chart
  */
-@WebServlet("/Profil")
-public class Profil extends HttpServlet {
+@WebServlet("/Chart")
+public class Chart extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Profil() {
+    public Chart() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,31 +35,33 @@ public class Profil extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		Datenbank db = new Datenbank();
+		String name = request.getParameter("name");
+		String score = request.getParameter("score");
+		double highscore = Double.parseDouble(score);
+		UserDatenbank user = new UserDatenbank();
 		DrawChart chart = new DrawChart();
+		Datenbank db = new Datenbank();
 		CalcVolumen vol = new CalcVolumen();
-		String key = (String) session.getAttribute("key");
-		System.out.println(key);
-		UserDatenbank udb = new UserDatenbank();
-		try {		
+		
+		try {
 			List<Produkt> produktDaten = db.getVerbrauchsListe();
-			List<String[]> userData = udb.userErgebnis(key);
-			List<String[]> volumen = vol.calcVolumen(produktDaten, userData);
+			List<String[]> ergebnis = user.bestToChart(name, highscore);
+			List<String[]> volumen = vol.calcVolumen(produktDaten, ergebnis);
+			String drawKosten = chart.drawKosten(ergebnis);
+			String drawBestand = chart.drawBestandsVerlauf(ergebnis);
 			String drawVol = chart.drawVolumenVerlauf(volumen);
-			String drawKosten = chart.drawKosten(userData);
-			String drawBestand = chart.drawBestandsVerlauf(userData);	
-			String drawHighscore = chart.drawScores(userData);
+			String drawHighscore = chart.drawScores(ergebnis);
 			request.setAttribute("drawHighscore", drawHighscore);
 			request.setAttribute("drawVol", drawVol);
-			request.setAttribute("drawBestand", drawBestand);
 			request.setAttribute("drawKosten", drawKosten);
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
+			request.setAttribute("drawBestand", drawBestand);
+			request.getRequestDispatcher("drawbest.jsp").forward(request, response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
-	
+		}
+		
+		
 	}
 
 	/**

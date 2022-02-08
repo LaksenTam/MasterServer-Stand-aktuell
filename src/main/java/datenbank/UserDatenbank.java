@@ -209,7 +209,7 @@ public class UserDatenbank {
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setDouble(1, highscore.getKosten());
+			ps.setDouble(1, highscore.getScore());
 			ps.setString(2, ue.getAPI_KEY());
 			ps.setDouble(3, highscore.getFehlmengen());
 			ps.setDouble(4, highscore.getKosten());
@@ -312,27 +312,114 @@ public class UserDatenbank {
 		}
 	}
 	
-	public List<String> userErgebnis(String api){
-		List<String> plist =new ArrayList<>();
-		String s = "";
+//	public List<String> userErgebnis(String api){
+//		List<String> plist =new ArrayList<>();
+//		String s = "";
+//		Connection con = null;
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		
+//		String sql = "Select bestellmenge, kosten, periode, zeitstempel from public.ergebnis where userkey = ?";
+//		try {
+//			con = DatenbankVerbindung.getConnection();
+//			ps = con.prepareStatement(sql);
+//			ps.setString(1, api);
+//			rs = ps.executeQuery();
+//			while(rs.next()) {
+//				s = Integer.toString(rs.getInt("bestellmenge")) + "," + rs.getString("pname") + "," + Double.toString(rs.getDouble("kosten")) + "," + Integer.toString(rs.getInt("periode")) + "," + Long.toString(rs.getLong("zeitstempel"));
+//				plist.add(s);
+//			}
+//		}catch(SQLException e) {
+//			e.printStackTrace();
+//		}
+//		return plist;
+//	}
+	
+	
+	public List<String> produktNames(){
+		List<String> pName = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		String sql = "Select name from public.produkt";
 		
-		String sql = "Select bestellmenge, kosten, periode, zeitstempel from public.ergebnis where userkey = ?";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setString(1, api);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				s = Integer.toString(rs.getInt("bestellmenge")) + "," + rs.getString("pname") + "," + Double.toString(rs.getDouble("kosten")) + "," + Integer.toString(rs.getInt("periode")) + "," + Long.toString(rs.getLong("zeitstempel"));
-				plist.add(s);
+				pName.add(rs.getString("name"));
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return plist;
+		return pName;
+	}
+
+	public List<String[]> bestToChart(String name, double score) throws SQLException{
+		List<String[]> chart = new ArrayList<String[]>();
+		
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS eKosten, public.highscore.kosten AS hKosten, fehl, zeit\n"
+				+ "from public.ergebnis\n"
+				+"INNER JOIN public.highscore on public.highscore.api = public.ergebnis.userkey\n"
+				+ " where userkey IN(select key from public.user where name =?)";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String[] s = { rs.getString("pname"), Integer.toString(rs.getInt("bestellmenge")), 
+						Double.toString(rs.getDouble("eKosten")), Double.toString(rs.getDouble("hKosten")), 
+						Double.toString(rs.getDouble("fehl")), Integer.toString(rs.getInt("zeit"))}; 				
+				chart.add(s);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
+		}
+		
+		return chart;
+	}
+	
+	public List<String[]> userErgebnis(String key) throws SQLException{
+		List<String[]> userData = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS pkosten, public.highscore.kosten AS hKosten, fehl, zeit\n"
+				+ "from public.ergebnis \n"
+				+ "INNER JOIN public.highscore ON public.highscore.api = public.ergebnis.userkey\n"
+				+ "where userkey = ?";
+			
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, key);
+			rs = ps.executeQuery();
+			while(rs.next()) {		
+				String[] s = { rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
+						Double.toString(rs.getDouble("pkosten")), Double.toString(rs.getDouble("hKosten")), 
+						Double.toString(rs.getDouble("fehl")), Integer.toString(rs.getInt("zeit"))};
+				userData.add(s);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
+		}
+		return userData;		
 	}
 
 }

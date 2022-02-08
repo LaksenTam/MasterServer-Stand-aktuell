@@ -10,7 +10,7 @@ import data.Produktergebnis;
 import data.Highscore;
 import datenbank.Datenbank;
 
-public class calcHighscore {
+public class CalcHighscore {
 	Datenbank db = new Datenbank();
 	
 	/**

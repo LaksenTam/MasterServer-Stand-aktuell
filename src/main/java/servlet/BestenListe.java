@@ -53,8 +53,8 @@ public class BestenListe extends HttpServlet {
 			
 			request.setAttribute("resultList", stringScores);
 			
-			//session.setAttribute("score", score);		
-			request.getRequestDispatcher("test.jsp").forward(request, response);		
+			request.setAttribute("score", score);		
+			request.getRequestDispatcher("best.jsp").forward(request, response);		
 	}
 
 	/**

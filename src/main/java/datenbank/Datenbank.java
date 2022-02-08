@@ -279,15 +279,15 @@ public class Datenbank {
 			ps.setString(2, pName);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-			p.setName(rs.getString("name"));
-			p.setBestellfix(rs.getDouble("bestellfix"));
-			p.setLagerkostensatz(rs.getDouble("lagerkostensatz"));
-			p.setFehlmengenkosten(rs.getDouble("fehlmengenkosten"));
-			p.setvProdukt(rs.getDouble("volumenprodukt"));
-			p.setMinBestand(rs.getInt("minbestand"));
-			p.setMaxBestand(rs.getInt("maxbestand"));
-			p.setEinstand(rs.getDouble("einstand"));
-			p.setVerbrauch(rs.getInt("verbrauch"));
+				p.setName(rs.getString("name"));
+				p.setBestellfix(rs.getDouble("bestellfix"));
+				p.setLagerkostensatz(rs.getDouble("lagerkostensatz"));
+				p.setFehlmengenkosten(rs.getDouble("fehlmengenkosten"));
+				p.setvProdukt(rs.getDouble("volumenprodukt"));
+				p.setMinBestand(rs.getInt("minbestand"));
+				p.setMaxBestand(rs.getInt("maxbestand"));
+				p.setEinstand(rs.getDouble("einstand"));
+				p.setVerbrauch(rs.getInt("verbrauch"));
 			}
 			
 		}catch(SQLException e) {
