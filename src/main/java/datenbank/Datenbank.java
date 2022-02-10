@@ -533,5 +533,24 @@ public class Datenbank {
 		}
 		return pListe;
 	}
+	
+	public void updateLager(Lager lager) throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "UPDATE probleminstanz set kapitalbindung = ?, lagervolumen = ? ";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setFloat(1, lager.getKbindung());
+			ps.setFloat(2, lager.getLagerVol());
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ps.close();
+			con.close();
+		}
+	}
 }
 	

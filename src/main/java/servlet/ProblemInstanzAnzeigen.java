@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 //import javax.servlet.http.HttpSession;
 
+import data.Lager;
+import datenbank.Datenbank;
 import manager.DatenManager;
 
 
@@ -38,7 +40,7 @@ public class ProblemInstanzAnzeigen extends HttpServlet {
 		String meldung = "";
 		//HttpSession session = request.getSession();
 		DatenManager daten = new DatenManager();
-		
+		Datenbank db = new Datenbank();
 		
 		//int zu = (int) session.getAttribute("zugriff");
 		
@@ -52,6 +54,11 @@ public class ProblemInstanzAnzeigen extends HttpServlet {
 				};
 				results.add(s);
 			}
+			
+			Lager lager = db.lagerAbrufen();
+			
+			request.setAttribute("lagerKap", lager.getKbindung());
+			request.setAttribute("lagerVol", lager.getLagerVol());
 			request.setAttribute("columnNames", new String[] { "Produktname ", "Bestellfixekosten ", "Einstandspreis "
 	        		, "Fehlmengenkostensatz ", "Lagerkostensatz", "Minimaler Bestand", "Maximaler Bestand", "Produktvolumen",
 	        		"verbrauch"});

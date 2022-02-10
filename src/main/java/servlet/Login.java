@@ -47,15 +47,17 @@ public class Login extends HttpServlet {
 			//if(db.login(name, password)) {
 				User user = new User();
 				if(db.getUser(name, password, user) != null && user.getApi_key() != null) {
-					
+					System.out.println(user.getZugriff());
 				//user = db.getUser(name, password, user);
 				user.setName(name);
 				System.out.println(user.getApi_key());
 				HttpSession session = request.getSession();
 				request.setAttribute("key", user.getApi_key());
 				request.setAttribute("name", name);
+				request.setAttribute("zugriff", user.getZugriff());
 				session.setAttribute("name", name);
 				session.setAttribute("key", user.getApi_key());
+				session.setAttribute("zugriff", user.getZugriff());
 				request.setAttribute("name", session.getAttribute("name"));
 				System.out.println(session.getAttribute("name"));
 				request.getRequestDispatcher("index.jsp").forward(request, response);

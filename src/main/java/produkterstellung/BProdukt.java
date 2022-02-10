@@ -27,7 +27,7 @@ public class BProdukt {
 			+ "Xiaomi Dreame D9, Xiaomi Mi Mop, Xiaomi ROIDMI EVE, iRobot Roomba i3, Canon EOS 2000D, Olympus E-M10";
 
 	
-	public Produkt generiereProduktB(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws IOException {
+	public Produkt generiereProduktB(Produkt p, boolean saisonal,boolean konstant, int i, int perioden, Lager lager) throws IOException {
 		
 		List<Integer> verbrauchsListe = new ArrayList<Integer>();
 		
@@ -53,6 +53,12 @@ public class BProdukt {
 		if(saisonal) {
 			int verbrauch = rand.nextInt(700)+0;
 			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
+		}else if(konstant) {
+			int verbrauch = rand.nextInt(700) +0;
+			for(int k = 0;k<perioden;k++) {
+				p.setVerbrauch(verbrauch);
+				verbrauchsListe.add(p.getVerbrauch());
+			}
 		}else {
 			
 			for(int n = 0; n < perioden; n++) {

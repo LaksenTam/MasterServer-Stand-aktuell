@@ -14,7 +14,6 @@ import data.Produkt;
 import datenbank.Datenbank;
 import datenbank.UserDatenbank;
 import json.DataToJson;
-import utility.CheckTime;
 
 /**
  * Servlet implementation class verbrauchProProdukt
@@ -39,8 +38,7 @@ public class Schwierigkeitsgrad1 extends HttpServlet {
 		// TODO Auto-generated method stub
 		long neuStempel = System.currentTimeMillis();
 		Datenbank db = new Datenbank();
-		DataToJson dj = new DataToJson();
-		CheckTime ct = new CheckTime();
+		DataToJson dj = new DataToJson();		
 		UserDatenbank ud = new UserDatenbank();
 	
 		String periode = request.getParameter("periode");
@@ -51,7 +49,7 @@ public class Schwierigkeitsgrad1 extends HttpServlet {
 		int per = Integer.parseInt(periode);
 		
 		PrintWriter pw = response.getWriter();
-		if(ct.testeStempel(neuStempel, key)) {
+		
 			Produkt p = db.getProduktInfos(per, produktName);			
 		
 			response.setContentType("text/json");
@@ -66,12 +64,7 @@ public class Schwierigkeitsgrad1 extends HttpServlet {
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-		}else {
-			pw.print("Du warst zu langsam Sorry");
-			pw.close();
-		}
-		
+			}		
 	}
 
 	/**

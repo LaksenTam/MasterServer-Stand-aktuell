@@ -32,7 +32,7 @@ public class AProdukt {
 	
 	//String artikel = "Huawei P30, Google Pixel 6, Samsung Galaxy S21";
 	
-	public Produkt generiereProduktA(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
+	public Produkt generiereProduktA(Produkt p, boolean saisonal, boolean konstant, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
 		
 		List<Integer> verbrauchsListe = new ArrayList<Integer>();		
 		
@@ -57,8 +57,13 @@ public class AProdukt {
 		if(saisonal) {
 			int verbrauch = rand.nextInt(100)+0;
 			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
-		}else {
-			
+		}else if(konstant) {
+			int verbrauch = rand.nextInt(100) +0;
+			for(int k = 0; k<perioden;k++) {
+				p.setVerbrauch(verbrauch);
+				verbrauchsListe.add(p.getVerbrauch());
+			}
+		}else {			
 			for(int n = 0; n < perioden; n++) {
 				p.setVerbrauch(rand.nextInt(100) + 0);
 				verbrauchsListe.add(p.getVerbrauch());

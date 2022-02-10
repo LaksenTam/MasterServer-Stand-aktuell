@@ -47,10 +47,9 @@ public class ErgebnisTestServ extends HttpServlet {
 		List<Produktergebnis> p = u.getProdukte();
 		try {			
 			Highscore highscore = score.berechneHighscore(p);	
-			System.out.println(u.getAPI_KEY());
 			long endstamp = check.berechneZeit(u.getAPI_KEY());
 			highscore.setTime(endstamp);
-			db.saveHighScore(highscore, u);
+			db.saveHighScore(highscore, u, 1);
 			db.produktErgebnisGesamtSpeicher(u);
 			
 		}catch (SQLException e) {

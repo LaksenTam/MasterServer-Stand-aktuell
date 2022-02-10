@@ -15,12 +15,12 @@ import data.Userergebnis;
 public class UserDatenbank {
 	
 	
-	public boolean ergebnisSpeichern(Userergebnis ue, long zeitstempel) throws SQLException {
+	public boolean ergebnisSpeichern(Userergebnis ue, int grad) throws SQLException {
 		boolean status = false;
 		Connection con = null;
 		PreparedStatement ps = null;
 		
-		String sql = "insert into public.ergebnis (bestellmenge, pname, kosten, userkey, periode, zeitstempel) values (?,?,?,?,?,?)";
+		String sql = "insert into public.ergebnis (bestellmenge, pname, kosten, userkey, periode, schwierigkeitsgrad) values (?,?,?,?,?,?)";
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -33,7 +33,7 @@ public class UserDatenbank {
 				ps.setDouble(3, pe.getKosten());
 				ps.setString(4,ue.getAPI_KEY());
 				ps.setInt(5, ue.getPeriode());
-				ps.setLong(6, zeitstempel);
+				ps.setInt(6, grad);
 				ps.executeUpdate();				
 			}
 			status = true;
@@ -87,6 +87,7 @@ public class UserDatenbank {
 			rs = ps.executeQuery();
 			if(status = rs.next()) {
 				user.setName(name);
+				user.setZugriff(rs.getInt("zugriff"));
 				user.setApi_key(rs.getString("key"));
 			}			
 		}catch(SQLException e) {
@@ -145,16 +146,20 @@ public class UserDatenbank {
 			System.out.println("DB Zeitstempel: " + stempel);
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
 		}
 		return stempel;
 	}
 	
-	public List<Highscore> highscoresabrufen() {
+	public List<Highscore> highscoresabrufen() throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Highscore> score = new ArrayList<Highscore>();
-		String sql = "Select DISTINCT name, score, api "
+		String sql = "Select name, score, api "
 					+ "from public.highscore "
 					+ "INNER JOIN public.user ON public.highscore.api = public.user.key "
 					+ "Order BY public.highscore.score DESC";
@@ -171,15 +176,19 @@ public class UserDatenbank {
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
 		}
 		return score;
 		
 	}
 	
-	public void produktErgebnisGesamtSpeicher(Userergebnis ue) {
+	public void produktErgebnisGesamtSpeicher(Userergebnis ue) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Insert into public.ergebnis (bestellmenge, pname, kosten,userkey,periode, zeitstempel) values(?,?,?,?,?,?)";		
+		String sql = "Insert into public.ergebnis (bestellmenge, pname, kosten,userkey,periode) values(?,?,?,?,?)";		
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -191,21 +200,23 @@ public class UserDatenbank {
 				ps.setString(2, pe.getProduktName());
 				ps.setDouble(3, pe.getKosten());
 				ps.setString(4, ue.getAPI_KEY());
-				ps.setInt(5, pe.getPeriode());
-				ps.setInt(6 , 1);
+				ps.setInt(5, pe.getPeriode());				
 				ps.executeUpdate();
 			}		
 			System.out.println("Erfolg");
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
-		}		
+		}finally {
+			ps.close();
+			con.close();
+		}
 	}
 	
-	public void saveHighScore(Highscore highscore, Userergebnis ue) throws SQLException {
+	public void saveHighScore(Highscore highscore, Userergebnis ue, int grad) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Insert into public.highscore (score, api, fehl, kosten, zeit) values(?,?,?,?,?)";
+		String sql = "Insert into public.highscore (score, api, fehl, kosten, zeit, schwierigkeitsgrad) values(?,?,?,?,?,?)";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -213,7 +224,8 @@ public class UserDatenbank {
 			ps.setString(2, ue.getAPI_KEY());
 			ps.setDouble(3, highscore.getFehlmengen());
 			ps.setDouble(4, highscore.getKosten());
-			ps.setLong(5, highscore.getTime());			
+			ps.setLong(5, highscore.getTime());		
+			ps.setInt(6, grad);
 			ps.executeUpdate();
 			System.out.println("Highscore gespeichert");
 		}catch(SQLException e) {
@@ -248,7 +260,7 @@ public class UserDatenbank {
 		}
 	}
 	
-	public long getStempel(String key) {
+	public long getStempel(String key) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -266,6 +278,10 @@ public class UserDatenbank {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
 		}
 		return alterStempel;
 	}
@@ -336,7 +352,7 @@ public class UserDatenbank {
 //	}
 	
 	
-	public List<String> produktNames(){
+	public List<String> produktNames() throws SQLException{
 		List<String> pName = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -352,6 +368,10 @@ public class UserDatenbank {
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
 		}
 		return pName;
 	}
@@ -395,7 +415,7 @@ public class UserDatenbank {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
-		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS pkosten, public.highscore.kosten AS hKosten, fehl, zeit\n"
+		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS pkosten, public.highscore.kosten AS hKosten, fehl, zeit, periode\n"
 				+ "from public.ergebnis \n"
 				+ "INNER JOIN public.highscore ON public.highscore.api = public.ergebnis.userkey\n"
 				+ "where userkey = ?";
@@ -409,7 +429,7 @@ public class UserDatenbank {
 			while(rs.next()) {		
 				String[] s = { rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
 						Double.toString(rs.getDouble("pkosten")), Double.toString(rs.getDouble("hKosten")), 
-						Double.toString(rs.getDouble("fehl")), Integer.toString(rs.getInt("zeit"))};
+						Double.toString(rs.getDouble("fehl")), Integer.toString(rs.getInt("zeit")), Integer.toString(rs.getInt("periode"))};
 				userData.add(s);
 			}
 		}catch(SQLException e) {
@@ -420,6 +440,68 @@ public class UserDatenbank {
 			con.close();
 		}
 		return userData;		
+	}
+
+	public List<String[]> getBestUser() throws SQLException {
+		List<String[]> bestScore = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "SELECT score, fehl, public.highscore.kosten as hKosten, zeit, api,name\n"
+				+"FROM public.highscore\n"	
+				+"INNER JOIN public.user ON public.user.key = public.highscore.api\n"
+				+"ORDER BY public.highscore.score DESC\n"
+				+"LIMIT 1";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);		
+			rs = ps.executeQuery();
+			while(rs.next()) {		
+				String[] s = {Double.toString(rs.getDouble("score")), Double.toString(rs.getDouble("fehl")),
+						Double.toString(rs.getDouble("hKosten")), Integer.toString(rs.getInt("zeit")), rs.getString("api"),
+						rs.getString("name")};
+				bestScore.add(s);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
+		}		
+		return bestScore;
+	}
+	
+	public List<String[]> getBestUserErgebnis(String api) throws SQLException{
+		List<String[]> bestScoreErgebnis = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String sql = "Select kosten, bestellmenge, pname\n"
+				+ "from public.ergebnis\n"
+				+ "where userkey =?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, api);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String[] s = {rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
+						Double.toString(rs.getDouble("kosten"))};
+				bestScoreErgebnis.add(s);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
+		}
+		
+		return bestScoreErgebnis;
 	}
 
 }

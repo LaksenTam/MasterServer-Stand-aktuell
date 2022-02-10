@@ -27,7 +27,7 @@ public class UserManagementTag extends SimpleTagSupport {
 					+ "<th>Name</th>"
 				    +"<th>Highscore</th>"
 					+"<th>Fehlmengenkosten</th>"
-					+"<th>Gesamt Kosten</th>"
+					+"<th>Gesamtkosten</th>"
 					+"<th>ben&ouml;tigte Zeit</th>"
 					+"<th>L&ouml;schen</th>"	
 					+"<th>Admin</th>"

@@ -20,9 +20,13 @@ public class AdminHead extends SimpleTagSupport {
 		JspWriter out = getJspContext().getOut();
 		
 		String name =  (String) session.getAttribute("name");
+		
+		
 		String adminHead = "";
-		try {
-		if(name != null) {			
+	
+		if(name != null) {	
+			int zugriff = (int) session.getAttribute("zugriff");
+			if(zugriff == 1) {
 				adminHead = "<div class=\"container-lg mb-5 mt-2\">\r\n"
 						+ "	<div class=\"row align-items-center\" >\r\n"
 						+ "		<div class=\"col-md-2 center\">\r\n"
@@ -34,7 +38,7 @@ public class AdminHead extends SimpleTagSupport {
 						+ "					<a class=\"nav-link active\" href=\"index.jsp\">Home</a>\r\n"
 						+ "				</li>\r\n"
 						+ "				<li class=\"nav-item\">\r\n"
-						+ "					<a class=\"nav-link active\" href=\"profil.jsp\">Profil</a>\r\n"
+						+ "					<a class=\"nav-link active\" href=\"Profil?\">Profil</a>\r\n"
 						+ "				</li>\r\n"
 						+ "				<li class=\"nav-item\">\r\n"
 						+ "					<a class=\"nav-link\" href=\"ProblemInstanzAnzeigen?\">Adminpanel</a>\r\n"
@@ -59,8 +63,37 @@ public class AdminHead extends SimpleTagSupport {
 						+ "		</div>\r\n"
 						+ "	</div>\r\n"
 						+ "</div>";
-				
-				
+			}	
+		}if(name != null) {
+			int zugriff = (int) session.getAttribute("zugriff");
+			if(zugriff == 0) {
+			adminHead = "<div class=\"container-lg mb-5 mt-2\">\r\n"
+					+ "	<div class=\"row align-items-center\" >\r\n"
+					+ "		<div class=\"col-md-2 center\">\r\n"
+					+ "		<img src = \"img/info.svg\" width = \"70\" height = \"70\">\r\n"
+					+ "		</div>\r\n"
+					+ "		<div class=\"col-md-8 p-2\">\r\n"
+					+ "			<ul class=\"nav justify-content-center\">\r\n"
+					+ "				<li class=\"nav-item\">\r\n"
+					+ "					<a class=\"nav-link active\" href=\"index.jsp\">Home</a>\r\n"
+					+ "				</li>\r\n"
+					+ "				<li class=\"nav-item\">\r\n"
+					+ "					<a class=\"nav-link active\" href=\"Profil?\">Profil</a>\r\n"
+					+ "				</li>\r\n"								
+					+ "				<li class=\"nav-item\">\r\n"
+					+ "					<a class=\"nav-link\" href=\"BestenListe?\">Bestenliste</a>\r\n"
+					+ "				</li>\r\n"											
+					+"				<li class=\"nav-item\">\r\n"
+					+ "					<a class=\"nav-link\" href=\"how-to.jsp\">How-To</a>\r\n"
+					+ "				</li>\r\n"
+					+ "			</ul>\r\n"
+					+ "		</div>\r\n"
+					+ "		<div class=\"col-md-1 justify-content-center\">\r\n"
+					+ "		<a href= \"Logout\"><button id = \"navbutton\" type=\"button\" class=\"btn btn-danger btn-block rounded-pill \">Logout</button></a>\r\n"
+					+ "		</div>\r\n"
+					+ "	</div>\r\n"
+					+ "</div>";
+			}
 		}else {
 			adminHead = "<div class=\"container-fluid mb-5 mt-2\">\r\n"
 					+ "	<div class=\"row align-items-center\" >\r\n"
@@ -92,9 +125,8 @@ public class AdminHead extends SimpleTagSupport {
 			
 			
 		}
-		
-		out.append(adminHead);
-
+		try {
+			out.append(adminHead);
 		}catch(IOException e) {
 			e.printStackTrace();
 		}

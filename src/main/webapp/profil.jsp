@@ -92,6 +92,101 @@
 	 	chart.draw(data, options); 		
  }
  
+ google.charts.load('current', {packages:['corechart', 'bar']});
+ google.charts.setOnLoadCallback(drawHighscoreKosten);
+ 
+ function drawHighscoreKosten(){
+ 	var data = google.visualization.arrayToDataTable([
+ 		['Name' , 'Kapitalbindung'], 		
+ 		${drawHighKosten}    		
+ 	]);
+ 	
+ 	var options = {
+ 			title: 'Kapitalbindung pro Produkt',
+ 			subtitle:'eigene Heuristik'
+ 	};
+ 	
+ 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreKosten'));
+ 	chart.draw(data, options); 		
+ 	
+	}
+ 
+ google.charts.load('current', {packages:['corechart', 'bar']});
+ google.charts.setOnLoadCallback(drawHighscoreBestand);
+ 
+ function drawHighscoreBestand(){
+	 var data = google.visualization.arrayToDataTable([
+	 		['Name' , 'Bestand'], 		
+	 		${drawHighBestand}    		
+	 	]);
+	 	
+	 	var options = {
+	 			title: 'Bestand',
+	 			subtitle:'eigene Heuristik'
+	 	};
+	 	
+	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreBestand'));
+	 	chart.draw(data, options); 		 	
+		}  
+ 
+ //Volumen des Spitzenreiters
+ google.charts.load('current', {packages:['corechart', 'bar']});
+ google.charts.setOnLoadCallback(drawHighscoreVolumen);
+ 
+ function drawHighscoreVolumen(){
+	 var data = google.visualization.arrayToDataTable([
+	 		['Name' , 'Volumen'], 		
+	 		${drawHighVol}    		
+	 	]);
+	 	
+	 	var options = {
+	 			title: 'Volumen',
+	 			subtitle:'eigene Heuristik'
+	 	};
+	 	
+	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreVolumen'));
+	 	chart.draw(data, options); 		
+ }
+ 
+ //Highscoredaten des Spitzenreiters
+ google.charts.load('current', {packages:['corechart', 'bar']});
+ google.charts.setOnLoadCallback(drawLeaderScore);
+ 
+ function drawLeaderScore(){
+	 var data = google.visualization.arrayToDataTable([
+	 		['Daten', 'Kosten' , 'Fehlmengen', 'Zeit'], 		
+	 		${drawHighscoreScore}    		
+	 	]);
+	 	
+	 	var options = {
+	 			title: 'Highscore Daten',
+	 			subtitle:'eigene Heuristik'
+	 	};
+	 	
+	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreLeader'));
+	 	chart.draw(data, options); 		
+ }
+ 
+ google.charts.load('current', {'packages':['line']});
+ google.charts.setOnLoadCallback(drawBestandsVerlauf);
+ 
+ function drawBestandsVerlauf(){
+	 var data = google.visualization.arrayToDataTable([
+	 	['Periode', 'Bestand'],
+	 	${userBestandsVerlauf}
+	 	]);
+	 
+	 var options = {
+     		title: 'Bestandsverlauf ',
+     		subtitle:'Test',
+     		
+     		};
+
+     var chart = new google.visualization.LineChart(document.getElementById('userBestandsVerlauf'));
+     chart.draw(data, options);
+
+ }
+ 
  </script>
 
 
@@ -112,11 +207,33 @@
 </table>  
 
 </div>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<div id="draw_Highscore" style="width: 900px; height: 500px;"></div>
-       <div id="draw_Kosten" style="width: 900px; height: 500px;"></div>
-       <div id="draw_Bestand" style="width: 900px; height: 500px;"></div>
-       <div id="draw_Volumen" style="width: 900px; height: 500px;"></div>
+<h5>${fehler }</h5>
+	<div class = "row">
+	
+		<div class = "col">
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<h3></h3>
+			<div id="draw_Highscore" style = "margin-top:28px; width: 900px; height: 500px;"></div>
+       		<div id="draw_Kosten" style="width: 900px; height: 500px;"></div>
+       		<div id="draw_Bestand" style="width: 900px; height: 500px;"></div>
+      		 <div id="draw_Volumen" style="width: 900px; height: 500px;"></div>
+      		 <div id="userBestandsVerlauf" style="width: 900px; height: 500px;"></div>
+		</div>
+		
+		<div class = "col">	
+		<h6>Daten von ${ highscoreName }</h6>	
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+			<div id="draw_HighscoreLeader" style="width: 900px; height: 500px;"></div>
+       		<div id="draw_HighscoreKosten" style="width: 900px; height: 500px;"></div>
+       		<div id="draw_HighscoreBestand" style="width: 900px; height: 500px;"></div>
+       		<div id="draw_HighscoreVolumen" style="width: 900px; height: 500px;"></div>
+		</div>
+	</div>
+
+
+
+		
+       
 
 
 </body>

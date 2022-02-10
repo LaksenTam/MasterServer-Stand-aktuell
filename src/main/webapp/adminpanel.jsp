@@ -30,13 +30,18 @@ $(document).ready(function(){
 <body>
 	<x:AdminHead></x:AdminHead>
 	
+
+	
 	<p>Aktuell im Bestand sind: </p>
 	<p>A Produkt: 46, B Produkt: 43, C Produkt: 32
 		
 	
 	<h4 class = "error">${fehler }</h4>
-	
+
+	<div class = "row m-md-5">
+	<div class = "col">
 <form action ="ProblemInstanzErstellen" method = "GET">
+<h4>Produkterstellung</h4>
 	<table>
 		<tr>
 		<td>Periodenanzahl:</td>		
@@ -46,27 +51,34 @@ $(document).ready(function(){
 		<tr>
 			<td>Produkteingabe:</td>	
 			<td></td>
-			<td></td>
-			<td><label>Anzahl der Saisonalenprodukte</label></td>		
+		
+			<td><label>Produkt mit starken Schwankungen</label></td>
+			<td><label>Anzahl der Saisonalenprodukte</label></td>	
+			<td><label>Konstantes Produkt</label>	
 		</tr>	
 		<tr>
 			<td></td>
 			<td>A-Produkt</td>
 			<td><input type = "text" name = "aprodukt"></td>
 			<td><input type = "text" name = "saisonalA"></td>
+			<td><input type = "text" name = "kostantA"></td>
 			
 		</tr>		
 		<tr>
 			<td></td>
 			<td>B-Produkt</td>
 			<td><input type = "text" name = "bprodukt"></td>	
-			<td><input type = "text" name = "saisonalB"></td>		
+			<td><input type = "text" name = "saisonalB"></td>	
+			<td><input type = "text" name = "kostantB"></td>
+				
 		</tr>		
 		<tr>
 			<td></td>
 			<td>C-Produkt</td>
 			<td><input type = "text" name = "cprodukt"></td>
 			<td><input type = "text" name = "saisonalC"></td>
+			<td><input type = "text" name = "kostantC"></td>
+			
 		</tr>
 		<tr>
 			<td><label for ="lager">Größe des Lagers</label></td>
@@ -92,13 +104,37 @@ $(document).ready(function(){
 		<tr>
 			<td></td>
 			<td></td>
-			<td><button type = "submit">Senden!</button></td>
+			<td><button class = "btn btn-info" type = "submit">Senden!</button></td>
 		</tr>	
 	</table>
 </form>
+</div>
+<div class = "col">
+
+	<form action = "UpdateLager" method = "GET">
+	<h4>Lagerdaten</h4>
+	<table>
+	<tr>
+		<td><label>Volumen des Lager</label></td>
+		<td><input type = "text" name = "vol" value = "${lagerVol }"></td>
+	</tr>
+	<tr>
+		<td><label>Lager Kapitalbindung</label></td>
+		<td><input type = "text" name = "kapBindung" value = "${lagerKap }"></td>
+	</tr>
+	<tr>
+		<td><button class = "btn btn-info" type = "submit">update</button>
+	</tr>
+	</table>
+	</form>
+
+
+</div>
+</div>
+
 
 <form action = "CreateCSV" method = "GET">
-        <button type = "submit">Als CSV speichern</button> 
+        <button class = "btn btn-warning" type = "submit">Als CSV speichern</button> 
 </form>
 
 	<p>Produkttabelle</p>

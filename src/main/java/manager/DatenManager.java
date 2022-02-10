@@ -34,8 +34,8 @@ public class DatenManager {
 		return db.getProblemInstanz(produktListe, periode);
 	}
 	
-	public boolean userErgebnisSpeichern(Userergebnis ue, long zeitstempel) throws SQLException {
-		return ud.ergebnisSpeichern(ue, zeitstempel);
+	public boolean userErgebnisSpeichern(Userergebnis ue, int grad) throws SQLException {
+		return ud.ergebnisSpeichern(ue, grad);
 	}
 	
 	public boolean ueberpruefeZeit(long currentTime, int periode, String api) throws SQLException {

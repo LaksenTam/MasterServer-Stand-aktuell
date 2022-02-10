@@ -44,5 +44,24 @@ public class DrawChart {
 		}
 		return score;
 	}
+	
+	public String drawHighScoreLeader(List<String[]> leader) {
+		String leaderScore = "";
+		for(int i = 0; i<leader.size();i++) {
+			leaderScore = "['Highscore Übersicht'," + leader.get(i)[2] + "," + leader.get(i)[1] + "," + leader.get(i)[3] + "],"; 
+		}
+		
+		return leaderScore;
+	}
+
+	public String drawGesamtBestandVerlauf(List<String[]> bestandsverlauf) {
+		String verlauf = "['0', 0]";		
+		for(int i = 0; i<bestandsverlauf.size();i++) {
+			verlauf += ",['" + bestandsverlauf.get(i)[0] + "'," + bestandsverlauf.get(i)[1] + "]";
+		}
+		verlauf +=",['" + (bestandsverlauf.size() +1) + "',0]";
+		System.out.println(verlauf);
+		return verlauf;
+	}
 
 }

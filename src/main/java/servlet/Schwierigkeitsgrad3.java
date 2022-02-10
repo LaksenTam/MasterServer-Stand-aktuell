@@ -47,7 +47,8 @@ public class Schwierigkeitsgrad3 extends HttpServlet {
 			ue = daten.ergebnis(ergebnis, ue);
 			produktListe = daten.produktListePeriode(produktListe, ue.getPeriode());
 			if(daten.ueberpruefeZeit(stempel, ue.getPeriode(), ue.getAPI_KEY())) {	
-				daten.userErgebnisSpeichern(ue, stempel);
+				//CHECK FEASIBLE
+				daten.userErgebnisSpeichern(ue, 3);
 				if(ue.getPeriode() != daten.getPeriodenAnzahl()) {
 					String jsonString = daten.dataToJson(produktListe);
 					pw.print(jsonString);

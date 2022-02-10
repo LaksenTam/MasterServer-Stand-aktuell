@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -39,22 +40,29 @@ public class BestenListe extends HttpServlet {
 			
 			//HttpSession session = request.getSession();
 			UserDatenbank db = new UserDatenbank();
-			List<Highscore> score = db.highscoresabrufen();	
-			List<String[]> stringScores = new ArrayList<String[]>();
-			
-			for(Highscore s: score) {				
-				String[] sh = { s.getName(), Double.toString(s.getScore())};
-				//System.out.println(s.getName() + " " + s.getScore());	
+			List<Highscore> score;
+			try {
+				score = db.highscoresabrufen();
+				List<String[]> stringScores = new ArrayList<String[]>();
 				
-				stringScores.add(sh);
-			}
+				for(Highscore s: score) {				
+					String[] sh = { s.getName(), Double.toString(s.getScore())};
+					//System.out.println(s.getName() + " " + s.getScore());	
+					
+					stringScores.add(sh);
+				}
+				LOGGER.log( Level.FINE, "processing score entries", score.size() );
+				
+				request.setAttribute("resultList", stringScores);
+				
+				request.setAttribute("score", score);		
+				request.getRequestDispatcher("best.jsp").forward(request, response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}				
 			
-			LOGGER.log( Level.FINE, "processing score entries", score.size() );
-			
-			request.setAttribute("resultList", stringScores);
-			
-			request.setAttribute("score", score);		
-			request.getRequestDispatcher("best.jsp").forward(request, response);		
+					
 	}
 
 	/**

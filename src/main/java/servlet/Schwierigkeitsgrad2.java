@@ -13,7 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import data.Produkt;
 import data.Userergebnis;
+import datenbank.UserDatenbank;
 import manager.DatenManager;
+import utility.CheckTime;
 
 /**
  * Servlet implementation class Schwierigkeitsgrad2
@@ -40,6 +42,8 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 		
 		Userergebnis ue = new Userergebnis();
 		DatenManager daten = new DatenManager();
+		CheckTime time = new CheckTime();
+		UserDatenbank user = new UserDatenbank();
 		
 		PrintWriter pw = response.getWriter();
 		
@@ -48,16 +52,25 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 		try {
 			ue = daten.ergebnis(ergebnis, ue);
 			produktListe = daten.produktListePeriode(produktListe, ue.getPeriode());
-			//für schwierigkeitgrad 2 muss die zeit nicht gespeichert werden
-			daten.userErgebnisSpeichern(ue, System.currentTimeMillis());
-			if(ue.getPeriode()!= daten.getPeriodenAnzahl()) {
-				String jsonString = daten.dataToJson(produktListe);
-				pw.print(jsonString);
-				pw.flush();
-				pw.close();
+			long stamp = System.currentTimeMillis();
+			//Schwierigkeitsgrad 2 zeit
+			if(time.testeStempel(stamp, ue.getAPI_KEY())) {
+				daten.userErgebnisSpeichern(ue, 2);
+				if(ue.getPeriode()!= daten.getPeriodenAnzahl()) {
+					String jsonString = daten.dataToJson(produktListe);
+					pw.print(jsonString);
+					pw.flush();
+					pw.close();
+					user.insStempel(ue.getAPI_KEY(), stamp);
+				}else {
+					//berechne Highscore
+					
+					pw.print("Geschafft!");
+					pw.flush();
+					pw.close();
+				}
 			}else {
-				//berechne Highscore
-				pw.print("Geschafft!");
+				pw.print("Zu langsam, optimiere den Algorithmus");
 				pw.flush();
 				pw.close();
 			}

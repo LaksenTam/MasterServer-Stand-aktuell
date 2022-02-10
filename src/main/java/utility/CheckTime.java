@@ -33,7 +33,7 @@ public class CheckTime {
 		return status;
 	}
 	
-	public boolean testeStempel(long neuStempel, String key) {
+	public boolean testeStempel(long neuStempel, String key) throws SQLException {
 		boolean status = false;
 		UserDatenbank ud = new UserDatenbank();
 		long altStempel = ud.getStempel(key);		

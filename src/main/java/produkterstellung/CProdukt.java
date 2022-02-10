@@ -24,7 +24,7 @@ public class CProdukt {
 			+ "Jabra Evolve2 75, Sony WF-1000XM4";
 
 	
-	public Produkt generiereProduktC(Produkt p, boolean saisonal, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
+	public Produkt generiereProduktC(Produkt p, boolean saisonal,boolean konstant, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
 	
 		List<Integer> verbrauchsListe = new ArrayList<Integer>();
 		List<String> namenListe = new ArrayList<String>();	
@@ -45,6 +45,12 @@ public class CProdukt {
 		if(saisonal) {
 			int verbrauch = rand.nextInt(1000)+0;
 			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
+		}else if(konstant) {
+			int verbrauch = rand.nextInt(1000)+0;
+			for(int k = 0; k< perioden; k++) {
+				p.setVerbrauch(verbrauch);
+				verbrauchsListe.add(p.getVerbrauch());
+			}
 		}else {		
 			for(int n = 0; n < perioden; n++) {
 				p.setVerbrauch(rand.nextInt(1000)+ 0);
