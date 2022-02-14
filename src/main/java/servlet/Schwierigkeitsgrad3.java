@@ -12,9 +12,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import data.Highscore;
+import data.Lager;
 import data.Produkt;
 import data.Userergebnis;
+import datenbank.Datenbank;
+import datenbank.UserDatenbank;
 import manager.DatenManager;
+import utility.CalcHighscore;
+import utility.CheckFeasible;
+import utility.CheckTime;
 
 /**
  * Servlet implementation class Schwierigkeitsgrad3
@@ -40,28 +47,42 @@ public class Schwierigkeitsgrad3 extends HttpServlet {
 		List<Produkt> produktListe = new ArrayList<Produkt>();
 		Userergebnis ue = new Userergebnis();
 		DatenManager daten = new DatenManager();
+		CheckFeasible feasible = new CheckFeasible();
+		Datenbank db = new Datenbank();
+		CheckTime check = new CheckTime();
+		CalcHighscore score = new CalcHighscore();
+		UserDatenbank user = new UserDatenbank();
+		
 		long stempel = System.currentTimeMillis();
 		PrintWriter pw = response.getWriter();
 		response.setContentType("text/json");
 		try {
 			ue = daten.ergebnis(ergebnis, ue);
 			produktListe = daten.produktListePeriode(produktListe, ue.getPeriode());
-			if(daten.ueberpruefeZeit(stempel, ue.getPeriode(), ue.getAPI_KEY())) {	
-				//CHECK FEASIBLE
-				daten.userErgebnisSpeichern(ue, 3);
-				if(ue.getPeriode() != daten.getPeriodenAnzahl()) {
-					String jsonString = daten.dataToJson(produktListe);
-					pw.print(jsonString);
-					pw.flush();
-					pw.close();
+			if(check.testeStempel(stempel, ue.getAPI_KEY())) {	
+				Lager lager = db.lagerAbrufen();
+				
+					daten.userErgebnisSpeichern(ue, 3);
+					if(ue.getPeriode() != daten.getPeriodenAnzahl()) {
+						String jsonString = daten.dataToJson(produktListe);
+						pw.print(jsonString);
+						pw.flush();
+						pw.close();
 					//speicher daten in DB
 				
-				}else {
-					pw.print("Geschafft!");
-					pw.flush();
-					pw.close();
+					}else {
+						if(feasible.isFeasible(ue.getProdukte(),lager,produktListe )) {
+							pw.print("Geschafft!");
+							pw.flush();
+							pw.close();
+							Highscore highscore = score.berechneHighscore(ue.getProdukte());
+							long endstamp = check.berechneZeit(ue.getAPI_KEY());
+							highscore.setTime(endstamp);
+							user.saveHighScore(highscore, ue, 3);
+							user.produktErgebnisGesamtSpeicher(ue);
 					//speicher die Daten in der DB
 					//berechne Highscore
+					}
 				}
 			}else {
 				pw.print("Optimiere deinen Algorithmus");

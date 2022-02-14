@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import data.Highscore;
 import data.Produkt;
 import data.Userergebnis;
 import datenbank.UserDatenbank;
 import manager.DatenManager;
+import utility.CalcHighscore;
 import utility.CheckTime;
 
 /**
@@ -44,7 +46,11 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 		DatenManager daten = new DatenManager();
 		CheckTime time = new CheckTime();
 		UserDatenbank user = new UserDatenbank();
+		CalcHighscore score = new CalcHighscore();
+		CheckTime check = new CheckTime();
 		
+
+
 		PrintWriter pw = response.getWriter();
 		
 		response.setContentType("text/json");
@@ -64,7 +70,11 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 					user.insStempel(ue.getAPI_KEY(), stamp);
 				}else {
 					//berechne Highscore
-					
+					Highscore highscore = score.berechneHighscore(ue.getProdukte());
+					long endstamp = check.berechneZeit(ue.getAPI_KEY());
+					highscore.setTime(endstamp);
+					user.saveHighScore(highscore, ue, 2);
+					user.produktErgebnisGesamtSpeicher(ue);
 					pw.print("Geschafft!");
 					pw.flush();
 					pw.close();
