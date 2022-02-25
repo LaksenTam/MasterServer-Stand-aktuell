@@ -7,6 +7,7 @@ import java.util.Random;
 
 import com.opencsv.exceptions.CsvValidationException;
 
+import data.ErweiterteProdukte;
 import data.Lager;
 import data.Produkt;
 import utility.CSVRead;
@@ -24,7 +25,8 @@ public class CProdukt {
 			+ "Jabra Evolve2 75, Sony WF-1000XM4";
 
 	
-	public Produkt generiereProduktC(Produkt p, boolean saisonal,boolean konstant, int i, int perioden, Lager lager) throws CsvValidationException, IOException {
+	public Produkt generiereProduktC(Produkt p, boolean saisonal,boolean konstant, int i, int perioden, 
+			Lager lager, boolean erweitert, ErweiterteProdukte prod) throws CsvValidationException, IOException {
 	
 		List<Integer> verbrauchsListe = new ArrayList<Integer>();
 		List<String> namenListe = new ArrayList<String>();	
@@ -32,16 +34,30 @@ public class CProdukt {
 	
 		int selector = rand.nextInt(namenListe.size())+0;		
 	
-		String name = namenListe.get(selector);		
-	
+		String name = namenListe.get(selector);	
 		p.setName(name);
-		p.setBestellfix((rand.nextInt(15000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);		
-		p.setEinstand((rand.nextInt(200) + 3) + (double) Math.round((rand.nextFloat()+0)*100)/100);
-		p.setFehlmengenkosten((rand.nextInt(50)+1) + ((double) Math.round((rand.nextDouble() + 0)*100)/100));
-		p.setLagerkostensatz((rand.nextInt(10)+0) + (double) Math.round((rand.nextDouble() + 0)*100)/100);
-		p.setMinBestand(rand.nextInt(10) + 0);
-		p.setMaxBestand(rand.nextInt(5000) + p.getMinBestand());
-		p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
+	
+		if(erweitert) {
+			p.setBestellfix((rand.nextInt(prod.getBestellMaxRange())+prod.getBestellMinRange()) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
+			System.out.println(p.getBestellfix());
+			p.setEinstand((rand.nextInt(prod.getEinstandmaxRange()) + prod.getEinstandminRange()) + (double) Math.round((rand.nextFloat()+0)*100)/100);
+			p.setFehlmengenkosten((rand.nextInt(prod.getFehlkostenMaxRange()) + prod.getFehlkostenMinRange())+(double) Math.round((rand.nextDouble() + 0)*100)/100);
+			p.setLagerkostensatz((double) Math.round(p.getEinstand()*prod.getLagersatz()));
+			p.setMinBestand(rand.nextInt(10) + 0);
+			p.setMaxBestand(rand.nextInt(5000) + p.getMinBestand());		
+			p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
+			
+		}
+		else {
+			p.setBestellfix((rand.nextInt(15000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);		
+			p.setEinstand((rand.nextInt(200) + 3) + (double) Math.round((rand.nextFloat()+0)*100)/100);
+			p.setFehlmengenkosten((rand.nextInt(50)+1) + ((double) Math.round((rand.nextDouble() + 0)*100)/100));
+			p.setLagerkostensatz((rand.nextInt(10)+0) + (double) Math.round((rand.nextDouble() + 0)*100)/100);
+			p.setMinBestand(rand.nextInt(10) + 0);
+			p.setMaxBestand(rand.nextInt(5000) + p.getMinBestand());
+			p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
+		}
+		
 		if(saisonal) {
 			int verbrauch = rand.nextInt(1000)+0;
 			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);

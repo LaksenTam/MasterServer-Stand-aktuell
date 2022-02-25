@@ -9,7 +9,7 @@ public class DatenbankVerbindung {
         protected static Connection instance;
       
         private static final String DB_SERVER = "localhost";
-        private static final String DB_NAME = "Master";
+        private static final String DB_NAME = "master";
         private static final String DB_USER = "postgres";
         private static final String DB_PASSWORD = "henrik";
         private static final String DB_DRIVER = "org.postgresql.Driver";

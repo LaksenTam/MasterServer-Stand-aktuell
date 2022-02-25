@@ -28,4 +28,9 @@
 		<tagclass>tags.UserManagementTag</tagclass>
 		<bodycontent>empty</bodycontent>
 	</tag>
+	<tag>
+		<name>ProfilDropDown</name>
+		<tagclass>tags.ProfilDropDown</tagclass>
+		<bodycontent>empty</bodycontent>
+	</tag>
 </taglib>

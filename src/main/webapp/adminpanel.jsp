@@ -30,8 +30,6 @@ $(document).ready(function(){
 <body>
 	<x:AdminHead></x:AdminHead>
 	
-
-	
 	<p>Aktuell im Bestand sind: </p>
 	<p>A Produkt: 46, B Produkt: 43, C Produkt: 32
 		
@@ -40,13 +38,35 @@ $(document).ready(function(){
 
 	<div class = "row m-md-5">
 	<div class = "col">
+	<a href ="erweitert.jsp">erweitertes Erstellen</a>
 <form action ="ProblemInstanzErstellen" method = "GET">
+<h4>Spielregeln</h4>
+<table>
+	<tr>
+		<td><label>Sammelbestellung</label>
+		<td><div class="input-group">
+ 		 <div class="input-group-prepend">
+   	 		<div class="input-group-text">
+     			 <input type="checkbox" aria-label="Checkbox for following text input">
+    		</div>
+ 		 </div>
+ 		 
+ 		 <input type="text" class="form-control" aria-label="Text input with checkbox">
+		</div>
+		</td>
+	</tr>	
+	<tr>		
+		<td><label>Zeitrestriktion</label></td>		
+		<td><input type = "text" class = "form-control" name = "zeit" placeholder = "In Sekunden z.B. für 400ms= 0.4"></td>	
+		</tr>
+			
+</table>
 <h4>Produkterstellung</h4>
 	<table>
 		<tr>
 		<td>Periodenanzahl:</td>		
 		<td></td>	
-		<td><input type = "text" name ="perioden"></td>
+		<td><input type = "text" name ="perioden" class = "form-control"></td>
 		</tr>
 		<tr>
 			<td>Produkteingabe:</td>	
@@ -59,25 +79,25 @@ $(document).ready(function(){
 		<tr>
 			<td></td>
 			<td>A-Produkt</td>
-			<td><input type = "text" name = "aprodukt"></td>
-			<td><input type = "text" name = "saisonalA"></td>
-			<td><input type = "text" name = "kostantA"></td>
+			<td><input type = "text" name = "aprodukt" class = "form-control"></td>
+			<td><input type = "text" name = "saisonalA" class = "form-control"></td>
+			<td><input type = "text" name = "kostantA" class = "form-control"></td>
 			
 		</tr>		
 		<tr>
 			<td></td>
 			<td>B-Produkt</td>
-			<td><input type = "text" name = "bprodukt"></td>	
-			<td><input type = "text" name = "saisonalB"></td>	
-			<td><input type = "text" name = "kostantB"></td>
+			<td><input type = "text" name = "bprodukt" class = "form-control"></td>	
+			<td><input type = "text" name = "saisonalB" class = "form-control"></td>	
+			<td><input type = "text" name = "kostantB" class = "form-control"></td>
 				
 		</tr>		
 		<tr>
 			<td></td>
 			<td>C-Produkt</td>
-			<td><input type = "text" name = "cprodukt"></td>
-			<td><input type = "text" name = "saisonalC"></td>
-			<td><input type = "text" name = "kostantC"></td>
+			<td><input type = "text" name = "cprodukt" class = "form-control"></td>
+			<td><input type = "text" name = "saisonalC" class = "form-control"></td>
+			<td><input type = "text" name = "kostantC"class = "form-control" ></td>
 			
 		</tr>
 		<tr>

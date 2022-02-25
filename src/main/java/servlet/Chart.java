@@ -35,9 +35,9 @@ public class Chart extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String name = request.getParameter("name");
-		String score = request.getParameter("score");
-		double highscore = Double.parseDouble(score);
+		String uid = request.getParameter("uid");
+		
+	
 		UserDatenbank user = new UserDatenbank();
 		DrawChart chart = new DrawChart();
 		Datenbank db = new Datenbank();
@@ -45,7 +45,7 @@ public class Chart extends HttpServlet {
 		
 		try {
 			List<Produkt> produktDaten = db.getVerbrauchsListe();
-			List<String[]> ergebnis = user.bestToChart(name, highscore);
+			List<String[]> ergebnis = user.scoreData(uid);
 			List<String[]> volumen = vol.calcVolumen(produktDaten, ergebnis);
 			String drawKosten = chart.drawKosten(ergebnis);
 			String drawBestand = chart.drawBestandsVerlauf(ergebnis);

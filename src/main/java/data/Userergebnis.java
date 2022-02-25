@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Userergebnis extends User {
 	
-	private int periode;	
+		
 	private String API_KEY;
 	private List<Produktergebnis> produkte;
 	
@@ -12,17 +12,6 @@ public class Userergebnis extends User {
 		
 	}
 	
-	
-	public int getPeriode() {
-		return periode;
-	}
-
-
-	public void setPeriode(int periode) {
-		this.periode = periode;
-	}
-
-
 	public List<Produktergebnis> getProdukte() {
 		return produkte;
 	}

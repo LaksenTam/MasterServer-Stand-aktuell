@@ -1,8 +1,7 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.ArrayList;
+
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -10,13 +9,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import data.Lager;
-import data.Produkt;
-import data.Userergebnis;
-import datenbank.Datenbank;
-import manager.DatenManager;
-import utility.CheckFeasible;
+import data.Highscore;
+import datenbank.UserDatenbank;
+
 
 /**
  * Servlet implementation class TestServ
@@ -37,28 +34,17 @@ public class TestServ extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String ergebnis = request.getParameter("json");		
-		List<Produkt> produktListe = new ArrayList<Produkt>();
-		Userergebnis ue = new Userergebnis();
-		DatenManager daten = new DatenManager();
-		Datenbank db = new Datenbank();
-		CheckFeasible feas = new CheckFeasible();
-
-
-		ue = daten.ergebnis(ergebnis, ue);
-		Lager lager = db.lagerAbrufen();
-		try {
-			produktListe = daten.produktListePeriode(produktListe, 1);
-			System.out.println("JA");
-			System.out.println(ue.getProdukte());
-			System.out.println(lager);
-			System.out.println(produktListe);
-			feas.isFeasible(ue.getProdukte(), lager, produktListe);
-		} catch (NullPointerException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		
+		UserDatenbank user = new UserDatenbank();
+		HttpSession session = request.getSession();
+		String key = (String) session.getAttribute("key");
+		
+		List<Highscore> scores = user.userScores(key);
+		for(Highscore s: scores) {
+			System.out.println(s.getScore());
 		}
-
+		request.setAttribute("scores", scores);
+		request.getRequestDispatcher("test.jsp").forward(request, response);
 		
 	}
 
@@ -66,8 +52,10 @@ public class TestServ extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		String test = request.getParameter("test1");
+		String vergleich = request.getParameter("test2");
+		System.out.println(test);
+		System.out.println(vergleich);
 	}
 
 }

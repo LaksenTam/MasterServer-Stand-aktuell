@@ -30,7 +30,7 @@ public class CalcHighscore {
 		int fehl = berechnefehlMengenKosten(ergebnis, produktListe, pInfo);
 		double kosten = berechneKosten(ergebnis,pInfo);
 		
-		double averageElo = 1500;
+		double averageElo = 1200;
 		double highscore = averageElo;
 		
 		double vergleichsWert = eloVergleichsWert();

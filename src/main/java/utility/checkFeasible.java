@@ -66,6 +66,13 @@ public class CheckFeasible {
 		return status;
 	}
 	
+	/**
+	 * Prüfen wie viel noch auis der Periode zuvor im Lager liegt einfpgen
+	 * @param pList
+	 * @param lager
+	 * @param produktdaten
+	 * @return
+	 */
 	public boolean checkLagerSize(List<Produktergebnis> pList, Lager lager, List<Produkt> produktdaten) {
 		boolean status = false;
 		double checkSize = 0.00;

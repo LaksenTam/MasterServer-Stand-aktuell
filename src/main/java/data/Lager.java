@@ -4,8 +4,7 @@ public class Lager {
 	
 	private int anz;
 	private int per;
-	private float kbindung;
-	private float sammelbkosten;
+	private float kbindung;	
 	private float lagerVol;
 	
 	
@@ -61,21 +60,6 @@ public class Lager {
 		this.kbindung = kbindung;
 	}
 
-
-	/**
-	 * @return the sammelbkosten
-	 */
-	public float getSammelbkosten() {
-		return sammelbkosten;
-	}
-
-
-	/**
-	 * @param sammelbkosten the sammelbkosten to set
-	 */
-	public void setSammelbkosten(float sammelbkosten) {
-		this.sammelbkosten = sammelbkosten;
-	}
 
 
 	/**

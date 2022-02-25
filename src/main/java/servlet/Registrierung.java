@@ -55,6 +55,7 @@ public class Registrierung extends HttpServlet {
 					request.setAttribute("user", user);
 					request.setAttribute("userName", user.getName());
 					session.setAttribute("name", user.getName());
+					session.setAttribute("zugriff", user.getZugriff());
 					System.out.println(session.getAttribute("name"));
 					System.out.println("Benutzer wurde erstellt: " + user.toString());
 					request.setAttribute("key", api_key);

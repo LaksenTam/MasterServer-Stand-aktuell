@@ -32,6 +32,11 @@
 
 Eine detaillierte Anleitung mit Code-Beispielen ist  <a href= "how-to.jsp" >hier</a> zu finden.
 
+<footer class = "page footer font-small blue pt-4">
+	<div class = "container-fluid text-center text-md-left">
+		<a href = "impressum.jsp">Impressum</a>
+	</div>
 
+</footer>
 </body>
 </html>

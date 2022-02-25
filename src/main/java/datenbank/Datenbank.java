@@ -9,6 +9,7 @@ import java.util.List;
 
 import data.Lager;
 import data.Produkt;
+import data.Spielregeln;
 
 
 
@@ -29,7 +30,7 @@ public class Datenbank {
 		try {	
 			loeschTabelle();	
 			resetBestenListe();
-			resetErgebnisse();
+			deleteStamps();
 			System.out.println("Tabellen geloescht");
 			con = DatenbankVerbindung.getConnection();									
 			ps1 = con.prepareStatement(sql);
@@ -58,6 +59,21 @@ public class Datenbank {
 		return status;
 	}
 	
+	private void deleteStamps() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Truncate public.stamps";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.execute();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
 	public boolean verbrauchProProduktAnlegen(String name, List<Integer> verbrauch) throws SQLException{
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -102,19 +118,7 @@ public class Datenbank {
 		return status;
 	}
 	
-	public void resetErgebnisse() {
-		Connection con = null;
-		PreparedStatement ps = null;
-		String sql = "Truncate public.ergebnis restart identity";
-		
-		try {
-			con = DatenbankVerbindung.getConnection();
-			ps = con.prepareStatement(sql);
-			ps.executeUpdate();
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
+
 	
 	public List<Produkt> getProblemInstanz(List<Produkt> produktListe, int periode) throws SQLException, NullPointerException {
 		
@@ -178,11 +182,11 @@ public class Datenbank {
 		return rs;
 	}
 	
-	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager) {
+	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager, Spielregeln spiel) {
 		boolean status = false;
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Insert into public.probleminstanz(panzahl, perioden, key,lagervolumen, kapitalbindung ) VALUES(?,?,?,?,?)";
+		String sql = "Insert into public.probleminstanz(panzahl, perioden, key,lagervolumen, kapitalbindung, sammelbestellung, zeit ) VALUES(?,?,?,?,?,?,?)";
 		
 		try {
 			problemInstanzLoeschen();
@@ -193,6 +197,8 @@ public class Datenbank {
 			ps.setString(3, key);	
 			ps.setFloat(4, lager.getLagerVol());
 			ps.setDouble(5, lager.getKbindung());
+			ps.setDouble(6, spiel.getSammelKosten());
+			ps.setLong(7, spiel.getZeit());
 			ps.executeUpdate();
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -200,18 +206,7 @@ public class Datenbank {
 		return status;
 	}
 	
-	public void problemInstanzLoeschen() {
-		Connection con  = null;
-		PreparedStatement ps = null;
-		String sql = "Delete from public.probleminstanz";
-		try {
-			con = DatenbankVerbindung.getConnection();
-			ps = con.prepareStatement(sql);
-			ps.executeUpdate();
-		}catch(SQLException e) {
-			e.printStackTrace();
-		}
-	}
+
 	
 	public int getPeriodenAnzahl() {
 		Connection con = null;
@@ -422,7 +417,7 @@ public class Datenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		
-		String sql = "Truncate public.highscore restart identity";
+		String sql = "Truncate public.highscore restart identity cascade";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -550,6 +545,36 @@ public class Datenbank {
 		}finally {
 			ps.close();
 			con.close();
+		}
+	}
+	
+	/**
+	 * Prüfe ob gelöscht werden kann
+	 */
+	public void resetErgebnisse() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "Truncate public.ergebnis restart identity cascade";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void problemInstanzLoeschen() {
+		Connection con  = null;
+		PreparedStatement ps = null;
+		String sql = "Delete from public.probleminstanz";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

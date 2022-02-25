@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+   
     <%@ taglib uri="WEB-INF/custom.tld" prefix="x"%>
     
 <!DOCTYPE html>
@@ -19,33 +19,14 @@
 </head>
 <body>
 <x:AdminHead></x:AdminHead>
-<h4>Http-Request(Post-Anfrage)</h4>
-<p>Bei dieser Seite ist es egal, ob ihr eine Post oder Get Anfrage stellt, es werden beide Arten unterstützt und verarbeitet.
-<pre>
-<code>
-	//z.B. URL url = new URL("http://www.google.com/");
-	URL url = new URL("Hier die Webseite einfügen");
-	HttpURLConnection con = (HttpURLConnection) url.openConnection();
-		con.setRequestMethod("GET");
-		con.setDoOutput(true);
-		try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())){
-			//z.B. wr.writeBytes("q=1111");				
-			wr.writeBytes("Hier entsprechende Attribute eingeben");			
-			wr.flush();
-		}		
-		int status = con.getResponseCode();
-		System.out.println("StatusCode: " + status);
-		BufferedReader in = new BufferedReader( new InputStreamReader(con.getInputStream()));
-		String inputLine;
-		StringBuffer content = new StringBuffer();
-		while ((inputLine = in.readLine()) != null) {
-			content.append(inputLine);					    
-		}
-		//Schließen der Attribute
-		in.close();
-		con.disconnect();
-</code>
-</pre>
+<nav class="nav nav-pills flex-column flex-sm-row">
+  <a class="flex-sm-fill text-sm-center nav-link active" href="how-to.jsp">Übersicht</a>
+  <a class="flex-sm-fill text-sm-center nav-link" href="datenklassen.jsp">Datenklassen</a>
+  <a class="flex-sm-fill text-sm-center nav-link" href="httpRequest.jsp">Http-Request</a>
+  <a class="flex-sm-fill text-sm-center nav-link" href="json.jsp">JSON</a>
+  <a class="flex-sm-fill text-sm-center nav-link" href="silvermeal.jsp">Beispielheuristik</a>
+  <a class="flex-sm-fill text-sm-center nav-link" href="ergebniseinreichen.jsp">Ergebnis einreichen</a>
+</nav>
 
 <h4>Die Schnittstellen</h4>
 <p> Dieser Server stellt verschiedene <a>Schnittstellen</a> zur Verfügung, über die die Daten abgefragt und gesendet werden können. 
@@ -59,155 +40,10 @@
 	<li>/Schwierigkeitsgrad1 gibt ein angefragtes Produkt in einer Periode mit dem dazugehörigen Verbrauch aus</li>
 	<li>/Schwierigkeitsgrad2 gibt eine Liste mit Produkten in einer angefragten Periode mit den dazugehörigen Verbräuchen zurück</li>
 	<li>/Schwierigkeitsgrad3 gibt eine Liste mit Produkten in einer angefragten Periode mit den dazugehörigen Verbräuchen zurück. Zusätzlich wird die Performanz des Algorithmus gemessen.</li>
-	<li>/Ergebnis über diese Schnittstelle kann das Ergebnis eingereicht werden
+	<li>/Ergebnis über diese Schnittstelle kann das Ergebnis für Schwierigkeitsgrad1 eingereicht werden in den anderen wird erkannt wann die berechnungen abgeschlossen sind. 
 </ol>
 
-<h4>Ergebnis einreichen</h4>
-<p> Das Einsenden der Ergebnisse erfolgt über die oben genannte /Ergebnis Schnittstelle. Zur Interaktion mit dieser Schnittstelle muss das Ergebnis im JSON-Format gesendet werden. Hierzu wird ebenfalls empfohlen eine der genannten Librarys zu verwenden.
-<p>  Syntax des Ergebnis:
-	<ul>
-		<li>API-Key</li>
-		<li>Periode</li>
-		<li>Produkte:</li>
-			<ul>
-				<li>Bestellmenge</li>
-				<li>Produktname</li>
-				<li>Kosten</li>
-			</ul>
-	</ul>
-	<h5>Beispieldatenklassen</h5>
-	<pre>
-	<code>
-	</code>
-	import java.util.List;
 
-	public class UserErgebnis {
-		
-		private String API_KEY;
-		private int periode;
-		private List<Ergebnis> produkte;
 	
-		public UserErgebnis() {		
-		}	
-	
-		public List<Ergebnis> getProdukte() {
-			return produkte;
-		}
-		public void setProdukte(List<Ergebnis> produkte) {
-			this.produkte = produkte;
-		}
-		public String getAPI_KEY() {
-			return API_KEY;		
-		}
-	
-		public int getPeriode() {
-			return periode;
-		}
-
-		public void setPeriode(int periode) {
-			this.periode = periode;
-		} 
-		public void setAPI_KEY(String aPI_KEY) {
-			API_KEY = aPI_KEY;
-		}	
-	}
-	
-		<code>
-	public class Ergebnis extends UserErgebnis{
-	
-		private int bestellmenge;
-		private String produktName;
-		private double kosten;
-		private int ergebnisPeriode;
-	
-		public Ergebnis() {
-	
-		}
-
-		public int getBestellmenge() {
-			return bestellmenge;
-		}
-
-		public void setBestellmenge(int bestellmenge) {
-			this.bestellmenge = bestellmenge;
-		}
-
-		public String getProduktName() {
-			return produktName;
-		}
-
-		public void setProduktName(String produktName) {
-			this.produktName = produktName;
-		}
-
-		public double getKosten() {
-			return kosten;
-		}
-
-		public void setKosten(double kosten) {
-			this.kosten = kosten;
-		}
-	
-		public int getErgebnisPeriode() {
-			return ergebnisPeriode;
-		}
-
-		public void setErgebnisPeriode(int ergebnisPeriode) {
-			this.ergebnisPeriode = ergebnisPeriode;
-		}	
-	}
-				
-		</code>		
-	</pre>
-<h5>Beispielklasse zum Senden des Ergebnisses</h5>
-<pre>
-	<code>
-	public class ErgebnisSenden {	
-		public static void sendErgebnis(UserErgebnis ue) throws MalformedURLException, IOException {		
-			jsonConvertion jc = new jsonConvertion();		
-			String json = jc.dataToJson(ue);
-			System.out.println(json);
-		
-			String url = "http://lukas-hoffmeister.de/MasterServer/ErgebnisTestServ";
-			HttpURLConnection httpClient = (HttpURLConnection) new URL(url).openConnection();
-		
-			httpClient.setRequestMethod("POST");
-			httpClient.setRequestProperty("User-Agent", "Mozilla/5.0");
-			httpClient.setDoOutput(true);		
-			try (DataOutputStream dos = new DataOutputStream(httpClient.getOutputStream())){
-			 	dos.writeBytes("json=" +json);
-			 	dos.flush();
-			}
-			int responseCode = httpClient.getResponseCode();
-			System.out.println("Sende Request an: " + url);
-			System.out.println("Http: " + responseCode);
-			BufferedReader in = new BufferedReader( new InputStreamReader(httpClient.getInputStream()));
-			String inputLine;
-			StringBuffer content = new StringBuffer();
-			while ((inputLine = in.readLine()) != null) {
-				content.append(inputLine);					    
-			}			
-		}
-	</code>
-</pre>
-<h5>Beispiel zum Serialisieren und Deserialisieren mit Gson</h5>
-<pre>
-<code>
-		public String dataToJson(UserErgebnis ue) {		
-			Gson gson = new Gson();
-			String ergebnis = gson.toJson(ue);
-			return ergebnis;		
-		}
-	</code>
-	<code>
-		public void jsonToData(String response) {		
-			Gson gson = new Gson();
-			Produkt[] p = gson.fromJson(response, Produkt[].class);				
-		}
-	</code>
-</pre>
-
-<h5>Beispielhafte Lagerheuristik(Silver Meal)</h5>
-<p> folgt...
 </body>
 </html>

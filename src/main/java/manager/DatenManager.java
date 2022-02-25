@@ -48,8 +48,8 @@ public class DatenManager {
 	
 	
 	
-	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager) {
-		return db.problemInstanzDatenSpeichern(anzProdukte, perioden, key, lager);
+	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager, Spielregeln spiel) {
+		return db.problemInstanzDatenSpeichern(anzProdukte, perioden, key, lager,spiel);
 	}
 	
 	public int getPeriodenAnzahl() {

@@ -50,7 +50,7 @@ public class Bestenliste extends SimpleTagSupport {
 					+ "<td>" + (i+1) + "</td>"
 					+ "<td>" + score.get(i).getName() + "</td>"	
 					+ "<td>" + score.get(i).getScore() + "</td>"
-					+"<td><a href =\"Chart?name=" + score.get(i).getName() + "&score=" + score.get(i).getScore()+"\"><img src =\"img/chart-bar-solid.svg\" width=\20\" height=\"20\"></a></td>" 
+					+"<td><a href =\"Chart?uid=" + score.get(i).getId()+"\"><img src =\"img/chart-bar-solid.svg\" width=\20\" height=\"20\"></a></td>" 
 			     	+ "</tr>";
 			}	  
 			              

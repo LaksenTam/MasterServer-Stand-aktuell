@@ -46,9 +46,7 @@ public class BestenListe extends HttpServlet {
 				List<String[]> stringScores = new ArrayList<String[]>();
 				
 				for(Highscore s: score) {				
-					String[] sh = { s.getName(), Double.toString(s.getScore())};
-					//System.out.println(s.getName() + " " + s.getScore());	
-					
+					String[] sh = { s.getName(), Double.toString(s.getScore())};					
 					stringScores.add(sh);
 				}
 				LOGGER.log( Level.FINE, "processing score entries", score.size() );

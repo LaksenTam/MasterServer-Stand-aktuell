@@ -193,7 +193,9 @@
 </head>
 <body>
 <x:AdminHead></x:AdminHead>
+
 <div class= "container">
+
 
 <table>
 	<tr>
@@ -205,7 +207,7 @@
 		<td>${key }</td>
 	</tr>
 </table>  
-
+	<x:ProfilDropDown/>
 </div>
 <h5>${fehler }</h5>
 	<div class = "row">
@@ -221,7 +223,7 @@
 		</div>
 		
 		<div class = "col">	
-		<h6>Daten von ${ highscoreName }</h6>	
+		<h6 class = "pl-5">Ranglisten Platz 1</h6>	
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 			<div id="draw_HighscoreLeader" style="width: 900px; height: 500px;"></div>
        		<div id="draw_HighscoreKosten" style="width: 900px; height: 500px;"></div>

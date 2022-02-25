@@ -18,11 +18,9 @@ public class UserDatenbank {
 	public boolean ergebnisSpeichern(Userergebnis ue, int grad) throws SQLException {
 		boolean status = false;
 		Connection con = null;
-		PreparedStatement ps = null;
-		
-		String sql = "insert into public.ergebnis (bestellmenge, pname, kosten, userkey, periode, schwierigkeitsgrad) values (?,?,?,?,?,?)";
-		
-		try {
+		PreparedStatement ps = null;		
+		String sql = "insert into public.ergebnis (bestellmenge, pname, kosten, userkey, periode, schwierigkeitsgrad) values (?,?,?,?,?,?)";		
+		try {			
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
 			for(int i = 0;i<ue.getProdukte().size(); i++ ) {	
@@ -32,7 +30,7 @@ public class UserDatenbank {
 				ps.setString(2, pe.getProduktName());
 				ps.setDouble(3, pe.getKosten());
 				ps.setString(4,ue.getAPI_KEY());
-				ps.setInt(5, ue.getPeriode());
+				ps.setInt(5, pe.getPeriode());
 				ps.setInt(6, grad);
 				ps.executeUpdate();				
 			}
@@ -45,13 +43,12 @@ public class UserDatenbank {
 			con.close();
 		}
 		return status;
-	}
+	}	
 	
 	public boolean registrierungUser(String name, String password, String api_key, int zugriff) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "INSERT into public.user (name, password, key, zugriff) values(?,?,?,?)";
-		
+		String sql = "INSERT into public.user (name, password, key, zugriff) values(?,?,?,?)";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -106,8 +103,7 @@ public class UserDatenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "Select * from public.user where name = ? AND password = ?;";
-		
+		String sql = "Select * from public.user where name = ? AND password = ?;";		
 		try {
 			System.out.println(name);
 			System.out.println(password);
@@ -141,8 +137,7 @@ public class UserDatenbank {
 			rs = ps.executeQuery();
 			if(rs.next()) {
 				stempel = rs.getLong("zeitstempel");
-			}
-			
+			}			
 			System.out.println("DB Zeitstempel: " + stempel);
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -159,7 +154,7 @@ public class UserDatenbank {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Highscore> score = new ArrayList<Highscore>();
-		String sql = "Select name, score, api "
+		String sql = "Select name, score, api, uid "
 					+ "from public.highscore "
 					+ "INNER JOIN public.user ON public.highscore.api = public.user.key "
 					+ "Order BY public.highscore.score DESC";
@@ -171,8 +166,8 @@ public class UserDatenbank {
 				Highscore hs = new Highscore();
 				hs.setName(rs.getString("name"));
 				hs.setScore(rs.getDouble("score"));
-				score.add(hs);	
-				
+				hs.setId(rs.getString("uid"));
+				score.add(hs);					
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -181,15 +176,13 @@ public class UserDatenbank {
 			ps.close();
 			con.close();
 		}
-		return score;
-		
+		return score;		
 	}
 	
-	public void produktErgebnisGesamtSpeicher(Userergebnis ue) throws SQLException {
+	public void produktErgebnisGesamtSpeicher(Userergebnis ue, String id) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Insert into public.ergebnis (bestellmenge, pname, kosten,userkey,periode) values(?,?,?,?,?)";		
-		
+		String sql = "Insert into public.ergebnis (bestellmenge, pname, kosten,userkey,periode,uid) values(?,?,?,?,?,?)";			
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -200,11 +193,11 @@ public class UserDatenbank {
 				ps.setString(2, pe.getProduktName());
 				ps.setDouble(3, pe.getKosten());
 				ps.setString(4, ue.getAPI_KEY());
-				ps.setInt(5, pe.getPeriode());				
+				ps.setInt(5, pe.getPeriode());	
+				ps.setString(6, id);
 				ps.executeUpdate();
 			}		
-			System.out.println("Erfolg");
-			
+			System.out.println("Erfolg");			
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -216,7 +209,7 @@ public class UserDatenbank {
 	public void saveHighScore(Highscore highscore, Userergebnis ue, int grad) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Insert into public.highscore (score, api, fehl, kosten, zeit, schwierigkeitsgrad) values(?,?,?,?,?,?)";
+		String sql = "Insert into public.highscore (score, api, fehl, kosten, zeit, schwierigkeitsgrad, uid) values(?,?,?,?,?,?,?)";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -224,8 +217,9 @@ public class UserDatenbank {
 			ps.setString(2, ue.getAPI_KEY());
 			ps.setDouble(3, highscore.getFehlmengen());
 			ps.setDouble(4, highscore.getKosten());
-			ps.setLong(5, highscore.getTime());		
+			ps.setLong(5, highscore.getTime());				
 			ps.setInt(6, grad);
+			ps.setString(7,  highscore.getId());
 			ps.executeUpdate();
 			System.out.println("Highscore gespeichert");
 		}catch(SQLException e) {
@@ -234,15 +228,12 @@ public class UserDatenbank {
 			ps.close();
 			con.close();
 		}
-	}
-		
+	}		
 	
 	public void insStempel(String key, long stamp) throws SQLException {
 		Connection con = null;
-		PreparedStatement ps = null;
-		
-		String sql = "Insert into public.stamps (key, timestamp,startstamp) values (?,?,?) ON Conflict (key) DO Update set timestamp = ?";
-		
+		PreparedStatement ps = null;		
+		String sql = "Insert into public.stamps (key, timestamp,startstamp) values (?,?,?) ON Conflict (key) DO Update set timestamp = ?";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -291,8 +282,7 @@ public class UserDatenbank {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		long stamp = 0;
-		String sql = "Select startstamp from public.stamps where key = ?";
-		
+		String sql = "Select startstamp from public.stamps where key = ?";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -309,11 +299,8 @@ public class UserDatenbank {
 	
 	public void deleteScore(String name, double score) throws SQLException {
 		Connection con = null;
-		PreparedStatement ps = null;
-	
-		
-		String sql = "Delete from public.highscore USING user where score = ? and api IN (select key from public.user where name =?)";
-		
+		PreparedStatement ps = null;		
+		String sql = "Delete from public.highscore USING user where score = ? and api IN (select key from public.user where name =?)";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -328,37 +315,12 @@ public class UserDatenbank {
 		}
 	}
 	
-//	public List<String> userErgebnis(String api){
-//		List<String> plist =new ArrayList<>();
-//		String s = "";
-//		Connection con = null;
-//		PreparedStatement ps = null;
-//		ResultSet rs = null;
-//		
-//		String sql = "Select bestellmenge, kosten, periode, zeitstempel from public.ergebnis where userkey = ?";
-//		try {
-//			con = DatenbankVerbindung.getConnection();
-//			ps = con.prepareStatement(sql);
-//			ps.setString(1, api);
-//			rs = ps.executeQuery();
-//			while(rs.next()) {
-//				s = Integer.toString(rs.getInt("bestellmenge")) + "," + rs.getString("pname") + "," + Double.toString(rs.getDouble("kosten")) + "," + Integer.toString(rs.getInt("periode")) + "," + Long.toString(rs.getLong("zeitstempel"));
-//				plist.add(s);
-//			}
-//		}catch(SQLException e) {
-//			e.printStackTrace();
-//		}
-//		return plist;
-//	}
-	
-	
 	public List<String> produktNames() throws SQLException{
 		List<String> pName = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "Select name from public.produkt";
-		
+		String sql = "Select name from public.produkt";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -385,8 +347,7 @@ public class UserDatenbank {
 		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS eKosten, public.highscore.kosten AS hKosten, fehl, zeit\n"
 				+ "from public.ergebnis\n"
 				+"INNER JOIN public.highscore on public.highscore.api = public.ergebnis.userkey\n"
-				+ " where userkey IN(select key from public.user where name =?)";
-		
+				+ " where userkey IN(select key from public.user where name =?)";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -404,27 +365,23 @@ public class UserDatenbank {
 			rs.close();
 			ps.close();
 			con.close();
-		}
-		
+		}		
 		return chart;
 	}
 	
-	public List<String[]> userErgebnis(String key) throws SQLException{
+	public List<String[]> userErgebnis(String uid) throws SQLException{
 		List<String[]> userData = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
+		ResultSet rs = null;		
 		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS pkosten, public.highscore.kosten AS hKosten, fehl, zeit, periode\n"
-				+ "from public.ergebnis \n"
-				+ "INNER JOIN public.highscore ON public.highscore.api = public.ergebnis.userkey\n"
-				+ "where userkey = ?";
-			
-		
+				+ "				from public.ergebnis \n"
+				+ "				INNER JOIN public.highscore ON public.highscore.uid = public.ergebnis.uid\n"
+				+ "				where public.highscore.uid = ?";			
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setString(1, key);
+			ps.setString(1, uid);
 			rs = ps.executeQuery();
 			while(rs.next()) {		
 				String[] s = { rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
@@ -447,20 +404,17 @@ public class UserDatenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "SELECT score, fehl, public.highscore.kosten as hKosten, zeit, api,name\n"
-				+"FROM public.highscore\n"	
-				+"INNER JOIN public.user ON public.user.key = public.highscore.api\n"
+		String sql = "SELECT score, fehl, public.highscore.kosten as hKosten, zeit, uid\n"
+				+"FROM public.highscore\n"					
 				+"ORDER BY public.highscore.score DESC\n"
-				+"LIMIT 1";
-		
+				+"LIMIT 1";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);		
 			rs = ps.executeQuery();
 			while(rs.next()) {		
 				String[] s = {Double.toString(rs.getDouble("score")), Double.toString(rs.getDouble("fehl")),
-						Double.toString(rs.getDouble("hKosten")), Integer.toString(rs.getInt("zeit")), rs.getString("api"),
-						rs.getString("name")};
+						Double.toString(rs.getDouble("hKosten")), Integer.toString(rs.getInt("zeit")), rs.getString("uid")};
 				bestScore.add(s);
 			}
 		}catch(SQLException e) {
@@ -473,20 +427,18 @@ public class UserDatenbank {
 		return bestScore;
 	}
 	
-	public List<String[]> getBestUserErgebnis(String api) throws SQLException{
+	public List<String[]> getBestUserErgebnis(String uid) throws SQLException{
 		List<String[]> bestScoreErgebnis = new ArrayList<>();
 		Connection con = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
+		ResultSet rs = null;		
 		String sql = "Select kosten, bestellmenge, pname\n"
 				+ "from public.ergebnis\n"
-				+ "where userkey =?";
-		
+				+ "where uid =?";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setString(1, api);
+			ps.setString(1, uid);
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				String[] s = {rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
@@ -499,9 +451,85 @@ public class UserDatenbank {
 			rs.close();
 			ps.close();
 			con.close();
-		}
-		
+		}		
 		return bestScoreErgebnis;
+	}
+	
+	public List<Highscore> userScores(String key){
+		List<Highscore> score = new ArrayList<Highscore>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "Select score, fehl, kosten, zeit,uid from public.highscore where api = ? "
+				+ "UNION SELECT score, fehl, kosten, zeit, uid from public.highscore order by score DESC";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, key);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				Highscore s = new Highscore();
+				s.setScore(rs.getDouble("score"));
+				s.setTime(rs.getLong("zeit"));
+				s.setFehlmengen(rs.getDouble("fehl"));
+				s.setKosten(rs.getDouble("kosten"));
+				s.setId(rs.getString("uid"));
+				score.add(s);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return score;
+	}
+	
+	public List<String[]> scoreData(String id){
+		List<String[]> scores = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS pkosten, public.highscore.kosten AS hKosten, fehl, zeit, periode\n"
+				+ "from public.ergebnis\n"
+				+ "INNER JOIN public.highscore on public.highscore.uid = public.ergebnis.uid\n"
+				+ " where public.highscore.uid =?";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, id);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				String[] s = { rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
+						Double.toString(rs.getDouble("pkosten")), Double.toString(rs.getDouble("hKosten")), 
+						Double.toString(rs.getDouble("fehl")), Integer.toString(rs.getInt("zeit")), Integer.toString(rs.getInt("periode"))};
+				scores.add(s);
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return scores;
+	}
+	
+	public Highscore userScoreList(String key){
+		Highscore userScore = new Highscore();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "Select score, fehl, kosten, zeit, uid from public.highscore where api =? Order By score DESC LIMIT 1";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, key);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				userScore.setScore(rs.getDouble("score"));
+				userScore.setFehlmengen(rs.getDouble("fehl"));
+				userScore.setKosten(rs.getDouble("kosten"));
+				userScore.setTime(rs.getLong("zeit"));
+				userScore.setId(rs.getString("uid"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return userScore;		
 	}
 
 }

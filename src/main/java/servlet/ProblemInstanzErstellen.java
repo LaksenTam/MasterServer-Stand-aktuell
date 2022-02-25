@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import data.ErweiterteProdukte;
 import data.Lager;
 import data.Produkt;
+import data.Spielregeln;
 import manager.DatenManager;
 import produkterstellung.AProdukt;
 import produkterstellung.BProdukt;
@@ -52,8 +54,11 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		String konstA = request.getParameter("kostantA");
 		String konstB = request.getParameter("kostantB");
 		String konstC = request.getParameter("kostantC");
-
 		
+		String zeit = request.getParameter("zeit");
+		String sammel = request.getParameter("sammelB");
+		String sammelActive = request.getParameter("sammelActive");
+	
 		try {
 		
 		//Parse Strings to Integer
@@ -105,12 +110,13 @@ public class ProblemInstanzErstellen extends HttpServlet {
 
 		boolean saison = false;
 		boolean konstant = false;
-		int counter = 0;
+		
 
 		int createAProdukte = aProdukt + saisonalA + konstantA;
 		int createBProdukte = bProdukt + saisonalB + konstantB;
 		int createCProdukte = cProdukt + saisonalC + konstantC;
 		
+		ErweiterteProdukte prod = new ErweiterteProdukte(); 
 		List<Produkt> checkName = new ArrayList<Produkt>();
 		//Erstelle A Produkte
 		
@@ -120,17 +126,17 @@ public class ProblemInstanzErstellen extends HttpServlet {
 			if(saisonalA>0) {
 				saison = true;
 				konstant = false;
-				ap.generiereProduktA(p, saison,konstant,counter, perioden, lager);
+				ap.generiereProduktA(p, saison,konstant, perioden, lager, false,prod);
 				saisonalA -= 1;
 			}else if(konstantA>0) {
 				saison = false;
 				konstant = true;
-				ap.generiereProduktA(p, saison,konstant,counter, perioden, lager);
+				ap.generiereProduktA(p, saison,konstant, perioden, lager, false,prod);
 				konstantA -=1;
 			}else {
 				saison =false;
 				konstant = false;
-				ap.generiereProduktA(p, saison,konstant, i, perioden, lager);
+				ap.generiereProduktA(p, saison,konstant, perioden, lager, false,prod);
 			}
 			checkName.add(p);
 		}
@@ -154,17 +160,17 @@ public class ProblemInstanzErstellen extends HttpServlet {
 			if(saisonalB>0) {
 				saison = true;
 				konstant = false;
-				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager);
+				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager, false, prod);
 				saisonalB -=1;
 			}else if(konstantB>0) {
 				konstant = true;
 				saison = false;
-				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager);
+				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager,false, prod);
 				konstantB -=1;
 			}else {
 				saison = false;
 				konstant = false;
-				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager);
+				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager, false, prod);
 			}
 			checkName.add(p);
 		}
@@ -189,17 +195,17 @@ public class ProblemInstanzErstellen extends HttpServlet {
 			if(saisonalC>0) {
 				saison = true;
 				konstant = false;
-				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager);
+				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager, false, prod);
 				saisonalC -=1;
 			}else if(konstantC>0) {
 				konstant = true;
 				saison = false;
-				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager);
+				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager, false,prod);
 				konstantC -=1;
 			}else {
 				saison =false;
 				konstant = false;
-				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager);
+				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager, false, prod);
 			}
 			checkName.add(p);
 		}
@@ -214,9 +220,25 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		checkName.clear();
 		produktNamen.clear();
 		
+		/**
+		 * Lege Spielregeln fest
+		 */
+		Spielregeln spiel = new Spielregeln();
+		boolean isSammel = false;
+		
+		if(sammelActive !=null) {
+			isSammel =true;
+			spiel.setSammelKosten(Double.parseDouble(sammel));
+		}
+		
+		spiel.setZeit(Long.parseLong(zeit));
+		spiel.setSammelbestellung(isSammel);
+		
+		
+		
 		String identifier = UUID.randomUUID().toString();
 		daten.produktSpeichern(produkte, identifier);
-		daten.problemInstanzDatenSpeichern(produkte.size(), perioden, identifier, lager);
+		daten.problemInstanzDatenSpeichern(produkte.size(), perioden, identifier, lager,spiel);
 		System.out.println(Arrays.asList(produkte));		
 		response.sendRedirect("ProblemInstanzAnzeigen?");
 		

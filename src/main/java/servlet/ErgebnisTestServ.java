@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +23,7 @@ import utility.CheckTime;
 /**
  * Servlet implementation class ErgebnisTestServ
  */
-@WebServlet("/ErgebnisTestServ")
+@WebServlet("/Ergebnis")
 public class ErgebnisTestServ extends HttpServlet {
 	private static final long serialVersionUID = 1L;
       CalcHighscore score = new CalcHighscore();
@@ -41,17 +42,20 @@ public class ErgebnisTestServ extends HttpServlet {
 		CheckTime check = new CheckTime();
 		UserDatenbank db = new UserDatenbank();
 		String ergebnis = request.getParameter("json");
+		
 		Userergebnis u = new Userergebnis();
 		ErgebnisDeserializer ed = new ErgebnisDeserializer();		
 		u = ed.deserializeJsonInput(ergebnis, u);
+		System.out.println(u.toString());
+		
 		List<Produktergebnis> p = u.getProdukte();
 		try {			
 			Highscore highscore = score.berechneHighscore(p);	
 			long endstamp = check.berechneZeit(u.getAPI_KEY());
 			highscore.setTime(endstamp);
+			highscore.setId(UUID.randomUUID().toString());
 			db.saveHighScore(highscore, u, 1);
-			db.produktErgebnisGesamtSpeicher(u);
-			
+			db.produktErgebnisGesamtSpeicher(u, highscore.getId());			
 		}catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

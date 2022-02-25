@@ -51,15 +51,13 @@ public class IntervallAufteilung {
 							break;
 						case(1):
 							test = zahl * intervall[i];
-							verbrauch = random.nextInt((int) test)+0;
-							
+							verbrauch = random.nextInt((int) test)+0;							
 							break;
 						default: 
 							test = zahl * intervall[i];
-							verbrauch = random.nextInt((int) test)+0;						
+							verbrauch = random.nextInt((int) test)+5;						
 							break;
-					}				
-					
+					}							
 					zahlen.add(verbrauch);
 				}
 				

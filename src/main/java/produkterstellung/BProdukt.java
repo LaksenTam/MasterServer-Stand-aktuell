@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-
+import data.ErweiterteProdukte;
 import data.Lager;
 import data.Produkt;
 import utility.CSVRead;
@@ -27,7 +27,8 @@ public class BProdukt {
 			+ "Xiaomi Dreame D9, Xiaomi Mi Mop, Xiaomi ROIDMI EVE, iRobot Roomba i3, Canon EOS 2000D, Olympus E-M10";
 
 	
-	public Produkt generiereProduktB(Produkt p, boolean saisonal,boolean konstant, int i, int perioden, Lager lager) throws IOException {
+	public Produkt generiereProduktB(Produkt p, boolean saisonal,boolean konstant, int i, int perioden,
+			Lager lager, boolean erweitert, ErweiterteProdukte prod) throws IOException {
 		
 		List<Integer> verbrauchsListe = new ArrayList<Integer>();
 		
@@ -39,17 +40,30 @@ public class BProdukt {
 		
 		int selector = rand.nextInt(namenListe.size())+0;		
 		
-		String name = namenListe.get(selector);		
+		String name = namenListe.get(selector);	
 		
 		p.setName(name);
-		p.setBestellfix((rand.nextInt(20000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
-		p.setEinstand((rand.nextInt(700) + 200) + (double) Math.round((rand.nextDouble()+0)*100)/100);
-		p.setFehlmengenkosten((rand.nextInt(70) + 0)+ (double) Math.round((rand.nextDouble()+0)*100)/100);		
-		p.setLagerkostensatz((rand.nextInt(10) + 0)+ (double) Math.round((rand.nextDouble()+0)*100)/100);
-		System.out.println(p.getLagerkostensatz());
-		p.setMinBestand(rand.nextInt(10) + 0);
-		p.setMaxBestand(rand.nextInt(4000) + p.getMinBestand());
-		p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
+		if(erweitert) {
+			p.setBestellfix((rand.nextInt(prod.getBestellMaxRange())+prod.getBestellMinRange()) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
+			System.out.println(p.getBestellfix());
+			p.setEinstand((rand.nextInt(prod.getEinstandmaxRange()) + prod.getEinstandminRange()) + (double) Math.round((rand.nextFloat()+0)*100)/100);
+			p.setFehlmengenkosten((rand.nextInt(prod.getFehlkostenMaxRange()) + prod.getFehlkostenMinRange())+(double) Math.round((rand.nextDouble() + 0)*100)/100);
+			p.setLagerkostensatz((double) Math.round(p.getEinstand()*prod.getLagersatz()));
+			p.setMinBestand(rand.nextInt(10) + 0);
+			p.setMaxBestand(rand.nextInt(4000) + p.getMinBestand());		
+			p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
+		}else {
+			
+			p.setBestellfix((rand.nextInt(20000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
+			p.setEinstand((rand.nextInt(700) + 200) + (double) Math.round((rand.nextDouble()+0)*100)/100);
+			p.setFehlmengenkosten((rand.nextInt(70) + 0)+ (double) Math.round((rand.nextDouble()+0)*100)/100);		
+			p.setLagerkostensatz((rand.nextInt(10) + 0)+ (double) Math.round((rand.nextDouble()+0)*100)/100);
+			System.out.println(p.getLagerkostensatz());
+			p.setMinBestand(rand.nextInt(10) + 0);
+			p.setMaxBestand(rand.nextInt(4000) + p.getMinBestand());
+			p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
+		}
+		
 		if(saisonal) {
 			int verbrauch = rand.nextInt(700)+0;
 			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
@@ -59,8 +73,7 @@ public class BProdukt {
 				p.setVerbrauch(verbrauch);
 				verbrauchsListe.add(p.getVerbrauch());
 			}
-		}else {
-			
+		}else {			
 			for(int n = 0; n < perioden; n++) {
 				p.setVerbrauch(rand.nextInt(700) + 0);
 				verbrauchsListe.add(p.getVerbrauch());

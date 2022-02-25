@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import data.Highscore;
 import data.Lager;
 import data.Produkt;
+import data.Produktergebnis;
 import data.Userergebnis;
 import datenbank.Datenbank;
 import datenbank.UserDatenbank;
@@ -46,6 +48,7 @@ public class Schwierigkeitsgrad3 extends HttpServlet {
 		
 		List<Produkt> produktListe = new ArrayList<Produkt>();
 		Userergebnis ue = new Userergebnis();
+		Produktergebnis pe = new Produktergebnis();
 		DatenManager daten = new DatenManager();
 		CheckFeasible feasible = new CheckFeasible();
 		Datenbank db = new Datenbank();
@@ -58,17 +61,16 @@ public class Schwierigkeitsgrad3 extends HttpServlet {
 		response.setContentType("text/json");
 		try {
 			ue = daten.ergebnis(ergebnis, ue);
-			produktListe = daten.produktListePeriode(produktListe, ue.getPeriode());
+			produktListe = daten.produktListePeriode(produktListe, pe.getPeriode());
 			if(check.testeStempel(stempel, ue.getAPI_KEY())) {	
 				Lager lager = db.lagerAbrufen();
 				
 					daten.userErgebnisSpeichern(ue, 3);
-					if(ue.getPeriode() != daten.getPeriodenAnzahl()) {
+					if(pe.getPeriode() != daten.getPeriodenAnzahl()) {
 						String jsonString = daten.dataToJson(produktListe);
 						pw.print(jsonString);
 						pw.flush();
-						pw.close();
-					//speicher daten in DB
+						pw.close();		
 				
 					}else {
 						if(feasible.isFeasible(ue.getProdukte(),lager,produktListe )) {
@@ -78,10 +80,9 @@ public class Schwierigkeitsgrad3 extends HttpServlet {
 							Highscore highscore = score.berechneHighscore(ue.getProdukte());
 							long endstamp = check.berechneZeit(ue.getAPI_KEY());
 							highscore.setTime(endstamp);
+							highscore.setId(UUID.randomUUID().toString());
 							user.saveHighScore(highscore, ue, 3);
-							user.produktErgebnisGesamtSpeicher(ue);
-					//speicher die Daten in der DB
-					//berechne Highscore
+							user.produktErgebnisGesamtSpeicher(ue, highscore.getId());					
 					}
 				}
 			}else {

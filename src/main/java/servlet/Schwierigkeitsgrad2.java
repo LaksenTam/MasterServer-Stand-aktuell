@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import data.Highscore;
 import data.Produkt;
+import data.Produktergebnis;
 import data.Userergebnis;
 import datenbank.UserDatenbank;
 import manager.DatenManager;
@@ -48,6 +50,7 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 		UserDatenbank user = new UserDatenbank();
 		CalcHighscore score = new CalcHighscore();
 		CheckTime check = new CheckTime();
+		Produktergebnis pe = new Produktergebnis();
 		
 
 
@@ -57,12 +60,12 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 		
 		try {
 			ue = daten.ergebnis(ergebnis, ue);
-			produktListe = daten.produktListePeriode(produktListe, ue.getPeriode());
+			produktListe = daten.produktListePeriode(produktListe, pe.getPeriode());
 			long stamp = System.currentTimeMillis();
 			//Schwierigkeitsgrad 2 zeit
 			if(time.testeStempel(stamp, ue.getAPI_KEY())) {
 				daten.userErgebnisSpeichern(ue, 2);
-				if(ue.getPeriode()!= daten.getPeriodenAnzahl()) {
+				if(pe.getPeriode()!= daten.getPeriodenAnzahl()) {
 					String jsonString = daten.dataToJson(produktListe);
 					pw.print(jsonString);
 					pw.flush();
@@ -73,8 +76,9 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 					Highscore highscore = score.berechneHighscore(ue.getProdukte());
 					long endstamp = check.berechneZeit(ue.getAPI_KEY());
 					highscore.setTime(endstamp);
+					highscore.setId(UUID.randomUUID().toString());
 					user.saveHighScore(highscore, ue, 2);
-					user.produktErgebnisGesamtSpeicher(ue);
+					user.produktErgebnisGesamtSpeicher(ue, highscore.getId());
 					pw.print("Geschafft!");
 					pw.flush();
 					pw.close();
