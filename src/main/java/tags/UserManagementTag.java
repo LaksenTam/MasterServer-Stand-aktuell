@@ -44,9 +44,9 @@ public class UserManagementTag extends SimpleTagSupport {
 				s +="<td><a class = \"btn btn-danger\" href = \"UserLoeschen?name="+ list.get(i)[0]+ "\" data-confirm =\"Sind Sie sich sicher " + list.get(i)[0] + " zu löschen?\">User</a>"
 						+ "<a class = \"btn btn-info\" href =\"ErgebnisLoeschen?name="+list.get(i)[0] + "&score=" + list.get(i)[1]+"\" data-confirm=\"Das Ergebnis von "+list.get(i)[0]+" soll gelöscht werden?\" >Ergebnis</a></td>";	
 				if(list.get(i)[5].equals("0")) {
-						s +="<td><a class =\"btn btn-sucess\" href =\"AdminErstellen?name=" + list.get(i)[0] + "\" data-confirm =\"Sind Sie sich sicher " +list.get(i)[0]+ " zu einem Admin zu machen?\"><img src=\"img/arrow-alt-circle-up-solid.svg\" width = \"20\" height = \"20\"></a></td>";
+						s +="<td><a class =\"btn btn-sucess invert\" href =\"AdminErstellen?name=" + list.get(i)[0] + "\" data-confirm =\"Sind Sie sich sicher " +list.get(i)[0]+ " zu einem Admin zu machen?\"><img src=\"img/arrow-alt-circle-up-solid.svg\" width = \"20\" height = \"20\"></a></td>";
 				}else {
-					s += "<td><a class =\"btn btn-sucess\" href =\"AdminDemote?name=" + list.get(i)[0] + "\" data-confirm =\"Sind Sie sich sicher " +list.get(i)[0]+  "zu einem Studenten zu machen?\"><img src = \"img/arrow-circle-down-solid.svg\" width = \"20\" height = \"20\"></a></td>";
+					s += "<td><a class =\"invert btn btn-sucess \" href =\"AdminDemote?name=" + list.get(i)[0] + "\" data-confirm =\"Sind Sie sich sicher " +list.get(i)[0]+  "zu einem Studenten zu machen?\"><img src = \"img/arrow-circle-down-solid.svg\" width = \"20\" height = \"20\"></a></td>";
 				}
 			}
 			s+="</tbody></table></div>";

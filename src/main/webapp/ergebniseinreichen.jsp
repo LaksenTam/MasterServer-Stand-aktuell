@@ -29,7 +29,7 @@ function toggle(id) {
  }  	
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <nav class="nav nav-pills flex-column flex-sm-row">
   <a class="flex-sm-fill text-sm-center nav-link" href="how-to.jsp">Übersicht</a>
@@ -37,7 +37,7 @@ function toggle(id) {
   <a class="flex-sm-fill text-sm-center nav-link" href="httpRequest.jsp">Http-Request</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="json.jsp">JSON</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="silvermeal.jsp">Beispielheuristik</a>
-  <a class="flex-sm-fill text-sm-center nav-link active" href="ergebniseinreichen.jsp">Ergebnis einreichen</a>
+  <a class="flex-sm-fill text-sm-center nav-link active bg-dark" href="ergebniseinreichen.jsp">Ergebnis einreichen</a>
 </nav>
 <h4>Ergebnis einreichen</h4>
 
@@ -55,12 +55,12 @@ function toggle(id) {
 	</ul>
 	
 	<p> Die nachfolgende Klasse nimmt das zuvor erzeugte Ergebnis der Heuristik convertiert es ins JSON-Format 
-	und sendet es an die Schnittstelle als POST-Request.<img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('ergebnis')">
+	und sendet es an die Schnittstelle als POST-Request.<img class = "show pb-3" src = "img/sort-down-solid.svg" width ="20" onClick="toggle('ergebnis')">
 	</p>
 	<br>
 	
 	<div id="ergebnis" style="display:none">	
-	<pre>
+	<pre class = "text-white">
 	<code>
 	public class ErgebnisSenden {	
 	public static void sendErgebnis(UserErgebnis ue) throws MalformedURLException, IOException {		

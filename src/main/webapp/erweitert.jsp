@@ -17,7 +17,7 @@
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <form action = "ErweiterteErstellung" method = "GET">
 <div class = "border border-dark rounded p-1 m-2">

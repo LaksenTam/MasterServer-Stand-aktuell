@@ -13,30 +13,41 @@
 <script src="bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
 <script src="js/jquery.tablesort.min.js"></script>
 <link rel = "stylesheet" href = "bootstrap-4.2.1-dist/css/bootstrap.min.css">
+<link rel = "stylesheet" type = "text/css" href= "css/style.css">
 
-<link rel = "stylesheet" href= "css/style.css">
-<script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 
 <x:AdminHead></x:AdminHead>
+<div class = "container-fluid intro">
 
-<h2>How-To</h2>
+<div class = "text-center">
+<h2>Intro</h2>
+<p>Sie sind der Betreiber eines Technik-Geschäfts. Ihr oberstes Ziel ist die Gewinnmaximierung. Daher wollen Sie möglichst günstig Wareneinkaufen. Ihre typischen Waren umfassen sowohl sehr teure Produkte, als auch günstige Produkte.
+	Sie kaufen Ihre Waren bei verschiedenen Großhändlern ein. Jeder Händler verlangt für jede Warenlieferung Lieferkosten, sowie einen Einkaufspreis für jedes Produkt.</p>
+	Ihr Lager hat jedoch nur begrenztes Fassungsvermögen und eine feste maximale Kapitalbindung. Basierend auf früheren Erfahrungen, haben Sie bereits für die verschiedenen Produkte minimale und maximale Bestände festgelegt.
+<p>Optimieren Sie das Lager mit Hilfe einer Bestellheuristik. Dabei ist ihre oberste Prämisse, dass Sie die Kosten der Bestellungen möglichst gering halten. 
+Unter Beachtung der Nebenbedingungen:
+<ul>
+	<li>Die maximale Kapitalbindung darf nicht überschritten werden
+	<li>Das Lagervolumen darf nicht überschritten werden
+	<li>Die minimalen Produktbestände müssen eingehalten werden
+	<li>Die maximalen Produktbestände dürfen nicht überschritten werden
+</ul>
+<h2>Kurz-Anleitung</h2>
 <ol>
-	<li>Erstelle einen Account oder nutze einen bereits vorhandenen Account</li>
-	<li>Programmier deine eigene Bestellheuristik</li>
-	<li> Rufe die Daten vom Server mit Hilfe der zur Verfügung gestellten Schnittstellen mit Hilfe eines Request ab.</li>
-	<li> Sende deine Ergebnisse an den Server</li>
-	<li>Vergleiche dich mit den anderen in der Bestenliste</li>	
+	<li>1. Erstelle einen Account oder nutze einen bereits vorhandenen Account</li>
+	<li>2. Programmier deine eigene Bestellheuristik</li>
+	<li>3.  Rufe die Daten vom Server mit Hilfe der zur Verfügung gestellten Schnittstellen mit Hilfe eines Request ab.</li>
+	<li>4.  Sende deine Ergebnisse an den Server</li>
+	<li>5. Vergleiche dich mit den anderen in der Bestenliste</li>	
 </ol>
 
 Eine detaillierte Anleitung mit Code-Beispielen ist  <a href= "how-to.jsp" >hier</a> zu finden.
 
-<footer class = "page footer font-small blue pt-4">
-	<div class = "container-fluid text-center text-md-left">
-		<a href = "impressum.jsp">Impressum</a>
-	</div>
+</div>
 
-</footer>
+</div>
+<x:FooterTag></x:FooterTag>
 </body>
 </html>

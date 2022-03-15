@@ -33,4 +33,11 @@
 		<tagclass>tags.ProfilDropDown</tagclass>
 		<bodycontent>empty</bodycontent>
 	</tag>
+	
+	<tag>
+		<name>FooterTag</name>
+		<tagclass>tags.FooterTag</tagclass>
+		<body-content>empty</body-content>
+	
+	</tag>
 </taglib>

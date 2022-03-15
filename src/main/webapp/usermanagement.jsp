@@ -26,7 +26,7 @@ $(document).on('click', ':not(form)[data-confirm]', function(e){
 });
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 
 <x:AdminHead></x:AdminHead>
 ${meldung }

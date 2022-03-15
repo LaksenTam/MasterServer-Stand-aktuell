@@ -159,7 +159,7 @@ a {
 
 a:hover {
   color: #0056b3;
-  text-decoration: underline;
+ 
 }
 
 a:not([href]):not([tabindex]) {
@@ -2420,14 +2420,14 @@ fieldset:disabled a.btn {
 
 .btn-primary {
   color: #fff;
-  background-color: #007bff;
-  border-color: #007bff;
+  background-color: #40403A;
+  border-color: #40403A;
 }
 
 .btn-primary:hover {
   color: #fff;
-  background-color: #0069d9;
-  border-color: #0062cc;
+  background-color:#40403A;
+  border-color: #40403A;
 }
 
 .btn-primary:focus, .btn-primary.focus {

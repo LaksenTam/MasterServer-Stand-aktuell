@@ -30,7 +30,7 @@ function toggle(id) {
  }  	
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 
 <nav class="nav nav-pills flex-column flex-sm-row">
@@ -38,11 +38,11 @@ function toggle(id) {
   <a class="flex-sm-fill text-sm-center nav-link" href="datenklassen.jsp">Datenklassen</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="httpRequest.jsp">Http-Request</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="json.jsp">JSON</a>
-  <a class="flex-sm-fill text-sm-center nav-link active" href="silvermeal.jsp">Beispielheuristik</a>
+  <a class="flex-sm-fill text-sm-center nav-link active bg-dark" href="silvermeal.jsp">Beispielheuristik</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="ergebniseinreichen.jsp">Ergebnis einreichen</a>
   </nav>
  <h5>Beispielheuristik (Silver Meal)</h5>
-<pre>
+<pre class = "text-white">
 <code>
 	public class SilverMealTestKlasse {
 	
@@ -65,7 +65,7 @@ function toggle(id) {
 	}
 	</code>
 	</pre>
-	<pre><code>
+	<pre class = "text-white"><code>
 	/**
 	 * Berechne die durchschnittlichen Kosten einer Bestellung und füge solange weitere Bestellungen hinzu bis 
 	 * die durchschnittlichen Kosten ansteigen
@@ -140,7 +140,7 @@ function toggle(id) {
 	}
 	</code>
 	</pre>
-	<pre>
+	<pre class = "text-white">
 	<code>
 	/**
 	*Füge 0 Werte hinzu für bestellfreie Perioden des Produktes	

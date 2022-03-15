@@ -29,22 +29,22 @@ function toggle(id) {
 	
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <nav class="nav nav-pills flex-column flex-sm-row">
   <a class="flex-sm-fill text-sm-center nav-link" href="how-to.jsp">Übersicht</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="datenklassen.jsp">Datenklassen</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="httpRequest.jsp">Http-Request</a>
-  <a class="flex-sm-fill text-sm-center nav-link active" href="json.jsp">JSON</a>
+  <a class="flex-sm-fill text-sm-center nav-link active bg-dark" href="json.jsp">JSON</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="silvermeal.jsp">Beispielheuristik</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="ergebniseinreichen.jsp">Ergebnis einreichen</a>
 </nav>
 
 
-<h5>Serialisieren der Ergebnisse mit Gson <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('ergebnis')"></h5>
+<h5>Serialisieren der Ergebnisse mit Gson <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('ergebnis')"></h5>
 
 <div id="ergebnis" style="display:none">
-<pre>
+<pre class = "text-white">
 <code>
 		public String dataToJson(UserErgebnis ue) {		
 			Gson gson = new Gson();
@@ -55,11 +55,11 @@ function toggle(id) {
 </pre>
 </div>
 
-<h5>Deserialisieren mit JSON mit der Produktklasse <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('deser')"></h5>
+<h5>Deserialisieren mit JSON mit der Produktklasse <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('deser')"></h5>
 
 
 <div id = "deser" style = "display:none">
-<pre>
+<pre class = "text-white">
 	<code>
 		public void jsonToData(String response) {		
 			Gson gson = new Gson();
@@ -68,10 +68,10 @@ function toggle(id) {
 	</code>
 	</pre>
 	</div>
-	<h5>Deserialisieren der Lagerklasse <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('lager')"></h5>
+	<h5>Deserialisieren der Lagerklasse <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('lager')"></h5>
 
 	<div id = "lager" style = "display:none">
-	<pre>
+	<pre class = "text-white">
 	<code>
 		public void jsonToLager(String response){
 		Gson gson = new Gson();
@@ -81,9 +81,9 @@ function toggle(id) {
 	</code>
 	</pre>
 	</div>
-	<h5>JSON-Format <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('jsonbsp')"></h5>
+	<h5>JSON-Format <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('jsonbsp')"></h5>
 	<div id ="jsonbsp" style = "display:none">
-	<pre><code>
+	<pre class = "text-white"><code>
 		{
   			"API_KEY": "", 			
   			"produkte": [

@@ -18,7 +18,7 @@
 <script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
 <title></title>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <p>${updated }</p>
 <x:ProblemInstanzBearbeiten></x:ProblemInstanzBearbeiten>

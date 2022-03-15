@@ -27,11 +27,34 @@
  	var data = google.visualization.arrayToDataTable([
  		['Name' , 'Kapitalbindung'], 		
  		${drawKosten}    		
- 	]);
+ 	]); 	
  	
- 	var options = {
- 			title: 'Kapitalbindung pro Produkt',
- 			subtitle:'eigene Heuristik'
+ 		 	var options = {
+ 		 			title: 'Highscore Daten',
+ 		 			subtitle:'eigene Heuristik',
+ 		 			backgroundColor: '#6c757d',     		
+			     	    is3D: true,
+			     	   colors: ['yellow'],
+					 hAxis: {
+						    textStyle: {
+						        color: '#ffffff'
+						    }
+						},
+						vAxis: {
+							 baselineColor: '#ffffff',
+						    textStyle: {
+						        color: '#ffffff'
+						    }
+						},
+						legend: {
+						    textStyle: {
+						        color: '#ffffff'
+						    }
+						},
+						titleTextStyle: {
+						    color: '#ffffff'
+						},	
+ 		 				
  	};
  	
  	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Kosten'));
@@ -47,10 +70,33 @@
 	 		['Name' , 'Bestand'], 		
 	 		${drawBestand}    		
 	 	]);
-	 	
-	 	var options = {
-	 			title: 'Bestand',
-	 			subtitle:'eigene Heuristik'
+	 	 	
+	 		var options = {
+	 		 			title: 'Highscore Daten',
+	 		 			subtitle:'eigene Heuristik',
+	 		 			backgroundColor: '#6c757d',     		
+ 			     	    is3D: true,
+ 			     	   colors: ['yellow'],
+ 					 hAxis: {
+ 						    textStyle: {
+ 						        color: '#ffffff'
+ 						    }
+ 						},
+ 						vAxis: {
+ 							 baselineColor: '#ffffff',
+ 						    textStyle: {
+ 						        color: '#ffffff'
+ 						    }
+ 						},
+ 						legend: {
+ 						    textStyle: {
+ 						        color: '#ffffff'
+ 						    }
+ 						},
+ 						titleTextStyle: {
+ 						    color: '#ffffff'
+ 						},	
+	 		 				
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Bestand'));
@@ -65,10 +111,33 @@
 	 		['Name' , 'Volumen'], 		
 	 		${drawVol}    		
 	 	]);
-	 	
-	 	var options = {
-	 			title: 'Volumen',
-	 			subtitle:'eigene Heuristik'
+	 		 
+	 		 	var options = {
+	 		 			title: 'Highscore Daten',
+	 		 			subtitle:'eigene Heuristik',
+	 		 			backgroundColor: '#6c757d',     		
+ 			     	    is3D: true,
+ 			     	   colors: ['yellow'],
+ 					 hAxis: {
+ 						    textStyle: {
+ 						        color: '#ffffff'
+ 						    }
+ 						},
+ 						vAxis: {
+ 							 baselineColor: '#ffffff',
+ 						    textStyle: {
+ 						        color: '#ffffff'
+ 						    }
+ 						},
+ 						legend: {
+ 						    textStyle: {
+ 						        color: '#ffffff'
+ 						    }
+ 						},
+ 						titleTextStyle: {
+ 						    color: '#ffffff'
+ 						},	
+	 		 				
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Volumen'));
@@ -85,7 +154,30 @@
 	 	
 	 	var options = {
 	 			title: 'Highscore Daten',
-	 			subtitle:'eigene Heuristik'
+	 			subtitle:'eigene Heuristik',
+ 				backgroundColor: '#6c757d',     		
+	 			     	    is3D: true,
+	 			     	   colors: ['yellow'],
+	 					 hAxis: {
+	 						    textStyle: {
+	 						        color: '#ffffff'
+	 						    }
+	 						},
+	 						vAxis: {
+	 							 baselineColor: '#ffffff',
+	 						    textStyle: {
+	 						        color: '#ffffff'
+	 						    }
+	 						},
+	 						legend: {
+	 						    textStyle: {
+	 						        color: '#ffffff'
+	 						    }
+	 						},
+	 						titleTextStyle: {
+	 						    color: '#ffffff'
+	 						},	
+					
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Highscore'));
@@ -103,7 +195,30 @@
  	
  	var options = {
  			title: 'Kapitalbindung pro Produkt',
- 			subtitle:'eigene Heuristik'
+ 			subtitle:'eigene Heuristik',
+ 			backgroundColor: '#6c757d',     		
+	     	    is3D: true,
+	     	   colors: ['yellow'],
+			 hAxis: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				vAxis: {
+					 baselineColor: '#ffffff',
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				legend: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				titleTextStyle: {
+				    color: '#ffffff'
+				},	
+ 				
  	};
  	
  	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreKosten'));
@@ -122,7 +237,30 @@
 	 	
 	 	var options = {
 	 			title: 'Bestand',
-	 			subtitle:'eigene Heuristik'
+	 			subtitle:'eigene Heuristik',
+	 			backgroundColor: '#6c757d',     		
+		     	    is3D: true,
+		     	   colors: ['yellow'],
+				 hAxis: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					vAxis: {
+						 baselineColor: '#ffffff',
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					legend: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					titleTextStyle: {
+					    color: '#ffffff'
+					},	
+					
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreBestand'));
@@ -141,7 +279,30 @@
 	 	
 	 	var options = {
 	 			title: 'Volumen',
-	 			subtitle:'eigene Heuristik'
+	 			subtitle:'eigene Heuristik',
+	 			backgroundColor: '#6c757d',     		
+		     	    is3D: true,
+		     	   colors: ['yellow'],
+				 hAxis: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					vAxis: {
+						 baselineColor: '#ffffff',
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					legend: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					titleTextStyle: {
+					    color: '#ffffff'
+					},	
+	 									
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreVolumen'));
@@ -160,7 +321,30 @@
 	 	
 	 	var options = {
 	 			title: 'Highscore Daten',
-	 			subtitle:'eigene Heuristik'
+	 			subtitle:'eigene Heuristik',
+	 				backgroundColor: '#6c757d',     		
+		     	    is3D: true,
+		     	   colors: ['yellow', 'orange', '#bb35d7'],
+				 hAxis: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					vAxis: {
+						 baselineColor: '#ffffff',
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					legend: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					titleTextStyle: {
+					    color: '#ffffff'
+					},
+					
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_HighscoreLeader'));
@@ -177,9 +361,32 @@
 	 	]);
 	 
 	 var options = {
-     		title: 'Bestandsverlauf ',
-     		subtitle:'Test',
-     		
+			 title: 'Bestandsverlauf ',
+	     		subtitle:'Test',
+	     		backgroundColor: '#6c757d',     		
+	     	    is3D: false,
+	     	   colors: ['orange'],
+	     	   lineWidth: 3,
+			 hAxis: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				vAxis: {
+					 baselineColor: '#ffffff',
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				legend: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				titleTextStyle: {
+				    color: '#ffffff'
+				},
+				
      		};
 
      var chart = new google.visualization.LineChart(document.getElementById('userBestandsVerlauf'));
@@ -191,7 +398,7 @@
 
 
 </head>
-<body>
+<body class = "bg-secondary text-white"> 
 <x:AdminHead></x:AdminHead>
 
 <div class= "container">
@@ -209,12 +416,12 @@
 </table>  
 	<x:ProfilDropDown/>
 </div>
-<h5>${fehler }</h5>
+<h6>${fehler }</h6>
 	<div class = "row">
 	
 		<div class = "col">
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<h3></h3>
+		<h6 class = "pl-5">Highscore 1 Punkte</h6>
 			<div id="draw_Highscore" style = "margin-top:28px; width: 900px; height: 500px;"></div>
        		<div id="draw_Kosten" style="width: 900px; height: 500px;"></div>
        		<div id="draw_Bestand" style="width: 900px; height: 500px;"></div>
@@ -223,7 +430,7 @@
 		</div>
 		
 		<div class = "col">	
-		<h6 class = "pl-5">Ranglisten Platz 1</h6>	
+		<h6 class = "pl-5">Highscore 2 Punkte</h6>	
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 			<div id="draw_HighscoreLeader" style="width: 900px; height: 500px;"></div>
        		<div id="draw_HighscoreKosten" style="width: 900px; height: 500px;"></div>

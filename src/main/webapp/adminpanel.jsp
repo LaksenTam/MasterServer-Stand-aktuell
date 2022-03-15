@@ -27,7 +27,7 @@ $(document).ready(function(){
 
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 	<x:AdminHead></x:AdminHead>
 	
 	<p>Aktuell im Bestand sind: </p>
@@ -37,7 +37,7 @@ $(document).ready(function(){
 	<h4 class = "error">${fehler }</h4>
 
 	<div class = "row m-md-5">
-	<div class = "col">
+	<div class = "col mr-2">
 	<a href ="erweitert.jsp">erweitertes Erstellen</a>
 <form action ="ProblemInstanzErstellen" method = "GET">
 <h4>Spielregeln</h4>
@@ -124,12 +124,12 @@ $(document).ready(function(){
 		<tr>
 			<td></td>
 			<td></td>
-			<td><button class = "btn btn-info" type = "submit">Senden!</button></td>
+			<td><button class = "btn btn-dark" type = "submit">Senden!</button></td>
 		</tr>	
 	</table>
 </form>
 </div>
-<div class = "col">
+<div class = "col ml-4">
 
 	<form action = "UpdateLager" method = "GET">
 	<h4>Lagerdaten</h4>
@@ -143,7 +143,7 @@ $(document).ready(function(){
 		<td><input type = "text" name = "kapBindung" value = "${lagerKap }"></td>
 	</tr>
 	<tr>
-		<td><button class = "btn btn-info" type = "submit">update</button>
+		<td><button class = "btn btn-dark" type = "submit">update</button>
 	</tr>
 	</table>
 	</form>
@@ -157,9 +157,9 @@ $(document).ready(function(){
         <button class = "btn btn-warning" type = "submit">Als CSV speichern</button> 
 </form>
 
-	<p>Produkttabelle</p>
-<button class="btn btn-primary btn-lg btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-Anzeigen
+
+<button class="btn btn-dark btn-lg btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+Produktübersicht anzeigen
 </button>
 				
 <div class="collapse" id="collapseExample" style="">
@@ -188,6 +188,7 @@ Anzeigen
             </tbody>
         </table> 
        </div>
+	
 	
 
 </body>

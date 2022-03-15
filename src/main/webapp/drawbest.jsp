@@ -92,7 +92,7 @@
  }
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<div id="draw_Highscore" style="width: 900px; height: 500px;"></div>

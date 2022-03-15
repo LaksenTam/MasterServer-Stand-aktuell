@@ -24,26 +24,27 @@ public class ProfilDropDown extends SimpleTagSupport{
 		String s = "";
 		
 		if(scores.size() != 0) {
-			s += "<form action = \"Profil\" method = \"POST\"><div class=\"input-group mb-3\">"
+			s += "<form action = \"Profil\" method = \"POST\"><div class=\"input-group mb-3 \">"
 			  +"<div class=\"input-group-prepend\">"
-					+"<select class = \"custom-select\" name = \"score1\">";
+					+"<select class = \"custom-select bg-dark text-white\" name = \"score1\">";
 			
 			  for(int j = 0; j<scores.size();j++) {
 				  s+="<option value="+ scores.get(j).getId() +"> Highscore: " + scores.get(j).getScore() + "</option> ";
 			  }
-			  s+="<option selected>Choose<option>"
+			  s+="<option selected>Auswahl<option>"
 			  +"</select>"
+			  + "</div> "
 			    +"<label class=\"input-group-text\" for=\"inputGroupSelect01\">VS</label>"
 			
-			   + "</div> "
-			   + "<select class=\"custom-select\"  name = \"score2\"> "
-			   + "<option selected>Choose...</option> ";
+  			+"<div class=\"input-group-prepend\">"
+			   + "<select class=\"custom-select  bg-dark text-white\"  name = \"score2\"> "
+			   + "<option selected>Auswahl...</option> ";
 			   for(int i =0; i<scores.size();i++) {
 				   s+="<option value="+ scores.get(i).getId() +"> Highscore: " + scores.get(i).getScore() + "</option> ";
 						   
 			   }
-			  s+=  "</select> "	
-					+ "<button class = \"btn btn-primary\" type = \"submit\">Senden</button>"
+			  s+=  "</select> </div>"	
+					+ "<button class = \"btn btn-dark ml-2\" type = \"submit\">Senden</button>"
 			   + "</div> </form>";
 		}else {
 			s = "UPS";

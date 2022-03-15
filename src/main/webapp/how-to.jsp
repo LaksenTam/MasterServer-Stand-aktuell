@@ -17,10 +17,10 @@
 <script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
 <title>Insert title here</title>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <nav class="nav nav-pills flex-column flex-sm-row">
-  <a class="flex-sm-fill text-sm-center nav-link active" href="how-to.jsp">Übersicht</a>
+  <a class="flex-sm-fill text-sm-center nav-link active bg-dark" href="how-to.jsp">Übersicht</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="datenklassen.jsp">Datenklassen</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="httpRequest.jsp">Http-Request</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="json.jsp">JSON</a>
@@ -40,7 +40,7 @@
 	<li>/Schwierigkeitsgrad1 gibt ein angefragtes Produkt in einer Periode mit dem dazugehörigen Verbrauch aus</li>
 	<li>/Schwierigkeitsgrad2 gibt eine Liste mit Produkten in einer angefragten Periode mit den dazugehörigen Verbräuchen zurück</li>
 	<li>/Schwierigkeitsgrad3 gibt eine Liste mit Produkten in einer angefragten Periode mit den dazugehörigen Verbräuchen zurück. Zusätzlich wird die Performanz des Algorithmus gemessen.</li>
-	<li>/Ergebnis über diese Schnittstelle kann das Ergebnis für Schwierigkeitsgrad1 eingereicht werden in den anderen wird erkannt wann die berechnungen abgeschlossen sind. 
+	<li>/Ergebnis über diese Schnittstelle kann das Ergebnis für Schwierigkeitsgrad1 eingereicht werden in den anderen wird erkannt wann die Berechnungen abgeschlossen sind. 
 </ol>
 
 

@@ -29,20 +29,20 @@ function toggle(id) {
  }  	
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <nav class="nav nav-pills flex-column flex-sm-row">
   <a class="flex-sm-fill text-sm-center nav-link" href="how-to.jsp">Übersicht</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="datenklassen.jsp">Datenklassen</a>
-  <a class="flex-sm-fill text-sm-center nav-link active" href="httpRequest.jsp">Http-Request</a>
+  <a class="flex-sm-fill text-sm-center nav-link active bg-dark" href="httpRequest.jsp">Http-Request</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="json.jsp">JSON</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="silvermeal.jsp">Beispielheuristik</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="ergebniseinreichen.jsp">Ergebnis einreichen</a>
 </nav>
 <div class = "container">
-<h5>Senden eines POST-Request <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('post')"></h5>
+<h5>Senden eines POST-Request <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('post')"></h5>
 <div id="post" style="display:none">
-<pre>
+<pre class = "text-white">
 	<code>
 	
 	public static void produktListe() throws IOException{		
@@ -74,9 +74,9 @@ function toggle(id) {
 </div>
 
 <h5>Senden eines GET-Request
-<img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('get')"></h5>
+<img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('get')"></h5>
 <div id="get" style="display:none">
-<pre>
+<pre class = "text-white">
 <code>
 	public static int httpNaechstePer(String name, int periode) throws IOException{
 		int verbrauch = 0;

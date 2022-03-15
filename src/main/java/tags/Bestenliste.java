@@ -32,10 +32,10 @@ public class Bestenliste extends SimpleTagSupport {
 			  +"</div>"
 			  +"</div>"
 			  + "<div class = \"container\">"
-			  +"<input class=\"form-control \" id=\"myInput\" type=\"text\" placeholder=\"Search..\">"
+			  +"<input class=\"form-control bg-dark text-white \" id=\"myInput\" type=\"text\" placeholder=\"Search..\">"
 
 			  +"<table id = \"tablesorter\" class = \"table table-hover tablesorter\">"
-			  +"<thead class = \"bg-danger text-white\">"
+			  +"<thead class = \"bg-dark text-white\">"
 			            +"<tr>"
 			             +"<th>#</th>"
 			            +"<th>name</th>"
@@ -50,7 +50,7 @@ public class Bestenliste extends SimpleTagSupport {
 					+ "<td>" + (i+1) + "</td>"
 					+ "<td>" + score.get(i).getName() + "</td>"	
 					+ "<td>" + score.get(i).getScore() + "</td>"
-					+"<td><a href =\"Chart?uid=" + score.get(i).getId()+"\"><img src =\"img/chart-bar-solid.svg\" width=\20\" height=\"20\"></a></td>" 
+					+"<td><a class = \"invert\" href =\"Chart?uid=" + score.get(i).getId()+"\"><img src =\"img/chart-bar-solid.svg\" width=\20\" height=\"20\"></a></td>" 
 			     	+ "</tr>";
 			}	  
 			              

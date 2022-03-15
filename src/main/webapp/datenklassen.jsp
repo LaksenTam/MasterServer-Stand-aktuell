@@ -28,11 +28,11 @@ function toggle(id) {
  }  	
 </script>
 </head>
-<body>
+<body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <nav class="nav nav-pills flex-column flex-sm-row">
   <a class="flex-sm-fill text-sm-center nav-link" href="how-to.jsp">Übersicht</a>
-  <a class="flex-sm-fill text-sm-center nav-link active" href="datenklassen.jsp">Datenklassen</a>
+  <a class="flex-sm-fill text-sm-center nav-link active bg-dark" href="datenklassen.jsp">Datenklassen</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="httpRequest.jsp">Http-Request</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="json.jsp">JSON</a>
   <a class="flex-sm-fill text-sm-center nav-link" href="silvermeal.jsp">Beispielheuristik</a>
@@ -40,10 +40,10 @@ function toggle(id) {
 </nav>
 <h5>Datenklassen</h5>
 
-<h6>Userergebnis <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('user')"></h6>
+<h6>Userergebnis <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('user')"></h6>
 
 <div id="user" style="display:none">
-<pre>
+<pre class = "text-white">
 <code>
 public class UserErgebnis {
 		
@@ -69,10 +69,10 @@ public class UserErgebnis {
 	}
 </code></pre>
 </div>
-<h6>Ergebnisklasse <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('ergebnis')"></h6>
+<h6>Ergebnisklasse <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('ergebnis')"></h6>
 
 <div id="ergebnis" style="display:none">
-<pre><code>
+<pre class = "text-white"><code>
 	public class Ergebnis extends UserErgebnis{
 	
 		private int bestellmenge;
@@ -119,10 +119,10 @@ public class UserErgebnis {
 </code>
 </pre>
 </div>
-<h6>Lagerklasse <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('lager')"></h6>
+<h6>Lagerklasse <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('lager')"></h6>
 
 <div id="lager" style="display:none">
-<pre><code>
+<pre class = "text-white"><code>
 public class Lager {
 	private int anz;
 	private int per;
@@ -167,10 +167,10 @@ public class Lager {
 
 </code></pre>
 </div>
-<h6>Produktklasse <img src = "img/sort-down-solid.svg" width ="20" class = "pb-3" onClick="toggle('produkt')"></h6>
+<h6>Produktklasse <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('produkt')"></h6>
 
 <div id="produkt" style="display:none">
-<pre><code>
+<pre class = "text-white"><code>
 public class Produkt {
 	
 	private String name;

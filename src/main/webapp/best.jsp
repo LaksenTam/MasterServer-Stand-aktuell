@@ -18,7 +18,7 @@
 <title>Bestenliste</title>
 
 </head>
-<body>
+<body class = "bg-secondary text-white">
 
 <x:AdminHead></x:AdminHead>
 
