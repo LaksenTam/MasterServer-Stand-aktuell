@@ -19,13 +19,14 @@
 <body class = "bg-secondary text-white">
 
 <x:AdminHead></x:AdminHead>
+<div class = "wrapper">
 <div class = "container-fluid intro">
 <div>
 	${meldung }
 </div>
 
-<div class = "text-center">
-<h2>Intro</h2>
+<div >
+<h2 class = "text-center">Intro</h2>
 <p>Sie sind der Betreiber eines Technik-Geschäfts. Ihr oberstes Ziel ist die Gewinnmaximierung. Daher wollen Sie möglichst günstig Wareneinkaufen. Ihre typischen Waren umfassen sowohl sehr teure Produkte, als auch günstige Produkte.
 	Sie kaufen Ihre Waren bei verschiedenen Großhändlern ein. Jeder Händler verlangt für jede Warenlieferung Lieferkosten, sowie einen Einkaufspreis für jedes Produkt.</p>
 	Ihr Lager hat jedoch nur begrenztes Fassungsvermögen und eine feste maximale Kapitalbindung. Basierend auf früheren Erfahrungen, haben Sie bereits für die verschiedenen Produkte minimale und maximale Bestände festgelegt.
@@ -37,7 +38,7 @@ Unter Beachtung der Nebenbedingungen:
 	<li>Die minimalen Produktbestände müssen eingehalten werden
 	<li>Die maximalen Produktbestände dürfen nicht überschritten werden
 </ul>
-<h2>Kurz-Anleitung</h2>
+<h2 class = "text-center">Kurz-Anleitung</h2>
 <ol>
 	<li>1. Erstelle einen Account oder nutze einen bereits vorhandenen Account</li>
 	<li>2. Programmier deine eigene Bestellheuristik</li>
@@ -50,6 +51,7 @@ Eine detaillierte Anleitung mit Code-Beispielen ist  <a href= "how-to.jsp" >hier
 
 </div>
 
+</div>
 </div>
 <x:FooterTag></x:FooterTag>
 </body>

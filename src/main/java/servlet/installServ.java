@@ -1,8 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -41,7 +41,12 @@ public class installServ extends HttpServlet {
 		String meldung = "";
 		
 		if(Datenbankinstaller.getConnection() == null) {
-			Datenbankinstaller.createAdminUser(name, salt);
+			try {
+				Datenbankinstaller.createAdminUser(name, salt);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			meldung = "Installation durchgeführt, Sie können sich nun mit den hinterlegten Daten einloggen";			
 
 		}else {

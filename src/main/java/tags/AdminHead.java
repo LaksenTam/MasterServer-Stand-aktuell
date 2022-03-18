@@ -60,7 +60,7 @@ public class AdminHead extends SimpleTagSupport {
 						+ "			</ul>\r\n"
 						+ "		</div>\r\n"
 						+ "		<div class=\"col-md-1 justify-content-center\">\r\n"
-						+ "		<a href= \"Logout\"><button id = \"navbutton\" type=\"button\" class=\"btn btn-danger btn-block rounded-pill \">Logout</button></a>\r\n"
+						+ "		<a href= \"Logout\"><button id = \"navbutton\" type=\"button\" class=\"btn btn-danger btn-block rounded-pill \"><span class = \"button-icon\"><img src = \"img/arrow-right-from-bracket-solid.svg\" width=\"13px\" height=\"15px\" class = \"log\"></span><span class = \"button-text\">Logout</span></button></a>\r\n"
 						+ "		</div>\r\n"
 						+ "	</div>\r\n"
 						+ "</div>";
@@ -86,7 +86,7 @@ public class AdminHead extends SimpleTagSupport {
 					+ "			</ul>\r\n"
 					+ "		</div>\r\n"
 					+ "		<div class=\"col-md-1 justify-content-center\">\r\n"
-					+ "		<a href= \"Logout\"><button id = \"navbutton\" type=\"button\" class=\"btn btn-danger btn-block rounded-pill \">Logout</button></a>\r\n"
+					+ "		<a href= \"Logout\"><button id = \"navbutton\" type=\"button\" class=\"btn btn-danger btn-block rounded-pill \"><span class = \"button-icon\"><img src = \"img/arrow-right-from-bracket-solid.svg\" width=\"13px\" height=\"15px\" class = \"log\"></span><span class = \"button-text\">Logout</span></button></a>\r\n"
 					+ "		</div>\r\n"
 					+ "	</div>\r\n"
 					+ "</div>";
