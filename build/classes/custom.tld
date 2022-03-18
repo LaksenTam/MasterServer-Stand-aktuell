@@ -40,4 +40,9 @@
 		<body-content>empty</body-content>
 	
 	</tag>
+	<tag>
+		<name>Tipp</name>
+		<tagclass>tags.TippTag</tagclass>
+		<body-content>empty</body-content>	
+	</tag>
 </taglib>

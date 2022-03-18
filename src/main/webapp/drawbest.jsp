@@ -30,7 +30,29 @@
  	
  	var options = {
  			title: 'Kapitalbindung pro Produkt',
- 			subtitle:'eigene Heuristik'
+ 			subtitle:'eigene Heuristik',
+ 				backgroundColor: '#6c757d',     		
+	     	    is3D: true,
+	     	   colors: ['yellow'],
+			 hAxis: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				vAxis: {
+					 baselineColor: '#ffffff',
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				legend: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				titleTextStyle: {
+				    color: '#ffffff'
+				},	
  	};
  	
  	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Kosten'));
@@ -49,7 +71,29 @@
 	 	
 	 	var options = {
 	 			title: 'Bestand',
-	 			subtitle:'eigene Heuristik'
+	 			subtitle:'eigene Heuristik',
+	 			backgroundColor: '#6c757d',     		
+	     	    is3D: true,
+	     	   colors: ['yellow'],
+			 hAxis: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				vAxis: {
+					 baselineColor: '#ffffff',
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				legend: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				titleTextStyle: {
+				    color: '#ffffff'
+				},	
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Bestand'));
@@ -67,7 +111,29 @@
 	 	
 	 	var options = {
 	 			title: 'Volumen',
-	 			subtitle:'eigene Heuristik'
+	 			subtitle:'eigene Heuristik',
+	 			backgroundColor: '#6c757d',     		
+	     	    is3D: true,
+	     	   colors: ['yellow'],
+			 hAxis: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				vAxis: {
+					 baselineColor: '#ffffff',
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				legend: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				titleTextStyle: {
+				    color: '#ffffff'
+				},	
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Volumen'));
@@ -84,7 +150,29 @@
 	 	
 	 	var options = {
 	 			title: 'Highscore Daten',
-	 			subtitle:'eigene Heuristik'
+	 			subtitle:'eigene Heuristik',
+	 			backgroundColor: '#6c757d',     		
+	     	    is3D: true,
+	     	   colors: ['yellow', 'orange', 'green'],
+			 hAxis: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				vAxis: {
+					 baselineColor: '#ffffff',
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				legend: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				titleTextStyle: {
+				    color: '#ffffff'
+				},	
 	 	};
 	 	
 	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Highscore'));

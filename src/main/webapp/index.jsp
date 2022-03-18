@@ -20,6 +20,9 @@
 
 <x:AdminHead></x:AdminHead>
 <div class = "container-fluid intro">
+<div>
+	${meldung }
+</div>
 
 <div class = "text-center">
 <h2>Intro</h2>

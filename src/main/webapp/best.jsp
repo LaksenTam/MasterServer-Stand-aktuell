@@ -21,6 +21,9 @@
 <body class = "bg-secondary text-white">
 
 <x:AdminHead></x:AdminHead>
+<div>
+<x:Tipp/>
+</div>
 
 <x:Bestenliste></x:Bestenliste>
        
