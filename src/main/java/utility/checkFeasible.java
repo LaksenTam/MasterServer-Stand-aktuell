@@ -90,7 +90,6 @@ public class CheckFeasible {
 				if(pList.get(i).getProduktName().equals(produktdaten.get(j).getName())) {
 					checkSize += pList.get(i).getBestellmenge() * produktdaten.get(j).getvProdukt();	
 					System.out.println(pList.get(i).getBestellmenge() +  "*" + produktdaten.get(j).getvProdukt() +"=" + checkSize);
-
 				}
 			}					
 		}

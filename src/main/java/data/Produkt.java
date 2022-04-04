@@ -21,6 +21,8 @@ public class Produkt implements Serializable {
 	private int maxLager;
 	private int verbrauch;
 	private transient List<Integer> verbraeuche = new ArrayList<Integer>();
+	private transient String vKat;
+	private transient String pKat;
 
 	public Produkt() {
 		
@@ -178,6 +180,24 @@ public class Produkt implements Serializable {
 	 */
 	public void setVerbraeuche(List<Integer> verbraeuche) {
 		this.verbraeuche = verbraeuche;
+	}
+	
+	
+
+	public String getvKat() {
+		return vKat;
+	}
+
+	public void setvKat(String vKat) {
+		this.vKat = vKat;
+	}
+
+	public String getpKat() {
+		return pKat;
+	}
+
+	public void setpKat(String pKat) {
+		this.pKat = pKat;
 	}
 
 	@Override

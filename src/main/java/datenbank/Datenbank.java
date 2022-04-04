@@ -24,7 +24,7 @@ public class Datenbank {
 		
 		//SQL Strings
 		String sql = "insert into public.produkt (name, bestellfix,lagerkostensatz,fehlmengenkosten,volumenprodukt, "
-				+ " minbestand, maxbestand, einstand, key) VALUES (?,?,?,?,?,?,?,?,?)";
+				+ " minbestand, maxbestand, einstand, key,pkategorie) VALUES (?,?,?,?,?,?,?,?,?,?)";
 		
 		//Füge die Werte der Datenbank hinzu
 		try {	
@@ -44,8 +44,9 @@ public class Datenbank {
 				ps1.setInt(7, produktListe.get(j).getMaxBestand());
 				ps1.setDouble(8, produktListe.get(j).getEinstand());
 				ps1.setString(9, key);
+				ps1.setString(10, produktListe.get(j).getpKat());
 				ps1.executeUpdate();
-				verbrauchProProduktAnlegen(produktListe.get(j).getName(),produktListe.get(j).getVerbraeuche());					
+				verbrauchProProduktAnlegen(produktListe.get(j).getName(),produktListe.get(j).getVerbraeuche(), produktListe.get(j).getvKat());					
 			}				
 			status = true;			
 		}catch(SQLException e) {
@@ -74,11 +75,11 @@ public class Datenbank {
 		
 	}
 
-	public boolean verbrauchProProduktAnlegen(String name, List<Integer> verbrauch) throws SQLException{
+	public boolean verbrauchProProduktAnlegen(String name, List<Integer> verbrauch, String verbrauchKategorie) throws SQLException{
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean status = false;
-		String sql = "insert into public.verbrauch(pname, periode, verbrauch) VALUES (?,?,?)";		
+		String sql = "insert into public.verbrauch(pname, periode, verbrauch,verbrauchkategorie) VALUES (?,?,?,?)";		
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -87,6 +88,7 @@ public class Datenbank {
 				ps.setString(1, name);
 				ps.setInt(2, i + 1);
 				ps.setInt(3, verbrauch.get(i));
+				ps.setString(4, verbrauchKategorie);
 				ps.executeUpdate();
 			}			
 			status = true;
@@ -168,7 +170,7 @@ public class Datenbank {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sql = "SELECT name, bestellfix,einstand, "
-				+ "fehlmengenkosten, lagerkostensatz, minbestand, maxbestand, volumenprodukt, verbrauch"
+				+ "fehlmengenkosten, lagerkostensatz, minbestand, maxbestand, volumenprodukt, verbrauch, pkategorie, verbrauchkategorie"
 				+ " FROM public.produkt RIGHT JOIN public.verbrauch "
 				+ "ON public.produkt.name = public.verbrauch.pname";
 		try {
@@ -607,6 +609,7 @@ public class Datenbank {
 			ps.executeUpdate();
 			produktebewaehrtSpeichern();
 			topUserSpeichern();
+			verbrauchBewaehrtSpeichern();
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}finally {
@@ -669,6 +672,22 @@ public class Datenbank {
 			e.printStackTrace();
 		}
 	}
+	
+	public void verbrauchBewaehrtSpeichern() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO bewaehrtverbrauch (pname, periode, verbrauch, verbrauchkategorie, problemkey) "
+		+ "SELECT pname, periode, verbrauch, verbrauchkategorie, problemkey "
+		+ "FROM verbrauch ";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.execute();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public List<String> getUIDsave() throws SQLException {
 		List<String> uid = new ArrayList<>();
@@ -715,8 +734,99 @@ public class Datenbank {
 		return problem;
 	}
 	
-	public void loadProbleminstanz() {
+	public void loadProbleminstanz(String pkey) {
 		
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO probleminstanz (panzahl, perioden, key, kapitalbindung, lagervolumen, sammelbestellung, zeit, name) "
+				+ "SELECT panzahl, perioden, problemkey, kapitalbindung, lagervolumen, sammelbestellung, zeit, name "
+				+ "FROM bewaehrtprobleminstanz "
+				+ "WHERE problemkey = ?";
+		
+		try {
+			loeschTabelle();
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, pkey);
+			ps.execute();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadProdukte(String pkey) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO produkt (name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, problemkey) "
+				+ "SELECT name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, key "
+				+ "FROM bewaehrtprodukt "
+				+ "WHERE problemkey = ?";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, pkey);
+			ps.execute();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void loadTop10(String pkey) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO highscore (score, fehl, kosten, zeit, schwierigkeitsgrad, uid, problemkey) "
+				+ "SELECT score, fehl, kosten, zeit, schwierigkeitsgrad, uid, problemkey "
+				+ "FROM toptenbewaehrt "
+				+ "WHERE problemkey = ?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, pkey);
+			ps.execute();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	public void loadVerbrauch(String pkey) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO verbrauch (pname, periode, verbrauch, verbrauchkategorie, problemkey) "
+				+ "SELECT pname, periode, verbrauch, verbrauchkategorie, problemkey "
+				+ "FROM bewaehrtverbrauch "
+				+ "WHERE problemkey = ?";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, pkey);
+			ps.execute();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public String getProblemInstanzByName(String name) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String pkey = "";
+		
+		String sql = "SELECT problemkey "
+				+ "from public.bewaehrtprobleminstanz "
+				+ "where name = ?";
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				pkey = rs.getString("problemkey");
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return pkey;
 	}
 	
 }

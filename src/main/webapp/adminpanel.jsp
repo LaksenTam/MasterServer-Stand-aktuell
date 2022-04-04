@@ -157,23 +157,7 @@ $(document).ready(function(){
         <button class = "btn btn-warning" type = "submit">Als CSV speichern</button> 
 </form>
 
-<form action = "problemInstanzSpeichern" method = "POST">
-<div class = "form-group row p-1">
-<div class = "form-group row">
-<div class = "col">
-	<label class = "form-control">Name</label>
-	</div>
-	<div class = "col">
-	<input type = "text" class = "form-control" name = "name" placeholder = "Probleminstanzname">
-	</div>
-	<div class = "form-group row">
-		<div class = "col">
-			<button class = "btn btn-dark" type = "submit">Speichern</button>
-		</div>
-	</div>
-	</div>
-	</div>
-</form>
+
 
 
 <button class="btn btn-dark btn-lg btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">

@@ -22,9 +22,9 @@ public class showProblem extends SimpleTagSupport {
 		JspWriter out = getJspContext().getOut();
 		String s = "";
 		
-			s += "<form action = \"Profil\" method = \"POST\"><div class=\"input-group mb-3 \">"
+			s += "<form action = \"loadProblem\" method = \"POST\"><div class=\"input-group mb-3 \">"
 			  +"<div class=\"input-group-prepend\">"
-					+"<select class = \"custom-select bg-dark text-white\" name = \"score1\">";
+					+"<select class = \"custom-select bg-dark text-white\" name = \"name\">";
 			
 			  for(int j = 0; j<problemname.size();j++) {
 				  s+="<option value="+ problemname.get(j) +">" + problemname.get(j) + "</option> ";

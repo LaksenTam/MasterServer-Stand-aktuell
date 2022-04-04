@@ -32,14 +32,10 @@ public class showSavedProbleminstanz extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Datenbank db = new Datenbank();
 		
-		List<String> problem = db.showSavedProbleminstanz();
-		for(int i = 0;i<problem.size();i++) {
-			System.out.println(problem.get(i));
-		}
-		
+		List<String> problem = db.showSavedProbleminstanz();	
 		
 		request.setAttribute("savedProblem", problem);
-		request.getRequestDispatcher("test.jsp").forward(request, response);
+		request.getRequestDispatcher("instanzmanagement.jsp").forward(request, response);
 	}
 
 	

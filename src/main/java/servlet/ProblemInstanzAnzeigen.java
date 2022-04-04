@@ -50,7 +50,7 @@ public class ProblemInstanzAnzeigen extends HttpServlet {
 			while(rs.next()) {
 				String[] s = { 
 						 rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6),
-	                		rs.getString(7), rs.getString(8), rs.getString(9)
+	                		rs.getString(7), rs.getString(8), rs.getString(9), rs.getString(10), rs.getString(11)
 				};
 				results.add(s);
 			}
@@ -61,7 +61,7 @@ public class ProblemInstanzAnzeigen extends HttpServlet {
 			request.setAttribute("lagerVol", lager.getLagerVol());
 			request.setAttribute("columnNames", new String[] { "Produktname ", "Bestellfixekosten ", "Einstandspreis "
 	        		, "Fehlmengenkostensatz ", "Lagerkostensatz", "Minimaler Bestand", "Maximaler Bestand", "Produktvolumen",
-	        		"verbrauch"});
+	        		"verbrauch", "Produktkategorie", "Verbrauchkategorie"});
 	        request.setAttribute("resultList", results);
 	        request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
 	        

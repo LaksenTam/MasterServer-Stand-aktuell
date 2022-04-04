@@ -123,20 +123,25 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		for(int i=0; i<createAProdukte; i++) {
 			Produkt p = new Produkt();
 			AProdukt ap = new AProdukt();
+			p.setpKat("A");
 			if(saisonalA>0) {
 				saison = true;
 				konstant = false;
 				ap.generiereProduktA(p, saison,konstant, perioden, lager, false,prod);
+				p.setvKat("Y");
 				saisonalA -= 1;
 			}else if(konstantA>0) {
 				saison = false;
 				konstant = true;
 				ap.generiereProduktA(p, saison,konstant, perioden, lager, false,prod);
 				konstantA -=1;
+				p.setvKat("X");
+				
 			}else {
 				saison =false;
 				konstant = false;
 				ap.generiereProduktA(p, saison,konstant, perioden, lager, false,prod);
+				p.setvKat("Z");
 			}
 			checkName.add(p);
 		}
@@ -156,21 +161,25 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		
 		for(int j = 0; j<createBProdukte;j++) {
 			Produkt p = new Produkt();
+			p.setpKat("B");
 			BProdukt bp = new BProdukt();
 			if(saisonalB>0) {
 				saison = true;
 				konstant = false;
 				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager, false, prod);
+				p.setvKat("Y");
 				saisonalB -=1;
 			}else if(konstantB>0) {
 				konstant = true;
 				saison = false;
 				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager,false, prod);
+				p.setvKat("X");
 				konstantB -=1;
 			}else {
 				saison = false;
 				konstant = false;
 				bp.generiereProduktB(p, saison,konstant, saisonalC, perioden, lager, false, prod);
+				p.setvKat("Z");
 			}
 			checkName.add(p);
 		}
@@ -191,21 +200,25 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		 */
 		for(int k = 0;k<createCProdukte;k++) {
 			Produkt p = new Produkt();
+			p.setpKat("C");
 			CProdukt cp = new CProdukt();
 			if(saisonalC>0) {
 				saison = true;
 				konstant = false;
 				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager, false, prod);
+				p.setvKat("Y");
 				saisonalC -=1;
 			}else if(konstantC>0) {
 				konstant = true;
 				saison = false;
 				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager, false,prod);
+				p.setvKat("X");
 				konstantC -=1;
 			}else {
 				saison =false;
 				konstant = false;
 				cp.generiereProduktC(p, saison,konstant, saisonalC, perioden, lager, false, prod);
+				p.setvKat("Z");
 			}
 			checkName.add(p);
 		}
