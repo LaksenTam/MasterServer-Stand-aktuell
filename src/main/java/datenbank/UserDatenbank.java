@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
 import java.util.List;
 
 import data.Highscore;
@@ -209,7 +210,8 @@ public class UserDatenbank {
 	public void saveHighScore(Highscore highscore, Userergebnis ue, int grad) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Insert into public.highscore (score, api, fehl, kosten, zeit, schwierigkeitsgrad, uid) values(?,?,?,?,?,?,?)";
+		String sql = "Insert into public.highscore (score, api, fehl, kosten, zeit, schwierigkeitsgrad, uid, problemkey) "
+				+ "values(?,?,?,?,?,?,?,(SELECT key from probleminstanz))";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -432,9 +434,10 @@ public class UserDatenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;		
-		String sql = "Select kosten, bestellmenge, pname\n"
+		String sql = "Select kosten, bestellmenge, pname, periode\n"
 				+ "from public.ergebnis\n"
-				+ "where uid =?";		
+				+ "where uid =?"
+				+"ORDER BY periode ASC";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -442,7 +445,7 @@ public class UserDatenbank {
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				String[] s = {rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
-						Double.toString(rs.getDouble("kosten"))};
+						Double.toString(rs.getDouble("kosten")), Integer.toString(rs.getInt("periode"))};
 				bestScoreErgebnis.add(s);
 			}
 		}catch(SQLException e) {
@@ -530,6 +533,38 @@ public class UserDatenbank {
 			e.printStackTrace();
 		}
 		return userScore;		
+	}
+	
+	public List<String[]> getUserDataPerPeriod(String uid) throws SQLException {
+		List<String[]> userData = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS pkosten, public.highscore.kosten AS hKosten, fehl, zeit, periode "
+				+ "from public.ergebnis "
+				+ "INNER JOIN public.highscore ON public.highscore.uid = public.ergebnis.uid "
+				+ "where public.highscore.uid = ? "
+				+"ORDER BY public.ergebnis.periode ASC";	
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, uid);
+			rs = ps.executeQuery();
+			while(rs.next()) {		
+				String[] s = { rs.getString("pname"),Integer.toString(rs.getInt("bestellmenge")), 
+						Double.toString(rs.getDouble("pkosten")), Double.toString(rs.getDouble("hKosten")), 
+						Double.toString(rs.getDouble("fehl")), Integer.toString(rs.getInt("zeit")), Integer.toString(rs.getInt("periode"))};
+				userData.add(s);				
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
+		}
+		return userData;		
+		
 	}
 
 }

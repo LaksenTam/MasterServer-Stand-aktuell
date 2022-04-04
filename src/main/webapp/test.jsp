@@ -19,6 +19,7 @@
 </head>
 <body>
 <x:AdminHead></x:AdminHead>
-<x:ProfilDropDown/>
+
+<x:showProblem/>
 </body>
 </html>

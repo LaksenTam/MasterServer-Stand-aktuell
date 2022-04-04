@@ -31,10 +31,10 @@
  	
  		 	var options = {
  		 			title: 'Highscore Daten',
- 		 			subtitle:'eigene Heuristik',
+ 		 			subtitle:'eigene Heuristik', 		 			
  		 			backgroundColor: '#6c757d',     		
 			     	    is3D: true,
-			     	   colors: ['yellow'],
+			     	   
 					 hAxis: {
 						    textStyle: {
 						        color: '#ffffff'
@@ -62,62 +62,23 @@
  	
 	}
  
- google.charts.load('current', {packages:['corechart', 'bar']});
- google.charts.setOnLoadCallback(drawBestand);
- 
- function drawBestand(){
-	 var data = google.visualization.arrayToDataTable([
-	 		['Name' , 'Bestand'], 		
-	 		${drawBestand}    		
-	 	]);
-	 	 	
-	 		var options = {
-	 		 			title: 'Highscore Daten',
-	 		 			subtitle:'eigene Heuristik',
-	 		 			backgroundColor: '#6c757d',     		
- 			     	    is3D: true,
- 			     	   colors: ['yellow'],
- 					 hAxis: {
- 						    textStyle: {
- 						        color: '#ffffff'
- 						    }
- 						},
- 						vAxis: {
- 							 baselineColor: '#ffffff',
- 						    textStyle: {
- 						        color: '#ffffff'
- 						    }
- 						},
- 						legend: {
- 						    textStyle: {
- 						        color: '#ffffff'
- 						    }
- 						},
- 						titleTextStyle: {
- 						    color: '#ffffff'
- 						},	
-	 		 				
-	 	};
-	 	
-	 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Bestand'));
-	 	chart.draw(data, options); 		 	
-		}  
  
  google.charts.load('current', {packages:['corechart', 'bar']});
  google.charts.setOnLoadCallback(drawVolumen);
  
  function drawVolumen(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Name' , 'Volumen'], 		
-	 		${drawVol}    		
+	 		${produktNamen}	
+	 		${stackedVolumen}    		
 	 	]);
 	 		 
 	 		 	var options = {
-	 		 			title: 'Highscore Daten',
+	 		 			title: 'Volumenverlauf pro Periode',
 	 		 			subtitle:'eigene Heuristik',
 	 		 			backgroundColor: '#6c757d',     		
  			     	    is3D: true,
- 			     	   colors: ['yellow'],
+ 			     	    isStacked:true,
+ 			     	 
  					 hAxis: {
  						    textStyle: {
  						        color: '#ffffff'
@@ -157,7 +118,7 @@
 	 			subtitle:'eigene Heuristik',
  				backgroundColor: '#6c757d',     		
 	 			     	    is3D: true,
-	 			     	   colors: ['yellow'],
+	 			     	  
 	 					 hAxis: {
 	 						    textStyle: {
 	 						        color: '#ffffff'
@@ -189,7 +150,7 @@
  
  function drawHighscoreKosten(){
  	var data = google.visualization.arrayToDataTable([
- 		['Name' , 'Kapitalbindung'], 		
+ 		${produktNamen}	
  		${drawHighKosten}    		
  	]);
  	
@@ -198,7 +159,7 @@
  			subtitle:'eigene Heuristik',
  			backgroundColor: '#6c757d',     		
 	     	    is3D: true,
-	     	   colors: ['yellow'],
+	     	   isStacked:true,
 			 hAxis: {
 				    textStyle: {
 				        color: '#ffffff'
@@ -231,7 +192,7 @@
  
  function drawHighscoreBestand(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Name' , 'Bestand'], 		
+	 		${produktNamen} 		
 	 		${drawHighBestand}    		
 	 	]);
 	 	
@@ -240,7 +201,7 @@
 	 			subtitle:'eigene Heuristik',
 	 			backgroundColor: '#6c757d',     		
 		     	    is3D: true,
-		     	   colors: ['yellow'],
+		     	   isStacked:true,
 				 hAxis: {
 					    textStyle: {
 					        color: '#ffffff'
@@ -273,7 +234,7 @@
  
  function drawHighscoreVolumen(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Name' , 'Volumen'], 		
+	 		${produktNamen} 		
 	 		${drawHighVol}    		
 	 	]);
 	 	
@@ -282,7 +243,7 @@
 	 			subtitle:'eigene Heuristik',
 	 			backgroundColor: '#6c757d',     		
 		     	    is3D: true,
-		     	   colors: ['yellow'],
+		     	    isStacked:true,		     	  
 				 hAxis: {
 					    textStyle: {
 					        color: '#ffffff'
@@ -393,7 +354,100 @@
      chart.draw(data, options);
 
  }
- 
+ google.charts.load('current', {
+	  callback: drawChart,
+	  packages: ['corechart']
+	});
+
+ //StackedKostenKapbindung Links
+	function drawChart() {
+	  var data = google.visualization.arrayToDataTable([
+		 ${produktNamen}
+	   ${drawStackedKosten}
+	  ]);
+
+
+	 	var options = {
+	 			title: 'Kosten pro Periode ',
+	 			subtitle:'eigene Heuristik',
+	 			backgroundColor: '#6c757d',     		
+	     	    is3D: true,
+	     	    isStacked:true,
+	     	 
+			 hAxis: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				vAxis: {
+					 baselineColor: '#ffffff',
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				legend: {
+				    textStyle: {
+				        color: '#ffffff'
+				    }
+				},
+				titleTextStyle: {
+				    color: '#ffffff'
+				},	
+	 				
+};
+
+	  var chartDiv = document.getElementById('chart_div');
+	  var chart = new google.visualization.ColumnChart(chartDiv);
+	  chart.draw(data, options);
+	}
+	
+ //stackedBestandkapitalbindung links
+	google.charts.load('current', {
+		  callback: drawStackedBestand,
+		  packages: ['corechart']
+		});
+
+		function drawStackedBestand() {
+		  var data = google.visualization.arrayToDataTable([
+			 ${produktNamen}
+		   ${stackedBestand}
+		  ]);
+
+
+		 	var options = {
+		 			title: 'Bestand pro Periode',
+		 			subtitle:'eigene Heuristik',
+		 			backgroundColor: '#6c757d',     		
+		     	    is3D: true,
+		     	    isStacked:true,
+		     	 
+				 hAxis: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					vAxis: {
+						 baselineColor: '#ffffff',
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					legend: {
+					    textStyle: {
+					        color: '#ffffff'
+					    }
+					},
+					titleTextStyle: {
+					    color: '#ffffff'
+					},	
+		 				
+	};
+
+		  var chartDiv = document.getElementById('stackedBestand');
+		  var chart = new google.visualization.ColumnChart(stackedBestand);
+		  chart.draw(data, options);
+		}
+	
  </script>
 
 
@@ -422,11 +476,11 @@
 		<div class = "col">
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<h6 class = "pl-5">Highscore 1 Punkte</h6>
-			<div id="draw_Highscore" style = "margin-top:28px; width: 900px; height: 500px;"></div>
-       		<div id="draw_Kosten" style="width: 900px; height: 500px;"></div>
-       		<div id="draw_Bestand" style="width: 900px; height: 500px;"></div>
-      		 <div id="draw_Volumen" style="width: 900px; height: 500px;"></div>
-      		 <div id="userBestandsVerlauf" style="width: 900px; height: 500px;"></div>
+			<div id="draw_Highscore" style = "margin-top:28px; width: 900px; height: 500px;"></div>       		
+      		 <div id="draw_Volumen" style="width: 900px; height: 500px;"></div>      		 
+      		 <div id = "chart_div" style = "width: 900px; height: 500px;"></div>
+      		  <div id = "stackedBestand" style = "width: 900px; height: 500px;"></div>
+      		  <div id="userBestandsVerlauf" style="width: 900px; height: 500px;"></div>
 		</div>
 		
 		<div class = "col">	

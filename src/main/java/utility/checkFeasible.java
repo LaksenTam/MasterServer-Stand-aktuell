@@ -9,12 +9,21 @@ import data.Produktergebnis;
 public class CheckFeasible {
 	
 	public boolean isFeasible(List<Produktergebnis> pList, Lager lager, List<Produkt> produktdaten) {
-		boolean status = false;
-		status = checkMinBestand(pList,produktdaten);
-		status = checkMaxBestand(pList, produktdaten);
-		status = checkKapitalbindung(pList,  lager);
-		status = checkLagerSize( pList,lager, produktdaten);
-		return status;
+		boolean[] status = new boolean[4];	
+		boolean feasible = false;
+		status[0] = checkMinBestand(pList,produktdaten);
+		status[1] = checkMaxBestand(pList, produktdaten);
+		status[2] = checkKapitalbindung(pList,  lager);
+		status[3] = checkLagerSize( pList,lager, produktdaten);
+		for(int i = 0; i<status.length;i++) {
+			System.out.println(i);
+			if(!status[i]) {
+				feasible = false;
+			}else {
+				feasible = true;
+			}
+		}
+		return feasible;
 	}
 	
 	public boolean checkMinBestand(List<Produktergebnis> pList, List<Produkt> produktdaten) {
@@ -44,7 +53,7 @@ public class CheckFeasible {
 						status = false;						
 					}else {
 						status = true;
-						System.out.println(status);
+						
 					}
 				}
 			}			

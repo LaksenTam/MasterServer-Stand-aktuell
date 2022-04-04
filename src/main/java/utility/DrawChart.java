@@ -60,8 +60,89 @@ public class DrawChart {
 			verlauf += ",['" + bestandsverlauf.get(i)[0] + "'," + bestandsverlauf.get(i)[1] + "]";
 		}
 		verlauf +=",['" + (bestandsverlauf.size() +1) + "',0]";
-		System.out.println(verlauf);
+	
 		return verlauf;
 	}
+	
+	public String drawStackedKosten(List<String[]> kostenList, int perioden) {
+		String kosten = "";
+		for(int i = 0; i<perioden;i++) {
+			kosten +="['Periode" + (i +1) + "'";			
+			for(int j = 0; j<kostenList.size();j++) {				
+				if(kostenList.get(j)[6].equals(Integer.toString(i+1))) {
+					kosten +=  ","+kostenList.get(j)[2] ;
+				}
+			}
+			kosten +="],";			
+		}		
+		return kosten;
+	}
+	
+	public String produktname(List<String[]> namenList) {
+		String namen = "['Produktnamen'";
+		for(int i = 0; i<namenList.size();i++) {
+			if(namenList.get(i)[6].equals("1")) {
+				namen += ", '"+ namenList.get(i)[0] + "'"; 
+			}
+		}
+		namen +="],\n";	
+		return namen;
+	}
+	
+	public String drawStackedBestand(List<String[]> bestandsList, int perioden) {
+		String bestandVerlauf = "";
+		for(int i = 0;i < perioden; i++ ) {
+			bestandVerlauf += "['Periode" + (i+1) + "'";
+			for(int j = 0; j<bestandsList.size();j++) {
+				if(bestandsList.get(j)[6].equals(Integer.toString(i+1))) {
+					bestandVerlauf += ","+bestandsList.get(j)[1];
+				}
+			}
+			bestandVerlauf += "],\n";
+		}		
+		return bestandVerlauf;
+	}
+	
+	public String drawStackedVolumen(List<String[]> volumen, int perioden) {
+		String volVerlauf = "";
+		for(int i=0; i<perioden;i++) {
+			volVerlauf += "['Periode" + (i+1) + "'";
+			for(int j = 0; j<volumen.size();j++) {
+				if(volumen.get(j)[2].equals(Integer.toString(i+1))) {
+					volVerlauf += ","+volumen.get(j)[1];
+				}
+			}
+			volVerlauf +="],\n";
+		}		
+		System.out.println(volVerlauf);
+		return volVerlauf;
+	}
+	
+	public String drawHighStackedBestand(List<String[]> bestandsList, int perioden) {
+		String bestandVerlauf = "";
+		for(int i = 0;i < perioden; i++ ) {
+			bestandVerlauf += "['Periode" + (i+1) + "'";
+			for(int j = 0; j<bestandsList.size();j++) {
+				if(bestandsList.get(j)[3].equals(Integer.toString(i+1))) {
+					bestandVerlauf += ","+bestandsList.get(j)[1];
+				}
+			}
+			bestandVerlauf += "],\n";
+		}		
+		return bestandVerlauf;
+	}
 
+	public String drawHighStackedKosten(List<String[]> kostenList, int perioden) {
+		String kosten = "";
+		for(int i = 0; i<perioden;i++) {
+			kosten +="['Periode" + (i +1) + "'";			
+			for(int j = 0; j<kostenList.size();j++) {				
+				if(kostenList.get(j)[3].equals(Integer.toString(i+1))) {
+					kosten +=  ","+kostenList.get(j)[2] ;
+				}
+			}
+			kosten +="],";			
+		}		
+		return kosten;
+	}
 }

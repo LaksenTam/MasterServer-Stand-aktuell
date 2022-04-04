@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -53,36 +54,46 @@ public class Profil extends HttpServlet {
 			request.setAttribute("scores", scores);	
 			session.setAttribute("pList", produktDaten);
 			List<String[]> userData = udb.userErgebnis(userScore.getId());
-			List<String[]> volumen = vol.calcVolumen(produktDaten, userData);	
+			List<String[]> volumen = vol.calcVolumen(produktDaten, userData);				
+			List<String[]> bestScore = udb.getBestUser();			
+			List<String[]> stackedUserData = udb.getUserDataPerPeriod(userScore.getId());		
+			int perioden = Integer.parseInt(stackedUserData.get(stackedUserData.size()-1)[6]);
 			
-			List<String[]> bestScore = udb.getBestUser();
 			
 			if(bestScore.size()!=0) {
-				List<String[]> bestScoreErgebnis = udb.getBestUserErgebnis(bestScore.get(0)[4]);
-				List<String[]> highVol = vol.calcVolumen(produktDaten, bestScoreErgebnis);
-				String drawHighBestand = chart.drawBestandsVerlauf(bestScoreErgebnis);
-				String drawHighKosten = chart.drawKosten(bestScoreErgebnis);
-				String drawHighVol = chart.drawVolumenVerlauf(highVol);
-				String drawHighscoreScore = chart.drawHighScoreLeader(bestScore);				
+				List<String[]> bestScoreErgebnis = udb.getBestUserErgebnis(bestScore.get(0)[4]);				
+				List<String[]> highVol = vol.calcHighVolumen(produktDaten, bestScoreErgebnis);
+				String drawHighBestand = chart.drawHighStackedBestand(bestScoreErgebnis,perioden);
+				String drawHighKosten = chart.drawHighStackedKosten(bestScoreErgebnis,perioden);
+				String drawHighVol = chart.drawStackedVolumen(highVol,perioden);
+				String drawHighscoreScore = chart.drawHighScoreLeader(bestScore);	
+				
+				for(int i=0; i<bestScoreErgebnis.size();i++) {
+					System.out.println(Arrays.asList(bestScoreErgebnis.get(i)));
+				}
 				
 				request.setAttribute("drawHighBestand", drawHighBestand);
 				request.setAttribute("drawHighKosten", drawHighKosten);
 				request.setAttribute("drawHighscoreScore", drawHighscoreScore);
-				request.setAttribute("drawHighVol", drawHighVol);				
+				request.setAttribute("drawHighVol", drawHighVol);		
+				
+				
 			}		
 			if(userData.size()!= 0) {
-				List<String[]> bestandsverlauf = bestand.bestandsVerlauf(userData,produktDaten);
-				String drawVol = chart.drawVolumenVerlauf(volumen);
-				String drawKosten = chart.drawKosten(userData);
-				String drawBestand = chart.drawBestandsVerlauf(userData);	
+				List<String[]> bestandsverlauf = bestand.bestandsVerlauf(userData,produktDaten);				
 				String drawHighscore = chart.drawScores(userData);
-				String drawBestandsVerlauf = chart.drawGesamtBestandVerlauf(bestandsverlauf);
-					
+				String drawBestandsVerlauf = chart.drawGesamtBestandVerlauf(bestandsverlauf);				
+				String drawStackedKosten = chart.drawStackedKosten(stackedUserData, perioden);
+				String produktNamen = chart.produktname(stackedUserData);
+				String stackedBestand = chart.drawStackedBestand(stackedUserData, perioden);
+				String stackedVolumen = chart.drawStackedVolumen(volumen, perioden);
+				
+				request.setAttribute("stackedBestand", stackedBestand);
 				request.setAttribute("userBestandsVerlauf", drawBestandsVerlauf);
 				request.setAttribute("drawHighscore", drawHighscore);
-				request.setAttribute("drawVol", drawVol);
-				request.setAttribute("drawBestand", drawBestand);
-				request.setAttribute("drawKosten", drawKosten);				
+				request.setAttribute("stackedVolumen", stackedVolumen);
+				request.setAttribute("produktNamen", produktNamen);
+				request.setAttribute("drawStackedKosten", drawStackedKosten);
 			}
 			
 			
@@ -97,6 +108,7 @@ public class Profil extends HttpServlet {
 	}
 
 	/**
+	 * For Tag ProfilDropwDown
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

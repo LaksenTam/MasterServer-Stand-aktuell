@@ -577,5 +577,147 @@ public class Datenbank {
 			e.printStackTrace();
 		}
 	}
+	
+	public void insertName(String name) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "UPDATE probleminstanz "
+				+ "SET name = ?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, name);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void problemInstanzSpeichern() throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO bewaehrtprobleminstanz (panzahl, perioden, problemkey, kapitalbindung, lagervolumen, sammelbestellung, zeit, name) "
+				+ "SELECT panzahl, perioden, key, kapitalbindung, lagervolumen, sammelbestellung, zeit, name "
+				+ "FROM probleminstanz";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+			produktebewaehrtSpeichern();
+			topUserSpeichern();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			ps.close();
+			con.close();
+		}
+	}
+	
+	public void produktebewaehrtSpeichern() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO bewaehrtprodukt (name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, problemkey) "
+				+ "SELECT name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, key "
+				+ "FROM produkt";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void topUserSpeichern() {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql = "INSERT INTO toptenbewaehrt (score, fehl, kosten, zeit, schwierigkeitsgrad, uid, problemkey) "
+				+ "SELECT score, fehl, kosten, zeit, schwierigkeitsgrad, uid, problemkey "
+				+ "FROM highscore "
+				+ "ORDER BY score DESC "
+				+ "LIMIT 10";				
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);			
+			ps.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void topUserErgebnis(List<String> userid) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql ="INSERT INTO bewaehrtuserergebnis (bestellmenge, pname, kosten, periode, uid) "
+				+ "SELECT bestellmenge, pname, kosten, periode, uid "
+				+ "from ergebnis "
+				+ "where uid = ?";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			for(int i = 0;i<userid.size();i++ ) {
+				ps.setString(1, userid.get(i));
+				ps.executeUpdate();
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public List<String> getUIDsave() throws SQLException {
+		List<String> uid = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "Select uid "
+				+ "from toptenbewaehrt "
+				+ "where problemkey IN (Select key from probleminstanz)";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				uid.add(rs.getString("uid"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			rs.close();
+			ps.close();
+			con.close();
+		}
+		return uid;
+	}
+	public List<String> showSavedProbleminstanz() {
+		List<String> problem = new ArrayList<>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String sql = "SELECT name FROM bewaehrtprobleminstanz";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				problem.add(rs.getString("name"));
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return problem;
+	}
+	
+	public void loadProbleminstanz() {
+		
+	}
+	
 }
 	

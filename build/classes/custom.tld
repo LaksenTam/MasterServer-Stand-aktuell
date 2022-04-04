@@ -45,4 +45,9 @@
 		<tagclass>tags.TippTag</tagclass>
 		<body-content>empty</body-content>	
 	</tag>
+	<tag>
+		<name>showProblem</name>
+		<tagclass>tags.showProblem</tagclass>
+		<body-content>empty</body-content>	
+	</tag>
 </taglib>
