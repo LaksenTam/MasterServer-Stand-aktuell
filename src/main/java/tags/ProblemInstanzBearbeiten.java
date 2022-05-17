@@ -1,7 +1,9 @@
 package tags;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspWriter;
@@ -9,6 +11,7 @@ import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 import data.Produkt;
+import datenbank.Datenbank;
 
 public class ProblemInstanzBearbeiten extends SimpleTagSupport {
 	
@@ -16,11 +19,26 @@ public class ProblemInstanzBearbeiten extends SimpleTagSupport {
 	public void doTag() {
 		PageContext pc = (PageContext) getJspContext();
 		HttpSession session = pc.getSession();
-		ArrayList<Produkt> p = (ArrayList<Produkt>) session.getAttribute("produkte");
+		
+		
 		JspWriter out = getJspContext().getOut();
 		String s ="";
 		String meldung = "";
-		session.setAttribute("i", p.size());
+		List <Produkt> p = new ArrayList<>();
+		Datenbank db = new Datenbank();
+		
+		if(null == session.getAttribute(meldung)) {
+			try {
+				p = db.produktListeAbrufen();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			p = (ArrayList<Produkt>) session.getAttribute("produkte");
+			session.setAttribute("i", p.size());
+		}
+	
 		
 		if(p != null) {
 			s += "<form action = \"ProblemInstanzAnpassen\" method = \"POST\">"

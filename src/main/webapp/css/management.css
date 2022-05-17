@@ -1,0 +1,85 @@
+@charset "ISO-8859-1";
+.container-grid {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "lagerDaten probleminstanzSpeichern problemLaden"
+    "anpassen anpassen anpassen";
+    justify-items: start;
+}
+
+.lagerDaten {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "ueber ueber ueber"
+    "label inputvol ."
+    "labelkap inputkap ."
+    "buttonLager . .";
+  grid-area: lagerDaten;
+  border: solid 2px;
+  padding: 2%;
+     border-radius: 5px;
+  
+}
+
+.ueber { grid-area: ueber; }
+
+.label { grid-area: label; }
+
+.inputvol { grid-area: inputvol; }
+
+.labelkap { grid-area: labelkap; }
+
+.inputkap { grid-area: inputkap; }
+
+.buttonLager { grid-area: buttonLager; }
+
+.probleminstanzSpeichern {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.8fr 1.1fr 1.1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "ueberSpeichern ueberSpeichern ueberSpeichern"
+    "inputsafe inputsafe ."
+    "button . .";
+  grid-area: probleminstanzSpeichern;
+    border: solid 2px;
+  padding: 5%;
+     border-radius: 5px;  
+  margin-left:10%;
+}
+
+
+.ueberSpeichern { grid-area: ueberSpeichern; }
+
+.inputsafe { grid-area: inputsafe; }
+
+.button { grid-area: button; }
+
+.problemLaden {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.8fr 1.2fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "ueberLaden ueberLaden ueberLaden"
+    "tag tag tag"
+    ". . .";
+  grid-area: problemLaden;
+   border: solid 2px ;
+   border-radius: 5px;
+  padding: 2%;
+}
+
+
+.ueberLaden { grid-area: ueberLaden; }
+
+.tag { grid-area: tag; }
+
+.anpassen { grid-area: anpassen; }

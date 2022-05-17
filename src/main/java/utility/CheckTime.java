@@ -2,7 +2,7 @@ package utility;
 
 import java.sql.SQLException;
 
-import data.Spielregeln;
+import data.Lager;
 import datenbank.UserDatenbank;
 
 public class CheckTime {
@@ -20,15 +20,15 @@ public class CheckTime {
 	 */
 	public boolean ueberpruefeZeit(long currentTime, int periode, String api) throws SQLException {
 		UserDatenbank ud = new UserDatenbank();
-		boolean status = false;
-		Spielregeln spiel = new Spielregeln();
+		boolean status = false;		
+		Lager lager = new Lager();
 		
 		long ergebnis;
 		periode = periode -1;
 		long altesErgebnis = ud.zeitStempel(periode, api);
 		
 		ergebnis = currentTime - altesErgebnis;		
-		if(ergebnis/1000<spiel.getZeit()) {
+		if(ergebnis/1000<lager.getZeit()) {
 			status = true;
 		}		
 		
@@ -38,12 +38,12 @@ public class CheckTime {
 	public boolean testeStempel(long neuStempel, String key) throws SQLException {
 		boolean status = false;
 		UserDatenbank ud = new UserDatenbank();
-		Spielregeln spiel = new Spielregeln();
+		Lager lager = new Lager();
 		long altStempel = ud.getStempel(key);		
 		double ergebnis = neuStempel - altStempel;		
 		
 		
-		if(ergebnis/1000<spiel.getZeit()) {
+		if(ergebnis/1000<lager.getZeit()) {
 			status = true;
 		}
 		return status;

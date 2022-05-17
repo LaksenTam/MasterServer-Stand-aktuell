@@ -12,18 +12,34 @@
 <script src="js/jquery.tablesort.min.js"></script>
 <link rel = "stylesheet" href = "bootstrap-4.2.1-dist/css/bootstrap.min.css">
 
-<link rel = "stylesheet" href= "css/style.css">
+
 <script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
+<link rel = "stylesheet" type = "text/css" href= "css/style.css">
 <meta charset="ISO-8859-1">
 <title>Bestenliste</title>
+
+<script>
+function toggle(id) {
+	  var x = document.getElementById(id);
+	  if (x.style.display !== "none") 
+    {  
+        x.style.display = "none";  
+    }  
+    else
+    {  
+        x.style.display = "block";  
+    }  
+}  
+
+</script>
 
 </head>
 <body class = "bg-secondary text-white">
 
 <x:AdminHead></x:AdminHead>
-<div>
+
 <x:Tipp/>
-</div>
+
 
 <x:Bestenliste></x:Bestenliste>
        

@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 
 
 import data.Userergebnis;
+import data.Zwischenergebnis;
 
 public class ErgebnisDeserializer {
 	
@@ -14,5 +15,9 @@ public class ErgebnisDeserializer {
 		return ue = new Gson().fromJson(jsonErgebnis, Userergebnis.class);		
 	}
 	
+	//Zwischenergebnis in Produktergebnis getauscht
+		public Zwischenergebnis deserializeJsonZwischenergebnis(String jsonErgebnis, Zwischenergebnis ue) {		
+			return ue = new Gson().fromJson(jsonErgebnis, Zwischenergebnis.class);		
+		}
 
 }

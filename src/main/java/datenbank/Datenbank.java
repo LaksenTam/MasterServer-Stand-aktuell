@@ -9,13 +9,33 @@ import java.util.List;
 
 import data.Lager;
 import data.Produkt;
-import data.Spielregeln;
 
-
+/**
+ * Klasse für Datenbankoperationen 
+ * @author Lukas
+ *
+ */
 
 public class Datenbank {	
 	
+	/**
+	 * Methode um Datenbank zurückzusetzen
+	 * @throws SQLException
+	 */
+	public void resetProblem() throws SQLException {
+		loeschTabelle();	
+		resetBestenListe();
+		deleteStamps();
+		System.out.println("Tabellen geloescht");
+	}
 	
+	/**
+	 * Erstellt eine Probleminstanz
+	 * @param produktListe = Liste mit den generierten Produktinformationen
+	 * @param key = Identifier für die PRobleminstanz 
+	 * @return
+	 * @throws SQLException
+	 */
 	public boolean problemInstanzAnlegen(List <Produkt> produktListe, String key) throws SQLException {		
 		//Initialisierung der Statements und Verbindung
 		Connection con = null;
@@ -27,11 +47,7 @@ public class Datenbank {
 				+ " minbestand, maxbestand, einstand, key,pkategorie) VALUES (?,?,?,?,?,?,?,?,?,?)";
 		
 		//Füge die Werte der Datenbank hinzu
-		try {	
-			loeschTabelle();	
-			resetBestenListe();
-			deleteStamps();
-			System.out.println("Tabellen geloescht");
+		try {			
 			con = DatenbankVerbindung.getConnection();									
 			ps1 = con.prepareStatement(sql);
 			for(int j = 0; j<produktListe.size();j++) {				
@@ -46,7 +62,7 @@ public class Datenbank {
 				ps1.setString(9, key);
 				ps1.setString(10, produktListe.get(j).getpKat());
 				ps1.executeUpdate();
-				verbrauchProProduktAnlegen(produktListe.get(j).getName(),produktListe.get(j).getVerbraeuche(), produktListe.get(j).getvKat());					
+				verbrauchProProduktAnlegen(produktListe.get(j).getName(),produktListe.get(j).getVerbraeuche(), produktListe.get(j).getvKat(),key);					
 			}				
 			status = true;			
 		}catch(SQLException e) {
@@ -60,6 +76,9 @@ public class Datenbank {
 		return status;
 	}
 	
+	/**
+	 * setzt die Zeitstempel in der Datenbank zurück
+	 */
 	private void deleteStamps() {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -74,12 +93,21 @@ public class Datenbank {
 		}
 		
 	}
-
-	public boolean verbrauchProProduktAnlegen(String name, List<Integer> verbrauch, String verbrauchKategorie) throws SQLException{
+	
+	/**
+	 * Speichert die Verbraueche der Produkte in der Datenbank
+	 * @param name = name des Produktes
+	 * @param verbrauch = Hoehe des Verbrauches
+	 * @param verbrauchKategorie = Kategorie im Sinne von XYZ
+	 * @param key = Probleminstanz key
+	 * @return
+	 * @throws SQLException
+	 */
+	public boolean verbrauchProProduktAnlegen(String name, List<Integer> verbrauch, String verbrauchKategorie, String key) throws SQLException{
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean status = false;
-		String sql = "insert into public.verbrauch(pname, periode, verbrauch,verbrauchkategorie) VALUES (?,?,?,?)";		
+		String sql = "insert into public.verbrauch(pname, periode, verbrauch,verbrauchkategorie,problemkey) VALUES (?,?,?,?,?)";		
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -87,8 +115,9 @@ public class Datenbank {
 			for(int i = 0; i< verbrauch.size();i++) {
 				ps.setString(1, name);
 				ps.setInt(2, i + 1);
-				ps.setInt(3, verbrauch.get(i));
+				ps.setInt(3, verbrauch.get(i));				
 				ps.setString(4, verbrauchKategorie);
+				ps.setString(5, key);
 				ps.executeUpdate();
 			}			
 			status = true;
@@ -99,12 +128,17 @@ public class Datenbank {
 		return status;
 	}
 	
+	/**
+	 * loescht die Probleminstanz
+	 * @return
+	 * @throws SQLException
+	 */
 	public static boolean loeschTabelle() throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		boolean status = false;
 		
-		String sql = "Truncate public.produkt restart identity cascade";
+		String sql = "Truncate public.probleminstanz restart identity cascade";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -113,15 +147,21 @@ public class Datenbank {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			
-		}finally {
-		
+		}finally {		
 			
 		}
 		return status;
 	}
 	
 
-	
+	/**
+	 * Ruft die Probleminstanz mit den Verbraeuchen in einer spezifischen Periode ab und speichert sie in einer Liste
+	 * @param produktListe
+	 * @param periode
+	 * @return
+	 * @throws SQLException
+	 * @throws NullPointerException
+	 */
 	public List<Produkt> getProblemInstanz(List<Produkt> produktListe, int periode) throws SQLException, NullPointerException {
 		
 		Connection con = null;
@@ -184,7 +224,15 @@ public class Datenbank {
 		return rs;
 	}
 	
-	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager, Spielregeln spiel) {
+	/**
+	 * Speichert die Parameter der Probleminstanz
+	 * @param anzProdukte = Anzahl der Produkte der PRobleminstanz
+	 * @param perioden = ANzahl der Perioden
+	 * @param key = Identifier der Probleminstanz
+	 * @param lager =  Lagerdatenklasse, die die Daten enthält
+	 * @return
+	 */
+	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager) {
 		boolean status = false;
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -199,8 +247,8 @@ public class Datenbank {
 			ps.setString(3, key);	
 			ps.setFloat(4, lager.getLagerVol());
 			ps.setDouble(5, lager.getKbindung());
-			ps.setDouble(6, spiel.getSammelKosten());
-			ps.setLong(7, spiel.getZeit());
+			ps.setDouble(6, lager.getSammelKosten());
+			ps.setLong(7, lager.getZeit());
 			ps.executeUpdate();
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -209,7 +257,10 @@ public class Datenbank {
 	}
 	
 
-	
+	/**
+	 * Liefert die Anzahl der Perioden zurück
+	 * @return
+	 */
 	public int getPeriodenAnzahl() {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -231,7 +282,11 @@ public class Datenbank {
 		return perioden;
 	}
 	
-	
+	/**
+	 * Methode um die Produktliste abzurufen 
+	 * @param produktListe
+	 * @return
+	 */
 	public List<Produkt> getStartProblem(List<Produkt> produktListe) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -260,6 +315,12 @@ public class Datenbank {
 		return produktListe;
 	}
 	
+	/**
+	 * Methode um Informationen eines bestimmten Produktes in einer spezifischen Periode zu erhalten
+	 * @param periode
+	 * @param pName
+	 * @return
+	 */
 	public Produkt getProduktInfos(int periode, String pName) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -294,6 +355,11 @@ public class Datenbank {
 		return p;		
 	}
 	
+	/**
+	 * Methode um die Informationen für die Schnittstelle /GetProdukte zur Verfügung zu stellen
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<Produkt> produktListeAbrufen() throws SQLException{
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -329,11 +395,15 @@ public class Datenbank {
 		return produkte;
 		}
 	
+	/**
+	 * Methode um Informationen für /GetProdukte zur Verfügung zu stellen
+	 * @return
+	 */
 	public Lager lagerAbrufen() {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "Select panzahl, perioden, lagervolumen, kapitalbindung from public.probleminstanz";
+		String sql = "Select panzahl, perioden, lagervolumen, kapitalbindung, sammelbestellung from public.probleminstanz";
 		Lager lager = new Lager();
 		
 		try {
@@ -353,6 +423,10 @@ public class Datenbank {
 		
 	}
 	
+	/**
+	 * Aktualisiert die Werte der Probleminstanz
+	 * @param produkte
+	 */
 	public void updateProblem(List<Produkt> produkte) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -377,6 +451,11 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Methode, die eine Liste der Produkte mit dessen VErbrauch liefert
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<Produkt> getVerbrauchsListe() throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -415,6 +494,9 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Setzt die Bestenliste zurück
+	 */
 	public void resetBestenListe() {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -429,14 +511,18 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Erstellt eine Liste aller User der Anwendung
+	 * @return
+	 */
 	public List<String[]> getUser() {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<String[]> list = new ArrayList<String[]>();
 		
-		String sql = "Select name,score,fehl,kosten,zeit, zugriff From public.user "
-				+ " LEFT JOIN public.highscore ON public.user.key = public.highscore.api";
+		String sql = "Select name,score,fehl,kosten,zeit, zugriff From public.benutzer "
+				+ " LEFT JOIN public.highscore ON public.benutzer.key = public.highscore.api";
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -454,11 +540,16 @@ public class Datenbank {
 		return list;
 	}
 	
+	/**
+	 * Loescht einen User 
+	 * @param name
+	 * @throws SQLException
+	 */
 	public void deleteUser(String name) throws SQLException{
 		Connection con = null;
 		PreparedStatement ps = null;
 		
-		String sql = "DELETE from public.user where name = ?";
+		String sql = "DELETE from public.benutzer where name = ?";
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -473,10 +564,15 @@ public class Datenbank {
 		}
 	}
 
+	/**
+	 * Erstellt einen neuen Admin 
+	 * @param name
+	 * @throws SQLException
+	 */
 	public void AdminErstellen(String name) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Update public.user Set zugriff = 1 where name =?";
+		String sql = "Update public.benutzer Set zugriff = 1 where name =?";
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -492,10 +588,15 @@ public class Datenbank {
 		
 	}
 	
+	/**
+	 * Setzt den Zugriff eines Admins auf den eines Users
+	 * @param name
+	 * @throws SQLException
+	 */
 	public void AdminDemoten(String name) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "Update public.user Set zugriff = 0 where name =?";
+		String sql = "Update public.benutzer Set zugriff = 0 where name =?";
 		
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -510,6 +611,10 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * erzeugt eine Liste mit allen Produktnamen
+	 * @return
+	 */
 	public List<String> proList() {
 		List<String> pListe = new ArrayList<>();
 		Connection con = null;
@@ -531,6 +636,11 @@ public class Datenbank {
 		return pListe;
 	}
 	
+	/**
+	 * aktualisiert die Lagerdaten der kapitalbindung und das lagervolumen
+	 * @param lager
+	 * @throws SQLException
+	 */
 	public void updateLager(Lager lager) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -567,6 +677,9 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Entfernt eine Probleminstanz
+	 */
 	public void problemInstanzLoeschen() {
 		Connection con  = null;
 		PreparedStatement ps = null;
@@ -580,6 +693,10 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Setzt einen Namen für eine Probleminstanz
+	 * @param name
+	 */
 	public void insertName(String name) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -596,6 +713,10 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Speichert eine Probleminstanz, sodass sie nicht mehr geloescht werden kann
+	 * @throws SQLException
+	 */
 	public void problemInstanzSpeichern() throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -618,11 +739,14 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Speichert die Produkte einer gespeicherten Probleminstanz
+	 */
 	public void produktebewaehrtSpeichern() {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "INSERT INTO bewaehrtprodukt (name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, problemkey) "
-				+ "SELECT name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, key "
+		String sql = "INSERT INTO bewaehrtprodukt (name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, problemkey, pkategorie) "
+				+ "SELECT name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, key, pkategorie "
 				+ "FROM produkt";
 		
 		try {
@@ -634,6 +758,9 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Speichert die Top10 User einer gespeicherten Probleminstanz
+	 */
 	public void topUserSpeichern() {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -652,6 +779,10 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Speichert die Ergebnisse der Top10 User
+	 * @param userid
+	 */
 	public void topUserErgebnis(List<String> userid) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -673,6 +804,9 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Speichert die Verbräuche der gespeicherten Produkte
+	 */
 	public void verbrauchBewaehrtSpeichern() {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -688,7 +822,12 @@ public class Datenbank {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * Ruft die UID ab
+	 * @return
+	 * @throws SQLException
+	 */
 	public List<String> getUIDsave() throws SQLException {
 		List<String> uid = new ArrayList<>();
 		Connection con = null;
@@ -714,6 +853,11 @@ public class Datenbank {
 		}
 		return uid;
 	}
+	
+	/**
+	 * Ruft eine Liste mit allen gespeicherten Probleminstanzen ab
+	 * @return
+	 */
 	public List<String> showSavedProbleminstanz() {
 		List<String> problem = new ArrayList<>();
 		Connection con = null;
@@ -734,6 +878,10 @@ public class Datenbank {
 		return problem;
 	}
 	
+	/**
+	 * Lädt eine gespeicherte Probleminstanz und macht sie aktiv
+	 * @param pkey
+	 */
 	public void loadProbleminstanz(String pkey) {
 		
 		Connection con = null;
@@ -744,21 +892,34 @@ public class Datenbank {
 				+ "WHERE problemkey = ?";
 		
 		try {
-			loeschTabelle();
+			loeschTabelle();		
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, pkey);
 			ps.execute();
+			
+			loadProdukte(pkey);
+			System.out.println("Produkte geladen");
+			loadTop10(pkey);
+			System.out.println("Top10 geladen");
+			loadVerbrauch(pkey);
+			System.out.println("Produktverbäuche geladen");
+			loadTopTenErgebnisse(pkey);
+			System.out.println("TopTen Ergebnisse geladen");
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Lädt die Produkte der Probleminstanz
+	 * @param pkey
+	 */
 	public void loadProdukte(String pkey) {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "INSERT INTO produkt (name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, problemkey) "
-				+ "SELECT name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, key "
+		String sql = "INSERT INTO produkt (name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, key, pkategorie) "
+				+ "SELECT name, bestellfix, lagerkostensatz, fehlmengenkosten, volumenprodukt, minbestand, maxbestand, einstand, problemkey, pkategorie "
 				+ "FROM bewaehrtprodukt "
 				+ "WHERE problemkey = ?";
 		try {
@@ -771,6 +932,10 @@ public class Datenbank {
 		}
 	}
 	
+	/**
+	 * Lädt die Top10 User der Probleminstanz
+	 * @param pkey
+	 */
 	public void loadTop10(String pkey) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -789,6 +954,10 @@ public class Datenbank {
 		}		
 	}
 	
+	/**
+	 * Lädt den Verbrauch der Produkte der Probleminstanz
+	 * @param pkey
+	 */
 	public void loadVerbrauch(String pkey) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -796,7 +965,7 @@ public class Datenbank {
 				+ "SELECT pname, periode, verbrauch, verbrauchkategorie, problemkey "
 				+ "FROM bewaehrtverbrauch "
 				+ "WHERE problemkey = ?";
-		try {
+		try {			
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, pkey);
@@ -806,6 +975,11 @@ public class Datenbank {
 		}
 	}
 
+	/**
+	 * Ruft die ID der Probleminstanz mit Hilfe des Namens ab
+	 * @param name
+	 * @return
+	 */
 	public String getProblemInstanzByName(String name) {
 		Connection con = null;
 		PreparedStatement ps = null;
@@ -827,6 +1001,30 @@ public class Datenbank {
 			e.printStackTrace();
 		}
 		return pkey;
+	}
+	
+	/**
+	 * Lädt die Ergebnisse der TOp10
+	 * @param pkey
+	 */
+	public void loadTopTenErgebnisse(String pkey) {
+		Connection con = null;
+		PreparedStatement ps = null;
+		String sql ="INSERT INTO ergebnis (bestellmenge, pname, kosten, periode, uid) "
+				+ "SELECT bestellmenge, pname, kosten, periode, uid "
+				+ "from bewaehrtuserergebnis "
+				+ "where uid = (SELECT uid FROM toptenbewaehrt where problemkey = ?)";
+		
+		try {
+			con = DatenbankVerbindung.getConnection();
+			ps = con.prepareStatement(sql);
+			ps.setString(1, pkey);
+			ps.executeUpdate();
+			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

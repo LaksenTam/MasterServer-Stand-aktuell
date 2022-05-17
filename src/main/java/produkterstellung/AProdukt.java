@@ -16,7 +16,7 @@ import data.Lager;
 /**
  * Klasse zur Erstellung eines Produktes
  * Hier werden hochwertige Produkte generiert
- * @author puken
+ * 
  *
  */
 public class AProdukt {
@@ -32,6 +32,19 @@ public class AProdukt {
 			+ "SAMSUNG NEO QLED, SAMSUNG GQ, LG 86NANO, SAMSUNG The Frame, Optoma UHZ, Acer L811, iRobot Roomba S9, ";
 	
 	
+	/**
+	 * 
+	 * @param p = Produkt
+	 * @param saisonal = true wenn saisonaler Verbrauch erstellt wird
+	 * @param konstant = true wenn konstanter Verbrauch erstellt wird
+	 * @param perioden = Anzahl der zu generierden Verbrauchsperioden
+	 * @param lager = Lagerklasse
+	 * @param erweitert = true wenn ueber das erweiterte Formular generiert wurde
+	 * @param prod = ??
+	 * @return
+	 * @throws CsvValidationException
+	 * @throws IOException
+	 */
 	
 	public Produkt generiereProduktA(Produkt p, boolean saisonal, boolean konstant, int perioden, Lager lager, boolean erweitert, 
 			ErweiterteProdukte prod) 
@@ -49,9 +62,9 @@ public class AProdukt {
 		
 		p.setName(name);
 		
+		//Unterscheidung zwischen der erweiterten Generierung und der normalen
 		if(erweitert) {
 			p.setBestellfix((rand.nextInt(prod.getBestellMaxRange())+prod.getBestellMinRange()) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
-			System.out.println(p.getBestellfix());
 			p.setEinstand((rand.nextInt(prod.getEinstandmaxRange()) + prod.getEinstandminRange()) + (double) Math.round((rand.nextFloat()+0)*100)/100);
 			p.setFehlmengenkosten((rand.nextInt(prod.getFehlkostenMaxRange()) + prod.getFehlkostenMinRange())+(double) Math.round((rand.nextDouble() + 0)*100)/100);
 			p.setLagerkostensatz((double) Math.round(p.getEinstand()*prod.getLagersatz()));
@@ -61,18 +74,19 @@ public class AProdukt {
 		}		
 		else {
 			p.setBestellfix((rand.nextInt(30000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);	
-			System.out.println(p.getBestellfix());
 			p.setEinstand((rand.nextInt(2000) + 700) + (double) Math.round((rand.nextFloat()+0)*100)/100);
-			p.setFehlmengenkosten((rand.nextInt(100) + 5)+(double) Math.round((rand.nextDouble() + 0)*100)/100);
-			p.setLagerkostensatz((rand.nextInt(50) + 0) +(double) Math.round( (rand.nextDouble() + 0)*100)/100);
+			float fk = rand.nextInt((90 - 40) + 1) + 40;		
+			p.setFehlmengenkosten((double) Math.round((fk/100)*p.getEinstand()*100)/100);
+			float lk = rand.nextInt((15-10)+1)+10;
+			p.setLagerkostensatz((double) Math.round((lk/100)*p.getEinstand()*100)/100);
 			p.setMinBestand(rand.nextInt(10) + 0);
 			p.setMaxBestand(rand.nextInt(1000) + p.getMinBestand());		
 			p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
 		}
 		
+		//Verbrauchsgenerierung
 		if(saisonal) {
 			int verbrauch = rand.nextInt(200)+70;
-			System.out.println(verbrauch);
 			verbrauchsListe = IntervallAufteilung.teileIntervall(perioden, verbrauch);
 		}else if(konstant) {
 			int verbrauch = rand.nextInt(100) +0;

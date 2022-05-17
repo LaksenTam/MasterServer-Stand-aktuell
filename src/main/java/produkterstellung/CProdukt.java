@@ -24,7 +24,19 @@ public class CProdukt {
 			+ "Cooler Master MH670, Elgato Wave:3, HP X1000, SteelSeries Arctis 9, Rode NT-USB Mini, Razer Blackshart V2, "
 			+ "Jabra Evolve2 75, Sony WF-1000XM4";
 
-	
+	/**
+	 * 
+	 * @param p =  Produktdatenklasse
+	 * @param saisonal = true wenn saisonales Produkt erstellt wird
+	 * @param konstant = true wenn konstantes Produkt erstellt wird
+	 * @param i =  iterator
+	 * @param perioden = Anzahl der Periode
+	 * @param lager = Lagerdatenklasse
+	 * @param erweitert = true wenn ueber erweitertes Forumlar erstellt
+	 * @param prod = Datenklasse fuer die generierung erweiterter Produkte
+	 * @return
+	 * @throws IOException
+	 */
 	public Produkt generiereProduktC(Produkt p, boolean saisonal,boolean konstant, int i, int perioden, 
 			Lager lager, boolean erweitert, ErweiterteProdukte prod) throws CsvValidationException, IOException {
 	
@@ -51,8 +63,10 @@ public class CProdukt {
 		else {
 			p.setBestellfix((rand.nextInt(15000)+1000) + (double) Math.round((rand.nextDouble()+0)*100)/100);		
 			p.setEinstand((rand.nextInt(200) + 3) + (double) Math.round((rand.nextFloat()+0)*100)/100);
-			p.setFehlmengenkosten((rand.nextInt(50)+1) + ((double) Math.round((rand.nextDouble() + 0)*100)/100));
-			p.setLagerkostensatz((rand.nextInt(10)+0) + (double) Math.round((rand.nextDouble() + 0)*100)/100);
+			float fk = rand.nextInt((40 - 10) + 1) + 10;		
+			p.setFehlmengenkosten((double) Math.round((fk/100)*p.getEinstand()*100)/100);
+			float lk = rand.nextInt((5-2)+1)+2;
+			p.setLagerkostensatz((double) Math.round((lk/100)*p.getEinstand()*100)/100);
 			p.setMinBestand(rand.nextInt(10) + 0);
 			p.setMaxBestand(rand.nextInt(5000) + p.getMinBestand());
 			p.setvProdukt((double) Math.round((rand.nextDouble() + 0)*100)/100);
@@ -77,13 +91,6 @@ public class CProdukt {
 		return p;		
 	}
 
-	public String doppelterName() {	
-		List<String> namenListe = new ArrayList<String>();			
-		namenListe = csv.lese(artikel, namenListe);				
-		int selector = rand.nextInt(namenListe.size())+0;		
-		String name = namenListe.get(selector);			
-		return name;		
-	}
 		
 	public List<String> getProduktNamen(){
 		List<String> produktNamen = new ArrayList<String>();

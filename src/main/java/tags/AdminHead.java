@@ -12,7 +12,12 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 
 public class AdminHead extends SimpleTagSupport {
 	
-	
+	/**
+	 * Erzeugt die Navbar
+	 * zugriff = 1 Adminnavibar
+	 * zugriff = 0 Normaler user
+	 * 
+	 */
 	public void doTag() {
 	
 		PageContext pc = (PageContext) getJspContext();	
@@ -48,9 +53,7 @@ public class AdminHead extends SimpleTagSupport {
 						+ "					<a class=\"nav-link\" href=\"BestenListe?\">Bestenliste</a>\r\n"
 						+ "				</li>\r\n"
 						+ "				\r\n"
-						+ "				<li class=\"nav-item\">\r\n"
-						+ "					<a class=\"nav-link\" href=\"ProblemInstanzAnpassen\">Anpassen</a>\r\n"
-						+ "				</li>\r\n"
+						
 						+"				<li class=\"nav-item\">\r\n"
 						+ "				<a class=\"nav-link\" href=\"GetStudenten?\">UserManagement</a>\r\n"
 						+ "				</li>\r\n"
@@ -58,7 +61,7 @@ public class AdminHead extends SimpleTagSupport {
 						+ "					<a class=\"nav-link\" href=\"how-to.jsp\">How-To</a>\r\n"
 						+ "				</li>\r\n"
 						+ "				<li class = \"nav-item\">\r\n"
-						+"					<a class = \"nav-link\" href =\"showSavedProblemInstanz?\">Probleminstanzmanagement</a>\r\n"
+						+"					<a class = \"nav-link\" href =\"showSavedProbleminstanz\">Probleminstanzmanagement</a>\r\n"
 						+"				</li>\r\n"
 						+ "			</ul>\r\n"
 						+ "		</div>\r\n"

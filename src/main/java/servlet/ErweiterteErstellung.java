@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import data.ErweiterteProdukte;
 import data.Lager;
 import data.Produkt;
-import data.Spielregeln;
 import manager.DatenManager;
 import produkterstellung.AProdukt;
 import produkterstellung.BProdukt;
@@ -308,14 +307,14 @@ public class ErweiterteErstellung extends HttpServlet {
 		checkName.clear();
 		produktNamen.clear();
 		
-		Spielregeln spiel = new Spielregeln();
-		spiel.setZeit(Long.parseLong(zeit));
-		spiel.setSammelbestellung(isSammel);
-		spiel.setSammelKosten(sammelKosten);
+		
+		lager.setZeit(Long.parseLong(zeit));
+		lager.setSammelbestellung(isSammel);
+		lager.setSammelKosten(sammelKosten);
 		
 		String identifier = UUID.randomUUID().toString();
 		daten.produktSpeichern(produkte, identifier);
-		daten.problemInstanzDatenSpeichern(produkte.size(), perioden, identifier, lager, spiel);
+		daten.problemInstanzDatenSpeichern(produkte.size(), perioden, identifier, lager);
 		System.out.println(Arrays.asList(produkte));		
 		response.sendRedirect("ProblemInstanzAnzeigen?");
 		

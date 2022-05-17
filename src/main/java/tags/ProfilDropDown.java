@@ -27,18 +27,15 @@ public class ProfilDropDown extends SimpleTagSupport{
 			s += "<form action = \"Profil\" method = \"POST\"><div class=\"input-group mb-3 \">"
 			  +"<div class=\"input-group-prepend\">"
 					+"<select class = \"custom-select bg-dark text-white\" name = \"score1\">";
-			
+			 s+="<option selected>Auswahl<option>";
 			  for(int j = 0; j<scores.size();j++) {
 				  s+="<option value="+ scores.get(j).getId() +"> Highscore: " + scores.get(j).getScore() + "</option> ";
 			  }
-			  s+="<option selected>Auswahl<option>"
-			  +"</select>"
-			  + "</div> "
-			    +"<label class=\"input-group-text\" for=\"inputGroupSelect01\">VS</label>"
-			
-  			+"<div class=\"input-group-prepend\">"
-			   + "<select class=\"custom-select  bg-dark text-white\"  name = \"score2\"> "
-			   + "<option selected>Auswahl...</option> ";
+			  s+="</select></div>"
+			    +"<label class=\"input-group-text\" for=\"inputGroupSelect01\">VS</label>"			
+			    +"<div class=\"input-group-prepend\">"
+			    + "<select class=\"custom-select  bg-dark text-white\"  name = \"score2\"> "
+			    + "<option selected>Auswahl</option> ";
 			   for(int i =0; i<scores.size();i++) {
 				   s+="<option value="+ scores.get(i).getId() +"> Highscore: " + scores.get(i).getScore() + "</option> ";
 						   
@@ -47,7 +44,7 @@ public class ProfilDropDown extends SimpleTagSupport{
 					+ "<button class = \"btn btn-dark ml-2\" type = \"submit\">Senden</button>"
 			   + "</div> </form>";
 		}else {
-			s = "UPS";
+			s = "";
 		}
 		try {
 			out.append(s);

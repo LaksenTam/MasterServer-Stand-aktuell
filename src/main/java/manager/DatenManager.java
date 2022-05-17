@@ -48,8 +48,8 @@ public class DatenManager {
 	
 	
 	
-	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager, Spielregeln spiel) {
-		return db.problemInstanzDatenSpeichern(anzProdukte, perioden, key, lager,spiel);
+	public boolean problemInstanzDatenSpeichern(int anzProdukte, int perioden, String key, Lager lager) {
+		return db.problemInstanzDatenSpeichern(anzProdukte, perioden, key, lager);
 	}
 	
 	public int getPeriodenAnzahl() {
@@ -67,6 +67,10 @@ public class DatenManager {
 	
 	public void updateProblemInstanz(List<Produkt> produkte) {
 		db.updateProblem(produkte);
+	}
+	
+	public void resetData() throws SQLException {
+		db.resetProblem();
 	}
 
 }

@@ -38,13 +38,12 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("passwort");
 		Hashing hash = new Hashing();
 		UserDatenbank db = new UserDatenbank();
+		System.out.println(password);		
+		password = hash.erstelleHash(password);
 		System.out.println(password);
 		
-		password = hash.erstelleHash(password);
-		
 				
-		try {
-			//if(db.login(name, password)) {
+		try {				
 				User user = new User();
 				if(db.getUser(name, password, user) != null && user.getApi_key() != null) {
 					System.out.println(user.getZugriff());

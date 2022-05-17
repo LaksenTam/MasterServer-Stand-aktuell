@@ -31,6 +31,7 @@ public class UpdateLager extends HttpServlet {
     }
 
 	/**
+	 * Methode um die Kapitalbindung und das Lagervolumen zu aktualisieren
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -41,8 +42,11 @@ public class UpdateLager extends HttpServlet {
 		
 		Lager lager = new Lager();
 		
-		lager.setKbindung(Float.parseFloat(kapBindung));
-		lager.setLagerVol(Float.parseFloat(lagerVol));
+		float kb = Float.parseFloat(kapBindung);
+		float lv = Float.parseFloat(lagerVol);
+		
+		lager.setKbindung(kb);
+		lager.setLagerVol(lv);
 		
 		try {
 			db.updateLager(lager);

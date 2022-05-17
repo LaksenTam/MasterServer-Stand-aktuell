@@ -15,12 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import data.ErweiterteProdukte;
 import data.Lager;
 import data.Produkt;
-import data.Spielregeln;
 import manager.DatenManager;
 import produkterstellung.AProdukt;
 import produkterstellung.BProdukt;
 import produkterstellung.CProdukt;
-import produkterstellung.LagerGenerierung;
 import utility.CheckName;
 
 /**
@@ -41,7 +39,7 @@ public class ProblemInstanzErstellen extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String anzPerioden = request.getParameter("perioden");
 		String aPro = request.getParameter("aprodukt");
 		String bPro = request.getParameter("bprodukt");
@@ -49,15 +47,16 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		String saiA = request.getParameter("saisonalA");
 		String saiB = request.getParameter("saisonalB");
 		String saiC = request.getParameter("saisonalC");
-		String vol = request.getParameter("lager");
+		String vol = request.getParameter("lagervol");
 		String kap = request.getParameter("kapital");
 		String konstA = request.getParameter("kostantA");
 		String konstB = request.getParameter("kostantB");
 		String konstC = request.getParameter("kostantC");
 		
 		String zeit = request.getParameter("zeit");
+	
 		String sammel = request.getParameter("sammelB");
-		String sammelActive = request.getParameter("sammelActive");
+		
 	
 		try {
 		
@@ -105,9 +104,14 @@ public class ProblemInstanzErstellen extends HttpServlet {
 
 		List<Produkt> produkte = new ArrayList<Produkt>();
 		Lager lager = new Lager();
-		LagerGenerierung lagerGen = new LagerGenerierung();
-		lagerGen.erstelleLager(lager, kap, vol);
-
+		Float volumen = Float.parseFloat(vol);
+		int kb = Integer.parseInt(kap);
+		System.out.println(kb);
+		System.out.println(volumen);
+		lager.setKbindung(kb);
+		lager.setLagerVol(volumen);
+		
+		
 		boolean saison = false;
 		boolean konstant = false;
 		
@@ -236,22 +240,23 @@ public class ProblemInstanzErstellen extends HttpServlet {
 		/**
 		 * Lege Spielregeln fest
 		 */
-		Spielregeln spiel = new Spielregeln();
 		boolean isSammel = false;
 		
-		if(sammelActive !=null) {
+		if(!sammel.equals("")) {
 			isSammel =true;
-			spiel.setSammelKosten(Double.parseDouble(sammel));
+			lager.setSammelKosten(Double.parseDouble(sammel));
 		}
+		double spielZeit = Double.parseDouble(zeit)*1000;		
+		lager.setZeit((long) spielZeit);
 		
-		spiel.setZeit(Long.parseLong(zeit));
-		spiel.setSammelbestellung(isSammel);
+		lager.setSammelbestellung(isSammel);
 		
 		
-		
+		daten.resetData();
 		String identifier = UUID.randomUUID().toString();
+		daten.problemInstanzDatenSpeichern(produkte.size(), perioden, identifier, lager);
 		daten.produktSpeichern(produkte, identifier);
-		daten.problemInstanzDatenSpeichern(produkte.size(), perioden, identifier, lager,spiel);
+		
 		System.out.println(Arrays.asList(produkte));		
 		response.sendRedirect("ProblemInstanzAnzeigen?");
 		

@@ -26,5 +26,6 @@ public class DataToJson {
 		String json = gson.toJson(lager);
 		return json;
 	}
+	
 
 }

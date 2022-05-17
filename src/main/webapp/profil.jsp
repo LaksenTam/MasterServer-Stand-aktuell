@@ -11,57 +11,13 @@
 <script src="bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
 <script src="js/jquery.tablesort.min.js"></script>
 <link rel = "stylesheet" href = "bootstrap-4.2.1-dist/css/bootstrap.min.css">
-
-<link rel = "stylesheet" href= "css/style.css">
 <script src="https://kit.fontawesome.com/5cfe696ca3.js"></script>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
 <script type="text/javascript"	src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+<link rel = "stylesheet" href= "css/style.css">
  <script type="text/javascript">
- google.charts.load('current', {packages:['corechart', 'bar']});
- google.charts.setOnLoadCallback(drawKosten);
- 
- function drawKosten(){
- 	var data = google.visualization.arrayToDataTable([
- 		['Name' , 'Kapitalbindung'], 		
- 		${drawKosten}    		
- 	]); 	
- 	
- 		 	var options = {
- 		 			title: 'Highscore Daten',
- 		 			subtitle:'eigene Heuristik', 		 			
- 		 			backgroundColor: '#6c757d',     		
-			     	    is3D: true,
-			     	   
-					 hAxis: {
-						    textStyle: {
-						        color: '#ffffff'
-						    }
-						},
-						vAxis: {
-							 baselineColor: '#ffffff',
-						    textStyle: {
-						        color: '#ffffff'
-						    }
-						},
-						legend: {
-						    textStyle: {
-						        color: '#ffffff'
-						    }
-						},
-						titleTextStyle: {
-						    color: '#ffffff'
-						},	
- 		 				
- 	};
- 	
- 	var chart = new google.visualization.ColumnChart(document.getElementById('draw_Kosten'));
- 	chart.draw(data, options); 		
- 	
-	}
- 
  
  google.charts.load('current', {packages:['corechart', 'bar']});
  google.charts.setOnLoadCallback(drawVolumen);
@@ -109,7 +65,7 @@
  
  function drawHighscore(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Daten', 'Kosten' , 'Fehlmengen', 'Zeit'], 		
+	 		['Daten', 'variable Kosten' , 'Bestellfix Kosten', 'Fehlmengenkosten'], 		
 	 		${drawHighscore}    		
 	 	]);
 	 	
@@ -276,7 +232,7 @@
  
  function drawLeaderScore(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Daten', 'Kosten' , 'Fehlmengen', 'Zeit'], 		
+	 		['Daten', 'variable Kosten' , 'Bestellfix Kosten', 'Fehlmengenkosten'], 		
 	 		${drawHighscoreScore}    		
 	 	]);
 	 	
@@ -285,7 +241,6 @@
 	 			subtitle:'eigene Heuristik',
 	 				backgroundColor: '#6c757d',     		
 		     	    is3D: true,
-		     	   colors: ['yellow', 'orange', '#bb35d7'],
 				 hAxis: {
 					    textStyle: {
 					        color: '#ffffff'
@@ -325,8 +280,8 @@
 			 title: 'Bestandsverlauf ',
 	     		subtitle:'Test',
 	     		backgroundColor: '#6c757d',     		
-	     	    is3D: false,
-	     	   colors: ['orange'],
+	     	    is3D: true,
+	     	  	colors: ['yellow'],
 	     	   lineWidth: 3,
 			 hAxis: {
 				    textStyle: {
@@ -447,35 +402,87 @@
 		  var chart = new google.visualization.ColumnChart(stackedBestand);
 		  chart.draw(data, options);
 		}
-	
+		
+		function toggle(id) {
+			  var x = document.getElementById(id);
+			  if (x.style.display !== "none") 
+		      {  
+		          x.style.display = "none";  
+		      }  
+		      else
+		      {  
+		          x.style.display = "block";  
+		      }  
+		 }  
+		
+		function removeGoogleErrors() {
+			  var id_root = "google-visualization-errors-all-";			    
+			    for(let i = 0; i<5;i++){
+			    	document.getElementById(id_root + i).style.display = 'none';
+			    	console.log(document.getElementById(id_root + i).style.display = 'none');
+			    }			   
+			}		
+		
+			
  </script>
 
 
 </head>
 <body class = "bg-secondary text-white"> 
 <x:AdminHead></x:AdminHead>
-
-<div class= "container">
-
-
-<table>
-	<tr>
-		<td>Name: </td>
-		<td>${name }</td>
-	</tr>
-	<tr>
-		<td>API-Key: </td>
-		<td>${key }</td>
-	</tr>
-</table>  
-	<x:ProfilDropDown/>
+<x:Tipp></x:Tipp>
+<div class = "container mb-5">
+	<table>
+		<tr>
+			<td>Name: </td>
+			<td>${name }</td>
+		</tr>
+		<tr>
+			<td>Auth-Key: </td>
+			<td>${key }</td>
+		</tr>
+	</table>  
 </div>
+
+<div class = "centerdrop">
+	<x:ProfilDropDown/> 
+</div>
+
+
+
 <h6>${fehler }</h6>
-	<div class = "row">
-	
+	<div class = "row">	
 		<div class = "col">
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 		<h6 class = "pl-5">Highscore 1 Punkte</h6>
+		<div class = "container">
+		<div class = "row pl-5">
+		<div class  = "col">
+		<h6 >Tabelle Score 1 <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('h1')"></h6>	
+		<div  id ="h1" style = display:none>
+			<table class = "table table-hover"> 
+ 			<thead class = "bg-dark"> 
+				<tr> 					
+					<c:forEach items="${columnNames }" var = "name">
+						<th scope = "row">${name }</th>
+					</c:forEach>			
+ 				</tr> 
+			</thead> 
+			<tbody class = "tablebody"> 
+				<c:forEach items = "${ resultList}" var = "produkt" >
+					<tr> 
+						
+						<c:forEach items = "${produkt}" var = "value">
+							<td>${value }</td>
+						</c:forEach>
+					</tr>
+				</c:forEach>
+			</tbody>		 
+ 		</table>
+ 		</div>	
+ 		</div> 
+ 		</div>
+ 		</div>
 			<div id="draw_Highscore" style = "margin-top:28px; width: 900px; height: 500px;"></div>       		
       		 <div id="draw_Volumen" style="width: 900px; height: 500px;"></div>      		 
       		 <div id = "chart_div" style = "width: 900px; height: 500px;"></div>
@@ -484,9 +491,37 @@
 		</div>
 		
 		<div class = "col">	
-		<h6 class = "pl-5">Highscore 2 Punkte</h6>	
-		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-			<div id="draw_HighscoreLeader" style="width: 900px; height: 500px;"></div>
+		<h6 class = "pl-5">Highscore 2 Punkte</h6>
+		<div class = "container">
+		<div class = "row pl-5">
+		<div class  = "col ">
+		<h6>Tabelle Score 2 <img src = "img/sort-down-solid.svg" width ="20" class = "show pb-3" onClick="toggle('h2')"></h6>	
+		<div id ="h2" style = display:none>
+		<table class = "table table-hover"> 
+ 			<thead class = "bg-dark"> 
+				<tr> 					
+					<c:forEach items="${columnNames }" var = "name">
+						<th scope = "row">${name }</th>
+					</c:forEach>			
+ 				</tr> 
+			</thead> 
+			<tbody class = "tablebody"> 
+				<c:forEach items = "${ resultList2}" var = "produkt2" >
+					<tr> 
+						
+						<c:forEach items = "${produkt2}" var = "value">
+							<td class = "center">${value }</td>
+						</c:forEach>
+					</tr>
+				</c:forEach>
+			</tbody>		 
+ 		</table>	 
+ 	</div>
+ 	</div>
+ 	</div>
+ 	</div>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>			
+			<div id="draw_HighscoreLeader" style="width: 900px; height: 500px;"></div>		
        		<div id="draw_HighscoreKosten" style="width: 900px; height: 500px;"></div>
        		<div id="draw_HighscoreBestand" style="width: 900px; height: 500px;"></div>
        		<div id="draw_HighscoreVolumen" style="width: 900px; height: 500px;"></div>

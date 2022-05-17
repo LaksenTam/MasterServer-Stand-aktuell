@@ -6,77 +6,73 @@ public class Lager {
 	private int per;
 	private float kbindung;	
 	private float lagerVol;
+	private transient long zeit;
+	private boolean sammelbestellung;
+	private double sammelKosten;
 	
-	
+		
 	public Lager() {
 		
 	}
 
-
-	/**
-	 * @return the anz
-	 */
+	
 	public int getAnz() {
 		return anz;
 	}
 
 
-	/**
-	 * @param anz the anz to set
-	 */
+	
 	public void setAnz(int anz) {
 		this.anz = anz;
 	}
 
 
-	/**
-	 * @return the per
-	 */
+	
 	public int getPer() {
 		return per;
 	}
 
 
-	/**
-	 * @param per the per to set
-	 */
+	
 	public void setPer(int per) {
 		this.per = per;
 	}
 
-
-	/**
-	 * @return the kbindung
-	 */
 	public float getKbindung() {
 		return kbindung;
 	}
-
-
-	/**
-	 * @param kbindung the kbindung to set
-	 */
+	
 	public void setKbindung(float kbindung) {
 		this.kbindung = kbindung;
 	}
-
-
-
-	/**
-	 * @return the lagerVol
-	 */
+	
 	public float getLagerVol() {
 		return lagerVol;
 	}
 
 
-	/**
-	 * @param lagerVol the lagerVol to set
-	 */
+	
 	public void setLagerVol(float lagerVol) {
 		this.lagerVol = lagerVol;
 	}
 	
-	
+	public long getZeit() {
+		return zeit/1000;
+	}
+	public void setZeit(long zeit) {
+		this.zeit = zeit*1000;
+	}
+	public boolean isSammelbestellung() {
+		return sammelbestellung;
+	}
+	public void setSammelbestellung(boolean sammelbestellung) {
+		this.sammelbestellung = sammelbestellung;
+	}
+	public double getSammelKosten() {
+		return sammelKosten;
+	}
+	public void setSammelKosten(double sammelKosten) {
+		this.sammelKosten = sammelKosten;
+	}
 
 }

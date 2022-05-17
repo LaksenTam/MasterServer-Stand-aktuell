@@ -1,7 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +37,7 @@ public class loadProblem extends HttpServlet {
 		db.loadProbleminstanz(pkey);
 		
 		System.out.println(pkey);
-		response.sendRedirect("showSavedProbleminstanz?");
+		response.sendRedirect("ProblemInstanzAnzeigen?");
 		
 	}
 

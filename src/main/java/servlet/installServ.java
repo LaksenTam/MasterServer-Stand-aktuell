@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import datenbank.DatenbankVerbindung;
 import datenbank.Datenbankinstaller;
 import utility.Hashing;
 
@@ -34,13 +35,14 @@ public class installServ extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String name = request.getParameter("name");
-		String pass = request.getParameter("pass");
-		
+		String pass = request.getParameter("password");
+		System.out.println(pass);
 		Hashing hash = new Hashing();
 		String salt = hash.erstelleHash(pass);
+		System.out.println(salt);
 		String meldung = "";
 		
-		if(Datenbankinstaller.getConnection() == null) {
+		if(DatenbankVerbindung.getConnection() == null) {
 			try {
 				Datenbankinstaller.createAdminUser(name, salt);
 			} catch (SQLException e) {

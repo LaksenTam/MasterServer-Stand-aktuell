@@ -52,7 +52,7 @@ public class problemInstanzSpeichern extends HttpServlet {
 		}
 		
 		request.setAttribute(meldung, "Probleminstanz gespeichert unter dem namen: " + name);
-		request.getRequestDispatcher("adminpanel.jsp").forward(request, response);
+		response.sendRedirect("ProblemInstanzAnzeigen?");
 	}
 
 }

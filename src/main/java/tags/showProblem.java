@@ -22,17 +22,18 @@ public class showProblem extends SimpleTagSupport {
 		JspWriter out = getJspContext().getOut();
 		String s = "";
 		
-			s += "<form action = \"loadProblem\" method = \"POST\"><div class=\"input-group mb-3 \">"
+			s += "<form action = \"loadProblem\" method = \"POST\"><div class=\"input-group mb-3 justify-content-between\">"
 			  +"<div class=\"input-group-prepend\">"
-					+"<select class = \"custom-select bg-dark text-white\" name = \"name\">";
+					+"<select class = \"custom-select bg-dark text-white\" name = \"name\">"	
 			
-			  for(int j = 0; j<problemname.size();j++) {
-				  s+="<option value="+ problemname.get(j) +">" + problemname.get(j) + "</option> ";
-			  }
-			  s +="<option selected>Auswahl<option>"
-					  +"</select>"
+			  +"<option selected>Auswahl<option>";
+					  
+					  for(int j = 0; j<problemname.size();j++) {
+						  s+="<option value="+ problemname.get(j) +">" + problemname.get(j) + "</option> ";
+					  }
+					  s+="</select>"
 					  + "</div> ";
-		s += "<button class = \"btn btn-dark type = \"submit\">Laden</button>"
+		s += "<button class = \"btn btn-dark ml-2\" type = \"submit\">Laden</button>"
 				+ "</select></div></form></div>";
 		
 		try {

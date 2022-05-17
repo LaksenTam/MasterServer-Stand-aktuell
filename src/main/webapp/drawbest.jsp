@@ -24,7 +24,7 @@
  
  function drawKosten(){
  	var data = google.visualization.arrayToDataTable([
- 		['Name' , 'Kapitalbindung'], 		
+ 		${produktNamen}	
  		${drawKosten}    		
  	]);
  	
@@ -33,7 +33,8 @@
  			subtitle:'eigene Heuristik',
  				backgroundColor: '#6c757d',     		
 	     	    is3D: true,
-	     	   colors: ['yellow'],
+	     	    isStacked:true,
+	     	   
 			 hAxis: {
 				    textStyle: {
 				        color: '#ffffff'
@@ -65,7 +66,7 @@
  
  function drawBestand(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Name' , 'Bestand'], 		
+	 		${produktNamen}		
 	 		${drawBestand}    		
 	 	]);
 	 	
@@ -74,7 +75,7 @@
 	 			subtitle:'eigene Heuristik',
 	 			backgroundColor: '#6c757d',     		
 	     	    is3D: true,
-	     	   colors: ['yellow'],
+	     	   isStacked:true,
 			 hAxis: {
 				    textStyle: {
 				        color: '#ffffff'
@@ -105,7 +106,7 @@
  
  function drawVolumen(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Name' , 'Volumen'], 		
+	 		${produktNamen}		
 	 		${drawVol}    		
 	 	]);
 	 	
@@ -114,7 +115,7 @@
 	 			subtitle:'eigene Heuristik',
 	 			backgroundColor: '#6c757d',     		
 	     	    is3D: true,
-	     	   colors: ['yellow'],
+	     	   isStacked:true,
 			 hAxis: {
 				    textStyle: {
 				        color: '#ffffff'
@@ -144,7 +145,7 @@
  
  function drawHighscore(){
 	 var data = google.visualization.arrayToDataTable([
-	 		['Daten', 'Kosten' , 'Fehlmengen', 'Zeit'], 		
+	 		['Daten', 'variable Kosten' , 'Bestellfix Kosten', 'Fehlmengenkosten'], 		
 	 		${drawHighscore}    		
 	 	]);
 	 	

@@ -25,8 +25,14 @@ public class TippTag extends SimpleTagSupport {
 		
 		int selector = rand.nextInt(tipps.size()) + 0;
 		
+		String s = "";
+		s +=  "    <div class = \"card-design\" id =\"tipp\"><img class = \"bulb\" src = \"img/lightbulb-solid.svg\"></a><h4>Wussten Sie schon?<button class = \"close\"  role = \"button\" onClick=\"toggle('tipp')\"> </h4>\r\n"				
+				+ "    <p>	"	+      tipps.get(selector)			      
+				+ "    </p></div>\r\n";		   
+				
+		
 		try {
-			out.append(tipps.get(selector));
+			out.append(s);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

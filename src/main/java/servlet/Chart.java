@@ -15,6 +15,7 @@ import datenbank.Datenbank;
 import datenbank.UserDatenbank;
 import utility.CalcVolumen;
 import utility.DrawChart;
+import utility.NumFormat;
 
 /**
  * Servlet implementation class Chart
@@ -36,25 +37,36 @@ public class Chart extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String uid = request.getParameter("uid");
-		
-	
+		String produktNamen = "";
 		UserDatenbank user = new UserDatenbank();
 		DrawChart chart = new DrawChart();
 		Datenbank db = new Datenbank();
 		CalcVolumen vol = new CalcVolumen();
 		
+				
 		try {
 			List<Produkt> produktDaten = db.getVerbrauchsListe();
 			List<String[]> ergebnis = user.scoreData(uid);
-			List<String[]> volumen = vol.calcVolumen(produktDaten, ergebnis);
-			String drawKosten = chart.drawKosten(ergebnis);
-			String drawBestand = chart.drawBestandsVerlauf(ergebnis);
-			String drawVol = chart.drawVolumenVerlauf(volumen);
-			String drawHighscore = chart.drawScores(ergebnis);
+			List<String[]> volumen = vol.calcVolumen(produktDaten, ergebnis);			
+			produktNamen = chart.produktname(ergebnis);			
+			List<String> hsData = NumFormat.seperatekv(produktDaten, ergebnis);	
+
+			
+			int perioden = Integer.parseInt(ergebnis.get(ergebnis.size()-1)[6]);
+			
+			String drawStackedBestand = chart.drawStackedBestand(ergebnis, perioden);
+		
+			
+			
+			String drawKosten = chart.drawStackedKosten(ergebnis,perioden);
+			String drawVol = chart.drawStackedVolumen(volumen,perioden);
+			System.out.println(drawVol);
+			String drawHighscore = chart.drawScores(hsData);
+			request.setAttribute("produktNamen", produktNamen);
 			request.setAttribute("drawHighscore", drawHighscore);
 			request.setAttribute("drawVol", drawVol);
 			request.setAttribute("drawKosten", drawKosten);
-			request.setAttribute("drawBestand", drawBestand);
+			request.setAttribute("drawBestand", drawStackedBestand);
 			request.getRequestDispatcher("drawbest.jsp").forward(request, response);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

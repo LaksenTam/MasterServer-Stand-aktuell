@@ -1,7 +1,8 @@
 package servlet;
 
 import java.io.IOException;
-
+import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,7 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import data.Highscore;
+import data.Produkt;
+import data.Userergebnis;
+import data.Zwischenergebnis;
+import datenbank.Datenbank;
 import datenbank.UserDatenbank;
+import json.DataToJson;
+import json.ErgebnisDeserializer;
 
 
 /**
@@ -29,33 +36,47 @@ public class TestServ extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		UserDatenbank user = new UserDatenbank();
-		HttpSession session = request.getSession();
-		String key = (String) session.getAttribute("key");
-		
-		List<Highscore> scores = user.userScores(key);
-		for(Highscore s: scores) {
-			System.out.println(s.getScore());
-		}
-		request.setAttribute("scores", scores);
-		request.getRequestDispatcher("test.jsp").forward(request, response);
-		
-	}
-
+	
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String test = request.getParameter("test1");
-		String vergleich = request.getParameter("test2");
-		System.out.println(test);
-		System.out.println(vergleich);
-	}
+		// TODO Auto-generated method stub
+				long neuStempel = System.currentTimeMillis();
+				Datenbank db = new Datenbank();
+				DataToJson dj = new DataToJson();		
+				UserDatenbank ud = new UserDatenbank();
+				ErgebnisDeserializer ed = new ErgebnisDeserializer();
+			
+				String anfrage = request.getParameter("anfrage");
+				System.out.println(anfrage);
+				Zwischenergebnis ue = new Zwischenergebnis(); 
+				try {
+					 ue = ed.deserializeJsonZwischenergebnis(anfrage, ue);
+					 System.out.println(ue.getAPI_KEY() + " " + ue.getProduktNameAnfrage() + " " + ue.zwischenPeriode);
+				}catch(Exception e) {
+					e.printStackTrace();
+				}
+
+				
+				
+				PrintWriter pw = response.getWriter();
+				
+					Produkt p = db.getProduktInfos(ue.zwischenPeriode, ue.getProduktNameAnfrage());			
+				
+					response.setContentType("text/json");
+					
+					String ausgabe = dj.produktToJson(p);
+					
+					pw.print(ausgabe);
+					pw.close();
+					
+				try {
+						ud.insStempel(ue.getAPI_KEY(), neuStempel);
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}		
+			}
 
 }

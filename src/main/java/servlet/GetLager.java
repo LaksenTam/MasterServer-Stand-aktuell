@@ -43,16 +43,21 @@ public class GetLager extends HttpServlet {
 		
 		String key = request.getParameter("key");		
 		
-		Lager lager = new Lager();	
+		Lager lager = new Lager();			
 		
 		try {
 			long stamp = System.currentTimeMillis();
 			ud.insStempel(key, stamp);
 			lager = db.lagerAbrufen();
+			
+			lager.setSammelbestellung(false);
+			if(lager.getSammelKosten()>0) {
+				lager.setSammelbestellung(true);
+			}
 			PrintWriter pw = response.getWriter();
 			response.setContentType("text/json");
 
-			String lagerToString = dj.lagerToJson(lager);
+			String lagerToString = dj.lagerToJson(lager);			
 			pw.print(lagerToString);
 			pw.flush();
 			pw.close();

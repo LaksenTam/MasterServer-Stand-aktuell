@@ -37,11 +37,10 @@ public class DrawChart {
 		return vol;
 	}
 
-	public String drawScores(List<String[]> userData) {
+	public String drawScores(List<String> hsData) {
 		String score ="";
-		for(int i = 0; i<userData.size();i++) {
-			score = "['Highscore Übersicht'," + userData.get(i)[3] + "," + userData.get(i)[4] + "," + userData.get(i)[5] + "],"; 
-		}
+		score = "['Highscore Übersicht'," +hsData.get(0) + "," + hsData.get(1) + "," + hsData.get(2) + "],"; 
+	
 		return score;
 	}
 	

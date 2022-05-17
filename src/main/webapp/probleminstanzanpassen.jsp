@@ -21,8 +21,20 @@
 <body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <p>${updated }</p>
-<x:ProblemInstanzBearbeiten></x:ProblemInstanzBearbeiten>
-
+<div class="container-problem">
+  <div class="anpassen">
+  	<x:ProblemInstanzBearbeiten></x:ProblemInstanzBearbeiten>
+  </div>
+  <div class="save-load">
+    <div class="save">
+    
+    </div>
+    <div class="load">
+    	<x:showProblem/>    
+    </div>
+    
+  </div>
+</div>
 
 			
 </body>

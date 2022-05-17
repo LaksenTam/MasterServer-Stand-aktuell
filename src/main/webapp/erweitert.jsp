@@ -20,8 +20,10 @@
 <body class = "bg-secondary text-white">
 <x:AdminHead></x:AdminHead>
 <form action = "ErweiterteErstellung" method = "GET">
-<div class = "border border-dark rounded p-1 m-2">
-<div class = "border border-dark rounded m-3 p-1">
+<div class = "container-erweitert">
+<div class = "border border-white rounded p-1 m-2 ml-4 mr-4">
+<h2 class = "text-center mt-2 mb-2">Erweiterte Instanzgenerierung</h2>
+<div class = "border border-white rounded m-3 p-1">
 	<div class = "form-group row p-1">
 		<label for="input" class = "col-sm-1 col-form-label">Spieleinstellungen</label>
 		<div class = "col">
@@ -42,7 +44,7 @@
 	
 	</div>
 	</div>
-	<div class = "border border-dark rounded m-3 p-1">
+	<div class = "border border-white rounded m-3 p-1">
 	<div class = "form-group row p-1">
 		<label for="input" class = "col-sm-1 col-form-label">Verbrauch</label>
 		<div class = "col">
@@ -122,7 +124,8 @@
 		</div>
 	</div>
 	</div>
-		<button class = "btn btn-info" type = "submit">Senden!</button>
+		<button class = "btn btn-dark" type = "submit">Senden!</button>
+	</div>
 	</div>
 </form>
 

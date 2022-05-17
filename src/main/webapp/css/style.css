@@ -135,3 +135,288 @@ img.show{
     box-shadow: 4px 4px 15px 2px #343a40;
 }
 
+.centerdrop {
+	margin-left:33%;
+}
+
+@keyframes card-design {
+	0% {
+		opacity: 0;
+		transform: translateX(250px);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.card-design {	
+    width: 300px;
+    border-radius: 6px;
+    border: solid;
+    border-color: #3c3434;
+    position: absolute;
+    margin-left: 82%;
+    padding: 20px;
+    background-color: #4d4d4d;
+    animation: card-design 0.5s linear 0s 1 normal forwards;
+    
+}
+
+.close {
+  position: absolute;
+  right: 10px;
+  top: 3px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.7;
+}
+.close:hover {
+  opacity: 1;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: #ffffff;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
+}
+
+.bulb{
+	width: 20px;
+    padding-bottom: 10px;
+    filter: invert(80%) sepia(57%) saturate(1892%) hue-rotate(350deg) brightness(100%) contrast(106%);
+}
+div#google-visualization-errors-all-1{
+	display:none !important;
+}
+
+div#google-visualization-errors-all-3{
+	display:none !important;
+}
+
+
+.container-grid {  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 0.8fr 1fr 0.2fr;
+  grid-auto-columns: 1fr;
+  grid-auto-rows: 1fr;
+  gap: 10px 15px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "spielregeln lagerdata"
+    "produkterstellung produkterstellung"
+    "buttons buttons";
+    margin: 0% 10%;
+    font-size:larger;
+}
+
+.spielregeln {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.6fr 1.2fr 1.2fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "spielregelnueber spielregelnueber spielregelnueber"
+    "sammelblabel sammelbin sammelbin"
+    "zeitlabel zeitin zeitin";
+  grid-area: spielregeln;
+  align-items: end;
+  border: 2px solid;
+    border-radius: 5px;
+    padding: 1%;
+}
+
+.spielregelnueber { grid-area: spielregelnueber; }
+
+.sammelblabel { grid-area: sammelblabel; }
+
+.sammelbin { grid-area: sammelbin; }
+
+.zeitlabel { grid-area: zeitlabel; }
+
+.zeitin { grid-area: zeitin; }
+
+.lagerdata {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.6fr 1.2fr 1.2fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "lagerueber lagerueber lagerueber"
+    "lagergen lagergen lagergen"
+    "lagerup lagerup lagerup";
+  grid-area: lagerdata;
+  border: 2px solid;
+    border-radius: 5px;
+    padding: 1%;
+        align-items: center;
+}
+
+.lagerueber { grid-area: lagerueber; }
+
+.lagergen {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "lagergenueber lagergenueber lagergenueber"
+    "lagervollabel lagervolin lagervolin"
+    "lagerkaplabel lagerkapin lagerkapin";
+  grid-area: lagergen;
+  margin-bottom: 2%;
+  }
+
+.lagergenueber { grid-area: lagergenueber; }
+
+.lagervollabel { grid-area: lagervollabel; }
+
+.lagerkaplabel { grid-area: lagerkaplabel; }
+
+.lagervolin { grid-area: lagervolin; }
+
+.lagerkapin { grid-area: lagerkapin; }
+
+.lagerup {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "lagerupdatelabel lagerupdatelabel lagerupdatelabel"
+    "lagerupvollabel lagerupvolin lagerupvolin"
+    "lagerupkap lagerupkapin lagerupkapin";
+  grid-area: lagerup;
+}
+
+.lagerupdatelabel { grid-area: lagerupdatelabel; }
+
+.lagerupvollabel { grid-area: lagerupvollabel; }
+
+.lagerupkap { grid-area: lagerupkap; }
+
+.lagerupvolin { grid-area: lagerupvolin; }
+
+.lagerupkapin { grid-area: lagerupkapin; }
+
+.produkterstellung {  display: grid;
+  grid-template-columns: 0.5fr 1.8fr 0.7fr;
+  grid-template-rows: 1fr 0.5fr 1.5fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "periodenlabel periodeninput ."
+    "verbrauchgen verbrauchgen ."
+    "verbrauchlabel verbrauchsin .";
+  grid-area: produkterstellung;
+  border: 2px solid;
+    border-radius: 5px;
+    padding: 1%;
+    align-items: end;
+}
+
+.periodenlabel { grid-area: periodenlabel; }
+
+.periodeninput { 
+	grid-area: periodeninput; 
+	width: fit-content;
+}
+
+.verbrauchgen { grid-area: verbrauchgen; }
+
+.verbrauchlabel {  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "a"
+    "b"
+    "c";
+  grid-area: verbrauchlabel;
+}
+
+.a { grid-area: a; }
+
+.b { grid-area: b; }
+
+.c { grid-area: c; }
+
+.verbrauchsin {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "a-in a-in a-in"
+    "b-in b-in b-in"
+    "c-in c-in c-in";
+  grid-area: verbrauchsin;
+}
+
+.b-in {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "b-konst b-sai b-schwank";
+  grid-area: b-in;
+}
+
+.b-konst { grid-area: b-konst; }
+
+.b-sai { grid-area: b-sai; }
+
+.b-schwank { grid-area: b-schwank; }
+
+.c-in {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "c-konst c-sai c-schwank";
+  grid-area: c-in;
+}
+
+.c-konst { grid-area: c-konst; }
+
+.c-sai { grid-area: c-sai; }
+
+.c-schwank { grid-area: c-schwank; }
+
+.a-in {  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "a-konst a-sai a-schwank";
+  grid-area: a-in;
+}
+
+.a-konst { grid-area: a-konst; }
+
+.a-sai { grid-area: a-sai; }
+
+.a-schwank { grid-area: a-schwank; }
+
+.buttons {
+	grid-area: buttons;
+}
+
+.container-erweitert{
+	margin:0 10%;
+}
+
+

@@ -60,7 +60,7 @@ public class Schwierigkeitsgrad2 extends HttpServlet {
 		
 		try {
 			ue = daten.ergebnis(ergebnis, ue);
-			produktListe = daten.produktListePeriode(produktListe, pe.getPeriode());
+			produktListe = daten.produktListePeriode(produktListe, pe.getPeriode());			
 			long stamp = System.currentTimeMillis();
 			//Schwierigkeitsgrad 2 zeit
 			if(time.testeStempel(stamp, ue.getAPI_KEY())) {

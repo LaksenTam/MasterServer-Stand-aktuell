@@ -14,7 +14,6 @@ public class DatenbankVerbindung {
         private static final String DB_PASSWORD = "henrik";
         private static final String DB_DRIVER = "org.postgresql.Driver";
         private static final String DB_URL = "jdbc:postgresql://" + DB_SERVER + "/" + DB_NAME;
-
     	
 
         /**
@@ -27,9 +26,11 @@ public class DatenbankVerbindung {
                 Class.forName(DB_DRIVER);
                 instance = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
                 return instance;
-            } catch (ClassNotFoundException | SQLException e) {
-                System.out.println("PostgresDb: Something went wrong: ");
-                e.printStackTrace();
+            } catch (ClassNotFoundException | SQLException e) {            	
+                System.out.println("PostgresDb: Something went wrong: ");    
+                Datenbankinstaller.initDatabase(DB_SERVER, DB_NAME, DB_USER, DB_DRIVER);
+               // e.printStackTrace();
+                
             }
 
             return null;

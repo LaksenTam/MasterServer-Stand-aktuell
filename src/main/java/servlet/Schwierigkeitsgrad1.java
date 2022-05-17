@@ -11,9 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import data.Produkt;
+import data.Zwischenergebnis;
 import datenbank.Datenbank;
 import datenbank.UserDatenbank;
 import json.DataToJson;
+import json.ErgebnisDeserializer;
 
 /**
  * Servlet implementation class verbrauchProProdukt
@@ -31,26 +33,30 @@ public class Schwierigkeitsgrad1 extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+	
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {		
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long neuStempel = System.currentTimeMillis();
 		Datenbank db = new Datenbank();
 		DataToJson dj = new DataToJson();		
 		UserDatenbank ud = new UserDatenbank();
+		ErgebnisDeserializer ed = new ErgebnisDeserializer();
 	
-		String periode = request.getParameter("periode");
-		String produktName = request.getParameter("produktName");
-		String key = request.getParameter("key");
-		
-
-		int per = Integer.parseInt(periode);
+		String anfrage = request.getParameter("anfrage");
+		System.out.println(anfrage);
+		Zwischenergebnis ue = new Zwischenergebnis(); 
+		try {
+			 ue = ed.deserializeJsonZwischenergebnis(anfrage, ue);
+			 System.out.println(ue.getAPI_KEY() + " " + ue.getProduktNameAnfrage() + " " + ue.zwischenPeriode);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}		
 		
 		PrintWriter pw = response.getWriter();
 		
-			Produkt p = db.getProduktInfos(per, produktName);			
+			Produkt p = db.getProduktInfos(ue.zwischenPeriode, ue.getProduktNameAnfrage());			
 		
 			response.setContentType("text/json");
 			
@@ -60,19 +66,12 @@ public class Schwierigkeitsgrad1 extends HttpServlet {
 			pw.close();
 			
 		try {
-				ud.insStempel(key, neuStempel);
+				ud.insStempel(ue.getAPI_KEY(), neuStempel);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}		
 	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+	
 
 }

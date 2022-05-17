@@ -54,6 +54,8 @@ public class CalcHighscore {
 		score.setScore(highscore);
 		score.setKosten(userKosten);		
 		score.setFehlmengen(fehl);
+		
+		calcKostenAufteilung(ergebnis, pInfo, produktListe);
 
 		return score;
 	}
@@ -86,6 +88,9 @@ public class CalcHighscore {
 				if(pro.get(j).getName().equals(ergebnis.get(k).getProduktName())) {
 					checkfehl -=ergebnis.get(k).getBestellmenge();
 				}				
+			}
+			if(checkfehl<0) {
+				checkfehl = 0;
 			}
 		fehlmengenKosten +=checkfehl *pInfo.get(j).getFehlmengenkosten();			
 		}	
@@ -121,6 +126,73 @@ public class CalcHighscore {
 			vergleichsWert += produkte.get(i).getBestellfix() + (produkte.get(i).getEinstand()*produkte.get(i).getVerbrauch());
 		}
 		return vergleichsWert;
+	}
+	
+	public List<Double> calcKostenAufteilung(List<Produktergebnis> ergebnis, List<Produkt> pinfo, List<Produkt> verbrauch) {
+		List <Double> kosten = new ArrayList<Double>();
+		double bf = calcBestellfix(ergebnis,pinfo);
+		kosten.add(bf);
+		double einstand = calcEinstand(ergebnis, pinfo);
+		kosten.add(einstand);
+		double lagerkosten = calcLagerkosten(ergebnis, pinfo, verbrauch);
+		
+		return null;
+		
+	}
+	
+	public double calcBestellfix(List<Produktergebnis> ergebnis, List<Produkt> pinfo) {
+		double bf = 0.00;
+		for(int i = 0; i<ergebnis.size();i++) {
+			if(ergebnis.get(i).getBestellmenge() >0) {
+				for(int j = 0; j< pinfo.size();j++) {
+					if(ergebnis.get(i).getProduktName().equals(pinfo.get(j).getName())) {
+						bf += pinfo.get(j).getBestellfix();
+					}
+				}				
+			}
+		}
+		System.out.println(bf);
+		return bf;
+	}
+	
+	public double calcEinstand(List<Produktergebnis> ergebnis, List<Produkt> pinfo) {
+		double einstand = 0.00;
+		for(int i = 0; i<ergebnis.size();i++) {
+			if(ergebnis.get(i).getBestellmenge()>0) {
+				for(int j = 0; j<pinfo.size();j++) {
+					if(ergebnis.get(i).getProduktName().equals(pinfo.get(j).getName())) {
+						einstand += ergebnis.get(i).getBestellmenge()* pinfo.get(j).getEinstand();
+					}
+				}
+			}
+		}
+		System.out.println(einstand);
+		return einstand;
+	}
+	
+	public double calcLagerkosten(List<Produktergebnis> ergebnis, List<Produkt> pinfo, List<Produkt> verbrauch) {
+		double lagerkosten = 0.00;
+		for(int i = 0; i<ergebnis.size(); i++) {
+			int per = 0;
+			if(ergebnis.get(i).getBestellmenge()>0) {
+				double besteller = ergebnis.get(i).getBestellmenge();
+				for(int j = 0; j<verbrauch.size(); j++) {
+					if(ergebnis.get(i).getProduktName().equals(verbrauch.get(j).getName())){						
+						besteller -= verbrauch.get(j).getVerbrauch(); 
+						System.out.println("besteller: " + besteller);
+						lagerkosten += verbrauch.get(j).getVerbrauch() * per * verbrauch.get(j).getLagerkostensatz();
+						per++;
+						if(besteller <= 0) {
+							break;
+						}
+					}
+				}
+				
+			}
+		}
+		System.out.println(lagerkosten);
+		return lagerkosten;
+		
 	}
 
 }

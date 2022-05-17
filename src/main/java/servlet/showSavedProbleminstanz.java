@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import data.Lager;
 import datenbank.Datenbank;
 
 /**
@@ -26,14 +27,19 @@ public class showSavedProbleminstanz extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    
 	/**
+	 * Ruft die Parameter der gespeicherten Probleminstanz ab
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Datenbank db = new Datenbank();
 		
 		List<String> problem = db.showSavedProbleminstanz();	
+		Lager lager = db.lagerAbrufen();
 		
+		request.setAttribute("lagerKap", lager.getKbindung());
+		request.setAttribute("lagerVol", lager.getLagerVol());
 		request.setAttribute("savedProblem", problem);
 		request.getRequestDispatcher("instanzmanagement.jsp").forward(request, response);
 	}

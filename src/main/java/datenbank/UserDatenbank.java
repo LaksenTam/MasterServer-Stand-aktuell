@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.List;
 
 import data.Highscore;
@@ -49,7 +48,7 @@ public class UserDatenbank {
 	public boolean registrierungUser(String name, String password, String api_key, int zugriff) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = "INSERT into public.user (name, password, key, zugriff) values(?,?,?,?)";		
+		String sql = "INSERT into public.benutzer (name, password, key, zugriff) values(?,?,?,?)";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -74,10 +73,8 @@ public class UserDatenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "Select * from public.user where name = ? AND password = ?;";
-		try {
-			System.out.println(name);
-			System.out.println(password);
+		String sql = "Select * from public.benutzer where name = ? AND password = ?;";
+		try {			
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, name);
@@ -104,16 +101,16 @@ public class UserDatenbank {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = "Select * from public.user where name = ? AND password = ?;";		
-		try {
-			System.out.println(name);
-			System.out.println(password);
+		String sql = "Select * from public.benutzer where name = ? AND password = ?;";		
+		try {			
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
 			ps.setString(1, name);
 			ps.setString(2, password);
 			rs = ps.executeQuery();
-			status = rs.next();
+			if(rs.next()) {
+				status = true;
+			}
 		}catch(SQLException e) {
 			e.printStackTrace();			
 		}finally {
@@ -157,7 +154,7 @@ public class UserDatenbank {
 		List<Highscore> score = new ArrayList<Highscore>();
 		String sql = "Select name, score, api, uid "
 					+ "from public.highscore "
-					+ "INNER JOIN public.user ON public.highscore.api = public.user.key "
+					+ "INNER JOIN public.benutzer ON public.highscore.api = public.benutzer.key "
 					+ "Order BY public.highscore.score DESC";
 		try {
 			con = DatenbankVerbindung.getConnection();
@@ -302,7 +299,7 @@ public class UserDatenbank {
 	public void deleteScore(String name, double score) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;		
-		String sql = "Delete from public.highscore USING user where score = ? and api IN (select key from public.user where name =?)";		
+		String sql = "Delete from public.highscore USING benutzer where score = ? and api IN (select key from public.benutzer where name =?)";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -349,7 +346,7 @@ public class UserDatenbank {
 		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS eKosten, public.highscore.kosten AS hKosten, fehl, zeit\n"
 				+ "from public.ergebnis\n"
 				+"INNER JOIN public.highscore on public.highscore.api = public.ergebnis.userkey\n"
-				+ " where userkey IN(select key from public.user where name =?)";		
+				+ " where userkey IN(select key from public.benutzer where name =?)";		
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);
@@ -493,7 +490,8 @@ public class UserDatenbank {
 		String sql = "Select pname, bestellmenge, public.ergebnis.kosten AS pkosten, public.highscore.kosten AS hKosten, fehl, zeit, periode\n"
 				+ "from public.ergebnis\n"
 				+ "INNER JOIN public.highscore on public.highscore.uid = public.ergebnis.uid\n"
-				+ " where public.highscore.uid =?";
+				+ "where public.highscore.uid =?\n"
+				+ "ORDER BY periode ASC";
 		try {
 			con = DatenbankVerbindung.getConnection();
 			ps = con.prepareStatement(sql);

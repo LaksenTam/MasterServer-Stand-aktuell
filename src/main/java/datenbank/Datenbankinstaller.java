@@ -8,33 +8,43 @@ import java.sql.Statement;
 
 public class Datenbankinstaller {
 	
-	 protected static Connection instance;
-     
-     private static final String DB_SERVER = "localhost";
-     private static final String DB_NAME = "testdatenbankinstall2";
-     private static final String DB_USER = "postgres";
-     private static final String DB_PASSWORD = "henrik";
-     private static final String DB_DRIVER = "org.postgresql.Driver";
-     private static final String DB_URL = "jdbc:postgresql://" + DB_SERVER + "/" + DB_NAME;
-     
-     public static void initDatabase() {
+//	 protected static Connection instance;
+//     
+//     private static final String DB_SERVER = "localhost";
+//     private static final String DB_NAME = "testdatenbankinstall2";
+//     private static final String DB_USER = "postgres";
+//     private static final String DB_PASSWORD = "henrik";
+//     private static final String DB_DRIVER = "org.postgresql.Driver";
+//     private static final String DB_URL = "jdbc:postgresql://" + DB_SERVER + "/" + DB_NAME;
+//     
+     public static void initDatabase(String DB_SERVER, String DB_NAME, String DB_USER, String DB_DRIVER) {
     	 try {
-			createDB();
+			createDB(DB_SERVER, DB_NAME, DB_USER, DB_DRIVER);
 			System.out.println("Database created");
-			createUserTable();
-			System.out.println("Usertable created");
-			createProdukt();
-			System.out.println("Produktable created");
+			createBenutzerTable();
+			System.out.println("Benutzertable created");
 			createProblemInstanz();
 			System.out.println("Probleminstanztable created");
 			createHighscore();
 			System.out.println("Highscoretable created");
+			createProdukt();
+			System.out.println("Produktable created");			
 			createErgebnis();
 			System.out.println("Ergebnistable created");
 			createStamps();
 			System.out.println("Timestamptable created");
 			createVerbrauch();
-			System.out.println("Verbrauchtable created");			
+			System.out.println("Verbrauchtable created");	
+			createBewaehrtProblem();			
+			System.out.println("BewaehrteProbleminstanz created");
+			createBewaehrtProdukt();
+			System.out.println("Bewaehrte Produkte created");
+			createBewaehrtVerbrauch();
+			System.out.println("Bewaehrte Verbrauch created");
+			createTopTen();
+			System.out.println("Top10 created");
+			createBewaehrtUserErgebnis();
+			System.out.println("BewaehrteUserergebnisse created");
 			
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -43,10 +53,10 @@ public class Datenbankinstaller {
      }
 
           
-     public static void createDB() throws ClassNotFoundException, SQLException {
+     public static void createDB(String DB_SERVER, String DB_NAME, String DB_USER, String DB_DRIVER) throws ClassNotFoundException, SQLException {
     	 Connection con = null;
     	 Statement stmt = null;
-    	 String sql = "CREATE DATABASE " + DB_NAME+ " OWNER " + DB_USER + ";";
+    	 String sql = "CREATE DATABASE " + DB_NAME + " OWNER " + DB_USER + ";";
     	 try {
         	 Class.forName(DB_DRIVER);
         	 con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres","henrik");      	    
@@ -59,64 +69,24 @@ public class Datenbankinstaller {
     	 }
     	 
      }
+        
      
-     /**
-      * Initializes a connection to the data base defined by DB_URL.
-      * 
-      * @return java.sql.Connection or null if there is an error.
-      */
-     private static Connection init() {
-         try {
-             Class.forName(DB_DRIVER);
-             instance = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             return instance;
-         } catch (ClassNotFoundException | SQLException e) {
-             System.out.println("PostgresDb: Something went wrong: ");
-             initDatabase();
-             //e.printStackTrace();
-         }
-
-         return null;
-     }
-
-     /**
-      * Returns a Connection or null if connecting to data base fails for some
-      * reason.
-      * 
-      * @return java.sql.Connection
-      */
-     public static Connection getConnection() {
-         try {
-             return (instance == null || instance.isClosed()) ? init() : instance;
-         } catch (SQLException e) {
-             e.printStackTrace();
-             return init();
-         }
-     }
-
-     public static void closeConnection() {
-         try {
-             instance.close();
-         } catch (SQLException e) {
-             // TODO Auto-generated catch block
-             e.printStackTrace();
-         }
-     }
-     
-     public static void createUserTable() throws SQLException {
+     public static void createBenutzerTable() throws SQLException {
     	 Connection con = null;
     	 PreparedStatement ps = null;
-    	 String sql = "CREATE TABLE users("
-    			 +"id serial NOT NULL,"
-    			 +"name character varying NOT NULL,"
-    			 +"password character varying NOT NULL,"
-    			 +"key character varying NOT NULL,"
-    			 +"zugriff integer NOT NULL,"
-    			  +"CONSTRAINT user_pkey PRIMARY KEY (id),"
-    			  +"CONSTRAINT name UNIQUE (name)"
-    			  +");";
+    	 String sql = "CREATE TABLE IF NOT EXISTS public.\"benutzer\"\r\n"
+    	 		+ "(\r\n"
+    	 		+ "    id serial NOT NULL,\r\n"
+    	 		+ "    name character varying NOT NULL,\r\n"
+    	 		+ "    password character varying  NOT NULL,\r\n"
+    	 		+ "    key character varying NOT NULL,\r\n"
+    	 		+ "    zugriff integer NOT NULL,\r\n"
+    	 		+ "    CONSTRAINT user_pkey PRIMARY KEY (id),\r\n"
+    	 		+ "    CONSTRAINT name UNIQUE (name),\r\n"
+    	 		+ "    CONSTRAINT key UNIQUE (key)\r\n"    	 	
+    	 		+ ")";
     	 try {
-    		 con = getConnection();
+    		 con = DatenbankVerbindung.getConnection();
     		 ps = con.prepareStatement(sql);
     		 ps.executeUpdate();
     	 }catch(SQLException e) {
@@ -133,15 +103,22 @@ public class Datenbankinstaller {
     	 		+ "    pname character varying NOT NULL,\r\n"
     	 		+ "    periode integer NOT NULL,\r\n"
     	 		+ "    verbrauch integer NOT NULL,\r\n"
+    	 		+ "    problemkey character varying,\r\n"
+    	 		+ "    verbrauchkategorie character varying COLLATE pg_catalog.\"default\",\r\n"    	 		
     	 		+ "    CONSTRAINT verbrauch_pkey PRIMARY KEY (vid),\r\n"
     	 		+ "    CONSTRAINT verbrauch FOREIGN KEY (pname)\r\n"
     	 		+ "        REFERENCES public.produkt (name) MATCH SIMPLE\r\n"
     	 		+ "        ON UPDATE NO ACTION\r\n"
-    	 		+ "        ON DELETE NO ACTION\r\n"
+    	 		+ "        ON DELETE NO ACTION,\r\n"
+    	 		+ "    CONSTRAINT verbrauch_problemkey_fkey FOREIGN KEY (problemkey)\r\n"
+    	 		+ "        REFERENCES public.probleminstanz (key) MATCH SIMPLE\r\n"
+    	 		+ "        ON UPDATE NO ACTION\r\n"
+    	 		+ "        ON DELETE CASCADE\r\n"
+    	 		+ "        NOT VALID\r\n"
     	 		+ ")";
     	 
     	 try {
-    		 con = getConnection();
+    		 con = DatenbankVerbindung.getConnection();
     		 ps = con.prepareStatement(sql);
     		 ps.executeUpdate();
     	 }catch(SQLException e) {
@@ -169,7 +146,7 @@ public class Datenbankinstaller {
     	 		+ "        NOT VALID\r\n"
     	 		+ ")";
     	 try {
-    		 con = getConnection();
+    		 con = DatenbankVerbindung.getConnection();
     		 ps = con.prepareStatement(sql);
     		 ps.executeUpdate();
     	 }catch(SQLException e) {
@@ -182,20 +159,30 @@ public class Datenbankinstaller {
     	 PreparedStatement ps = null;
     	 String sql = "CREATE TABLE IF NOT EXISTS public.highscore\r\n"
     	 		+ "(\r\n"
-    	 		+ "    id serial NOT NULL ,\r\n"
+    	 		+ "    id serial NOT NULL,\r\n"
     	 		+ "    score double precision NOT NULL,\r\n"
-    	 		+ "    api character varying NOT NULL,\r\n"
+    	 		+ "    api character varying COLLATE pg_catalog.\"default\" NOT NULL,\r\n"
     	 		+ "    fehl double precision,\r\n"
     	 		+ "    kosten double precision,\r\n"
     	 		+ "    zeit bigint,\r\n"
     	 		+ "    schwierigkeitsgrad integer,\r\n"
-    	 		+ "    uid character varying NOT NULL,\r\n"
+    	 		+ "    uid character varying COLLATE pg_catalog.\"default\" NOT NULL,\r\n"
+    	 		+ "    problemkey character varying COLLATE pg_catalog.\"default\",\r\n"
     	 		+ "    CONSTRAINT highscore_pkey PRIMARY KEY (id),\r\n"
-    	 		+ "    CONSTRAINT uid UNIQUE (uid)\r\n"
+    	 		+ "    CONSTRAINT uid UNIQUE (uid),\r\n"
+    	 		+ "    CONSTRAINT highscore_problemkey_fkey FOREIGN KEY (problemkey)\r\n"
+    	 		+ "        REFERENCES public.probleminstanz (key) MATCH SIMPLE\r\n"
+    	 		+ "        ON UPDATE NO ACTION\r\n"
+    	 		+ "        ON DELETE CASCADE\r\n"
+    	 		+ "        NOT VALID,\r\n"
+    	 		+ "	   CONSTRAINT ukey FOREIGN KEY (api)\r\n"
+    	 		+ "        REFERENCES public.\"benutzer\" (key) MATCH SIMPLE\r\n"
+    	 		+ "        ON UPDATE NO ACTION\r\n"
+    	 		+ "        ON DELETE NO ACTION\r\n"
+    	 		+ "        NOT VALID"
     	 		+ ")";
-    	 
     	 try {
-    		 con = getConnection();
+    		 con = DatenbankVerbindung.getConnection();
     		 ps = con.prepareStatement(sql);
     		 ps.executeUpdate();
     	 }catch(SQLException e) {
@@ -216,11 +203,13 @@ public class Datenbankinstaller {
     	 		+ "    kapitalbindung double precision,\r\n"
     	 		+ "    sammelbestellung double precision,\r\n"
     	 		+ "    zeit bigint,\r\n"
-    	 		+ "    CONSTRAINT probleminstanz_pkey PRIMARY KEY (id)\r\n"
-    	 		+ ")";
+    	 		+ "    name character varying,\r\n"
+    	 	    + "    CONSTRAINT probleminstanz_pkey PRIMARY KEY (id),\r\n"
+    	 	    + "    CONSTRAINT problemkey UNIQUE (key)\r\n "   	 		
+    	 	    + ")";
     	 
     	 try {
-    		 con = getConnection();
+    		 con = DatenbankVerbindung.getConnection();
     		 ps = con.prepareStatement(sql);
     		 ps.executeUpdate();
     	 }catch(SQLException e) {
@@ -234,21 +223,27 @@ public class Datenbankinstaller {
     	 String sql = "CREATE TABLE IF NOT EXISTS public.produkt\r\n"
     	 		+ "(\r\n"
     	 		+ "    pid serial NOT NULL ,\r\n"
-    	 		+ "    name character varying NOT NULL,\r\n"
-    	 		+ "    bestellfix double precision NOT NULL,\r\n"
-    	 		+ "    lagerkostensatz double precision NOT NULL,\r\n"
-    	 		+ "    fehlmengenkosten double precision NOT NULL,\r\n"
-    	 		+ "    volumenprodukt double precision NOT NULL,\r\n"
-    	 		+ "    minbestand integer,\r\n"
-    	 		+ "    maxbestand integer,\r\n"
-    	 		+ "    einstand double precision NOT NULL,\r\n"
-    	 		+ "    key character varying ,\r\n"
-    	 		+ "    CONSTRAINT produkt_pkey PRIMARY KEY (pid),\r\n"
-    	 		+ "    CONSTRAINT produkt_name_key UNIQUE (name)\r\n"
-    	 		+ ")";
+    	 		+ "    name character varying COLLATE pg_catalog.\"default\" NOT NULL,\r\n"
+    	 	    + " bestellfix double precision NOT NULL,\r\n"
+    	 	    + "lagerkostensatz double precision NOT NULL,\r\n"
+    	 	    + "fehlmengenkosten double precision NOT NULL,\r\n"
+    	 	    + "volumenprodukt double precision NOT NULL,\r\n"
+    	 	    + "minbestand integer,\r\n"
+    	 	    + "maxbestand integer,\r\n"
+    	 	    + "einstand double precision NOT NULL,\r\n"
+    	 	    + "key character varying COLLATE pg_catalog.\"default\",\r\n"
+    	 	    + "pkategorie character varying COLLATE pg_catalog.\"default\","
+    	 	    + "CONSTRAINT produkt_pkey PRIMARY KEY (pid),\r\n"
+    	 	    + " CONSTRAINT produkt_name_key UNIQUE (name),\r\n"
+    	 	    + "CONSTRAINT probleminstanz FOREIGN KEY (key) \r\n"
+    	 	    + "   REFERENCES public.probleminstanz (key) MATCH SIMPLE \r\n"
+    	 	    + "   ON UPDATE NO ACTION \r\n"
+    	 	    + "   ON DELETE CASCADE \r\n"
+    	 	    + "    NOT VALID \r\n"
+    	 	    + ")";
     	 
     	 try {
-    		 con = getConnection();
+    		 con = DatenbankVerbindung.getConnection();
     		 ps = con.prepareStatement(sql);
     		 ps.executeUpdate();
     	 }catch(SQLException e) {
@@ -267,7 +262,7 @@ public class Datenbankinstaller {
     			+ "    CONSTRAINT stamps_pkey PRIMARY KEY (key)\r\n"
     			+ ")\r\n";
     	try {
-   		 	con = getConnection();
+   		 	con = DatenbankVerbindung.getConnection();
    		 	ps = con.prepareStatement(sql);
    		 	ps.executeUpdate();
     	}catch(SQLException e) {
@@ -279,10 +274,11 @@ public class Datenbankinstaller {
      public static void createAdminUser(String name, String pw) throws SQLException {
     	 Connection con = null;
     	 PreparedStatement ps = null;
-    	 String sql = "INSERT into public.users (name, password, key, zugriff) VALUES (?,?,?,?)";
+    	 System.out.println(pw);
+    	 String sql = "INSERT into public.benutzer (name, password, key, zugriff) VALUES (?,?,?,?)";
     	 
     	 try {
-    		 con = getConnection();
+    		 con = DatenbankVerbindung.getConnection();
     		 ps = con.prepareStatement(sql);
     		 ps.setString(1, name);
     		 ps.setString(2, pw);
@@ -298,6 +294,139 @@ public class Datenbankinstaller {
     		 
     	 }
      }
+     
+     public static void createBewaehrtProblem() {
+    	 Connection con = null;
+    	 PreparedStatement ps = null;
+    	 String sql = "CREATE TABLE IF NOT EXISTS public.bewaehrtprobleminstanz\r\n"
+    	 		+ "(\r\n"
+    	 		+ "    id serial NOT NULL,\r\n"
+    	 		+ "    panzahl integer NOT NULL,\r\n"
+    	 		+ "    perioden integer NOT NULL,\r\n"
+    	 		+ "    problemkey character varying COLLATE pg_catalog.\"default\" NOT NULL,\r\n"
+    	 		+ "    kapitalbindung double precision NOT NULL,\r\n"
+    	 		+ "    lagervolumen double precision NOT NULL,\r\n"
+    	 		+ "    sammelbestellung double precision NOT NULL,\r\n"
+    	 		+ "    zeit bigint NOT NULL,\r\n"
+    	 		+ "    name character varying COLLATE pg_catalog.\"default\" NOT NULL,\r\n"
+    	 		+ "    CONSTRAINT bewaehrtprobleminstanz_pkey PRIMARY KEY (id),\r\n"
+    	 		+ "    CONSTRAINT \"Key\" UNIQUE (problemkey)\r\n"
+    	 		+ ")";
+    	 try {
+    		 con = DatenbankVerbindung.getConnection();
+    		 ps = con.prepareStatement(sql);
+    		 ps.executeUpdate();
+    	 }catch(SQLException e) {
+    		 e.printStackTrace();
+    	 }
+     }
+     
+     public static void createBewaehrtProdukt() {
+    	Connection con = null;
+    	PreparedStatement ps = null;
+    	String sql = "CREATE TABLE IF NOT EXISTS public.bewaehrtprodukt\r\n"
+    			+ "(\r\n"
+    			+ "    pid serial NOT NULL,\r\n"
+    			+ "    name character varying NOT NULL,\r\n"
+    			+ "    bestellfix double precision NOT NULL,\r\n"
+    			+ "    lagerkostensatz double precision NOT NULL,\r\n"
+    			+ "    fehlmengenkosten double precision NOT NULL,\r\n"
+    			+ "    volumenprodukt double precision NOT NULL,\r\n"
+    			+ "    minbestand integer NOT NULL,\r\n"
+    			+ "    maxbestand integer NOT NULL,\r\n"
+    			+ "    einstand double precision NOT NULL,\r\n"
+    			+ "    problemkey character varying NOT NULL,\r\n"
+    			+ "    pkategorie character varying COLLATE pg_catalog.\"default\",\r\n"    			
+    			+ "    CONSTRAINT bewaehrtprodukt_pkey PRIMARY KEY (pid),\r\n"
+    			+ "    CONSTRAINT bewaehrtprodukt_problemkey_fkey FOREIGN KEY (problemkey)\r\n"
+    			+ "        REFERENCES public.bewaehrtprobleminstanz (problemkey) MATCH SIMPLE\r\n"
+    			+ "        ON UPDATE NO ACTION\r\n"
+    			+ "        ON DELETE NO ACTION\r\n"
+    			+ ")";
+    	
+    	try {
+   		 con = DatenbankVerbindung.getConnection();
+   		 ps = con.prepareStatement(sql);
+   		 ps.executeUpdate();
+    	}catch(SQLException e) {
+   		 e.printStackTrace();
+   	 	}
+     }
     
+     public static void createBewaehrtUserErgebnis() {
+    	 Connection con = null;
+    	 PreparedStatement ps = null;
+    	 String sql = "CREATE TABLE IF NOT EXISTS public.bewaehrtuserergebnis\r\n"
+    			+ "(\r\n"
+    			+ "    id serial NOT NULL,\r\n"
+    			+ "    bestellmenge integer NOT NULL,\r\n"
+    			+ "    pname character varying NOT NULL,\r\n"
+    			+ "    kosten double precision NOT NULL,\r\n"
+    			+ "    periode integer NOT NULL,\r\n"
+    			+ "    uid character varying NOT NULL,\r\n"
+    			+ "    CONSTRAINT bewaehrtuserergebnis_pkey PRIMARY KEY (id)\r\n"
+    			+ ")";
+    	 
+    	 try {
+       		 con = DatenbankVerbindung.getConnection();
+       		 ps = con.prepareStatement(sql);
+       		 ps.executeUpdate();
+        	}catch(SQLException e) {
+       		 e.printStackTrace();
+       	 	}
+    	 
+     }
+     
+     public static void createBewaehrtVerbrauch() {
+    	 Connection con = null;
+    	 PreparedStatement ps = null;
+    	 String sql = "CREATE TABLE IF NOT EXISTS public.bewaehrtverbrauch\r\n"
+    	 		+ "(\r\n"
+    	 		+ "    vid serial NOT NULL ,\r\n"
+    	 		+ "    pname character varying NOT NULL,\r\n"
+    	 		+ "    periode integer NOT NULL,\r\n"
+    	 		+ "    verbrauch integer NOT NULL,\r\n"
+    	 		+ "    verbrauchkategorie \"char\",\r\n"
+    	 		+ "    problemkey character varying,\r\n"
+    	 		+ "    CONSTRAINT bewaehrtverbrauch_pkey PRIMARY KEY (vid)\r\n"
+    	 		+ ")\r\n";    	 		
+    	 
+    	 try {
+       		 con = DatenbankVerbindung.getConnection();
+       		 ps = con.prepareStatement(sql);
+       		 ps.executeUpdate();
+        	}catch(SQLException e) {
+       		 e.printStackTrace();
+       	 	}
+     }
+     
+     public static void createTopTen() {
+    	 Connection con = null;
+    	 PreparedStatement ps = null;
+    	 String sql = "CREATE TABLE IF NOT EXISTS public.toptenbewaehrt\r\n"
+    	 		+ "(\r\n"
+    	 		+ "    id serial NOT NULL,\r\n"
+    	 		+ "    score double precision NOT NULL,\r\n"
+    	 		+ "    fehl double precision NOT NULL,\r\n"
+    	 		+ "    kosten double precision NOT NULL,\r\n"
+    	 		+ "    zeit bigint NOT NULL,\r\n"
+    	 		+ "    schwierigkeitsgrad integer NOT NULL,\r\n"
+    	 		+ "    problemkey character varying,\r\n"
+    	 		+ "    uid character varying,\r\n"
+    	 		+ "    CONSTRAINT toptenbewaehrt_pkey PRIMARY KEY (id),\r\n"
+    	 		+ "    CONSTRAINT pkey FOREIGN KEY (problemkey)\r\n"
+    	 		+ "        REFERENCES public.bewaehrtprobleminstanz (problemkey) MATCH SIMPLE\r\n"
+    	 		+ "        ON UPDATE NO ACTION\r\n"
+    	 		+ "        ON DELETE NO ACTION\r\n"
+    	 		+ ")";
+    	 
+    	 try {
+       		 con = DatenbankVerbindung.getConnection();
+       		 ps = con.prepareStatement(sql);
+       		 ps.executeUpdate();
+        	}catch(SQLException e) {
+       		 e.printStackTrace();
+       	 	}
+     }
 
 }

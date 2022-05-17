@@ -24,133 +24,71 @@ $(document).ready(function(){
 	    });
 	  });
 	});
+	
+	
+
+
 
 </script>
 </head>
 <body class = "bg-secondary text-white">
 	<x:AdminHead></x:AdminHead>
 	
-	<p>Aktuell im Bestand sind: </p>
-	<p>A Produkt: 46, B Produkt: 43, C Produkt: 32
-		
-	
-	<h4 class = "error">${fehler }</h4>
-
-	<div class = "row m-md-5">
-	<div class = "col mr-2">
-	<a href ="erweitert.jsp">erweitertes Erstellen</a>
-<form action ="ProblemInstanzErstellen" method = "GET">
-<h4>Spielregeln</h4>
-<table>
-	<tr>
-		<td><label>Sammelbestellung</label>
-		<td><div class="input-group">
- 		 <div class="input-group-prepend">
-   	 		<div class="input-group-text">
-     			 <input type="checkbox" aria-label="Checkbox for following text input">
-    		</div>
- 		 </div>
- 		 
- 		 <input type="text" class="form-control" aria-label="Text input with checkbox">
-		</div>
-		</td>
-	</tr>	
-	<tr>		
-		<td><label>Zeitrestriktion</label></td>		
-		<td><input type = "text" class = "form-control" name = "zeit" placeholder = "In Sekunden z.B. f¸r 400ms= 0.4"></td>	
-		</tr>
-			
-</table>
-<h4>Produkterstellung</h4>
-	<table>
-		<tr>
-		<td>Periodenanzahl:</td>		
-		<td></td>	
-		<td><input type = "text" name ="perioden" class = "form-control"></td>
-		</tr>
-		<tr>
-			<td>Produkteingabe:</td>	
-			<td></td>
-		
-			<td><label>Produkt mit starken Schwankungen</label></td>
-			<td><label>Anzahl der Saisonalenprodukte</label></td>	
-			<td><label>Konstantes Produkt</label>	
-		</tr>	
-		<tr>
-			<td></td>
-			<td>A-Produkt</td>
-			<td><input type = "text" name = "aprodukt" class = "form-control"></td>
-			<td><input type = "text" name = "saisonalA" class = "form-control"></td>
-			<td><input type = "text" name = "kostantA" class = "form-control"></td>
-			
-		</tr>		
-		<tr>
-			<td></td>
-			<td>B-Produkt</td>
-			<td><input type = "text" name = "bprodukt" class = "form-control"></td>	
-			<td><input type = "text" name = "saisonalB" class = "form-control"></td>	
-			<td><input type = "text" name = "kostantB" class = "form-control"></td>
-				
-		</tr>		
-		<tr>
-			<td></td>
-			<td>C-Produkt</td>
-			<td><input type = "text" name = "cprodukt" class = "form-control"></td>
-			<td><input type = "text" name = "saisonalC" class = "form-control"></td>
-			<td><input type = "text" name = "kostantC"class = "form-control" ></td>
-			
-		</tr>
-		<tr>
-			<td><label for ="lager">Grˆﬂe des Lagers</label></td>
-			<td></td>
-			<td><select id = "lager" name = "lager">
-				<option value = "klein">Kleines Lager</option>
-				<option value = "medium">Mittelgroﬂes Lager</option>
-				<option value = "gross">Groﬂes Lager</option>			
-			</select></td>		
-		</tr>
-		<tr>
-			<td><label for ="kapBindung">Kapitalbindung des Lagers</label></td>
-			<td></td>
-			<td><select id = "kapital" name = "kapital">
-				<option value = "wenig">Kleines Budget</option>
-				<option value = "medium">Medium Budget</option>
-				<option value = "viel">Viel Budget</option>			
-			</select></td>		
-		</tr>							
-		<tr>
-		<td></td>
-		</tr>
-		<tr>
-			<td></td>
-			<td></td>
-			<td><button class = "btn btn-dark" type = "submit">Senden!</button></td>
-		</tr>	
-	</table>
+	<form action ="ProblemInstanzErstellen" method = "POST">
+<div class="container-grid">
+  <div class="spielregeln">
+    <div class="spielregelnueber"><h3>Spielregeln</h3></div>
+    <div class="sammelblabel"><label for="" class = "label">Sammelbestellungskosten</label>
+    <label for="" class = "form-label">Zeitrestriktion</label></div>
+    <div class="sammelbin"><input type = "text" class = "form-control" id = "spielregeln" name = "sammelB" placeholder = "Kosten f¸r Sammelbestellungen">
+    <input type = "text" class = "form-control" id = "spielregeln" name = "zeit" placeholder = "maximale Zeit f¸r einen Durchlauf"></div>
+   
+  </div>
+  <div class="lagerdata">
+    <div class="lagerueber"><h3>Lagergenerieren</h3></div>
+    <div class="lagergen">
+      <div class="lagergenueber"></div>
+      <div class="lagervollabel"><label for="" class = "form-label">Lagervolumen</label></div>
+      <div class="lagerkaplabel"><label for="" class = "form-label">Lagerkapital</label></div>
+      <div class="lagervolin"><input type = "text" class = "form-control" id = "" name = "lagervol" placeholder = "Maximales Lagervolumen"></div>
+      <div class="lagerkapin"><input type = "text" class = "form-control" id = "" name = "kapital" placeholder = "Maximale Kapitalbindung"></div>
+    </div>
+  
+   </div>
+   <div class="produkterstellung">
+   
+    <div class="periodenlabel"><h3>Produktgenerierung</h3><label for="" class = "form-label">Anzahl der Perioden</label></div>
+    <div class="periodeninput"><input type = "text" class = "form-control" id = "" name = "perioden" placeholder = "Periodenanzahl"></div>
+    <div class="verbrauchgen"><h4>Verbrauchsgenerierung</h4></div>
+    <div class="verbrauchlabel">
+      <div class="a"><label for="" class = "form-label">A-Produkt</label></div>
+      <div class="b"><label for="" class = "form-label">B-Produkt</label></div>
+      <div class="c"><label for="" class = "form-label">C-Produkt</label></div>
+    </div>
+    <div class="verbrauchsin">
+      <div class="b-in">
+        <div class="b-konst"><input type = "text" class = "form-control" id = "spielregeln" name = "kostantB" placeholder = "Konstanter Verbrauch (X)"></div>
+        <div class="b-sai"><input type = "text" class = "form-control" id = "spielregeln" name = "saisonalB" placeholder = "Saisonaler Verbrauch (Y)"></div>
+        <div class="b-schwank"><input type = "text" class = "form-control" id = "spielregeln" name = "bprodukt" placeholder = "Schwankender-Verbrauch(Z)"></div>
+      </div>
+      <div class="c-in">
+        <div class="c-konst"><input type = "text" class = "form-control" id = "spielregeln" name = "kostantC" placeholder = "Konstanter Verbrauch (X)"></div>
+        <div class="c-sai"><input type = "text" class = "form-control" id = "spielregeln" name = "saisonalC" placeholder = "Saisonaler Verbrauch (Y)"></div>
+        <div class="c-schwank"><input type = "text" class = "form-control" id = "spielregeln" name = "cprodukt" placeholder = "Schwankender-Verbrauch(Z)"></div>
+      </div>
+      <div class="a-in">
+        <div class="a-konst"><input type = "text" class = "form-control" id = "spielregeln" name = "kostantA" placeholder = "Konstanter Verbrauch (X)"></div>
+        <div class="a-sai"><input type = "text" class = "form-control" id = "spielregeln" name = "saisonalA" placeholder = "Saisonaler Verbrauch (Y)"></div>
+        <div class="a-schwank"><input type = "text" class = "form-control" id = "spielregeln" name = "aprodukt" placeholder = "Schwankender-Verbrauch(Z)"></div>
+      </div>      
+    </div>    
+  </div>
+  <div class="buttons"><a href = "erweitert.jsp" class = "btn btn-dark">Erweitertes Erstellen</a> <button class = "btn btn-dark" type = "Submit">generieren</button></div>
+</div>
 </form>
-</div>
-<div class = "col ml-4">
 
-	<form action = "UpdateLager" method = "GET">
-	<h4>Lagerdaten</h4>
-	<table>
-	<tr>
-		<td><label>Volumen des Lager</label></td>
-		<td><input type = "text" name = "vol" value = "${lagerVol }"></td>
-	</tr>
-	<tr>
-		<td><label>Lager Kapitalbindung</label></td>
-		<td><input type = "text" name = "kapBindung" value = "${lagerKap }"></td>
-	</tr>
-	<tr>
-		<td><button class = "btn btn-dark" type = "submit">update</button>
-	</tr>
-	</table>
-	</form>
-
-
-</div>
-</div>
+ 
+  
 
 
 <form action = "CreateCSV" method = "GET">

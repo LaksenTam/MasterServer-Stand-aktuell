@@ -33,6 +33,7 @@ public class ProblemInstanzAnzeigen extends HttpServlet {
     }
 
 	/**
+	 * Liefert alle notwendigen Daten für das ANzeigen der Probleminstanz im Adminpanel
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

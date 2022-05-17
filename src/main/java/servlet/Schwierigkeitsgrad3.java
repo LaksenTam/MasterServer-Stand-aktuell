@@ -68,7 +68,7 @@ public class Schwierigkeitsgrad3 extends HttpServlet {
 		 */
 		try {
 			ue = daten.ergebnis(ergebnis, ue);
-			produktListe = daten.produktListePeriode(produktListe, pe.getPeriode());
+			produktListe = daten.produktListePeriode(produktListe, pe.getPeriode());			
 			//Prüfe ob Zeitrestriktion eingehalten wurde
 			if(check.testeStempel(stempel, ue.getAPI_KEY())) {	
 				Lager lager = db.lagerAbrufen();				

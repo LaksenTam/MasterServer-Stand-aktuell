@@ -52,7 +52,7 @@ public class Produktergebnis extends Userergebnis {
 	@Override
 	public String toString() {
 		return "Produktergebnis [bestellmenge=" + bestellmenge + ", produktName=" + produktName + ", kosten=" + kosten
-				+ ", periode=" + ergebnisPeriode + "]";
+				+ "]";
 	}
 
 	
